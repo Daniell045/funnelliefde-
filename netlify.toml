@@ -1,0 +1,30 @@
+# Netlify configuratie voor Hechtingtest.nl
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Force HTTPS
+[[redirects]]
+  from = "http://hechtingtest.nl/*"
+  to = "https://hechtingtest.nl/:splat"
+  status = 301
+  force = true
+
+# SEO + security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Cache static assets
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
