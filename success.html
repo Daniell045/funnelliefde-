@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bedankt — Hechtingtest</title>
+<style>
+body { font-family: 'Manrope', system-ui, sans-serif; background: #F4EFE6; color: #2A1F1A; padding: 2rem; text-align: center; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.container { max-width: 540px; }
+h1 { font-size: 2.5rem; margin: 1rem 0; }
+p { font-size: 1rem; color: #6B5D52; line-height: 1.6; margin: 1rem 0; }
+.btn { display: inline-block; background: #2D4A3E; color: white; padding: 1rem 2rem; border-radius: 999px; text-decoration: none; margin-top: 1rem; font-weight: 600; }
+.btn:hover { background: #3D5C50; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>✓ Bedankt!</h1>
+  <p id="message">Je betaling is in orde. Je rapport komt zo snel mogelijk in je mailbox.</p>
+  <p style="font-size: 0.875rem; color: #999;">Controleer ook je spam-folder als je het niet direct ziet.</p>
+  <a href="/" class="btn">Terug naar Hechtingtest</a>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const plan = params.get('plan');
+if (plan === 'couple') {
+  document.getElementById('message').innerHTML = 'Je betaling is in orde! Wacht tot je partner de test doet, daarna krijgen jullie het koppels-rapport.';
+}
+</script>
+</body>
+</html>
