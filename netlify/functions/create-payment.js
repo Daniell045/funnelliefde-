@@ -1,5 +1,5 @@
 const mollieClient = require('@mollie/api-client');
-const { getStore } = require('@netlify/blobs');
+const { dbGet, dbSet } = require('./_lib/firebase-admin');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method not allowed' };
@@ -9,10 +9,8 @@ exports.handler = async (event) => {
     const mollie = mollieClient.default({ apiKey: process.env.MOLLIE_API_KEY });
     const siteUrl = process.env.SITE_URL || 'https://hechtingtest.nl';
 
-    // ─── SUBSCRIPTION (premium €9,99/maand) ───────────────────────────────────
+    // ─── SUBSCRIPTION (premium €9,99/maand) ──────────────────────────────────
     if (plan === 'subscription') {
-      // Stap 1: maak een eerste betaling aan met sequenceType 'first'
-      // Mollie slaat daarna het mandaat op voor recurring
       const payment = await mollie.payments.create({
         amount: { currency: 'EUR', value: '9.99' },
         description: 'Hechtingtest Premium — eerste maand',
@@ -22,14 +20,15 @@ exports.handler = async (event) => {
         metadata: { sessionId, plan: 'subscription', userEmail: user.email }
       });
 
-      // Sessie opslaan
-      const sessions = getStore('sessions');
-      const sess = await sessions.get(sessionId, { type: 'json' });
+      // Sessie updaten in Firebase
+      const sess = await dbGet(`sessions/${sessionId}`);
       if (sess) {
-        sess.paymentId = payment.id;
-        sess.plan = 'subscription';
-        sess.subscriptionEmail = user.email;
-        await sessions.setJSON(sessionId, sess);
+        await dbSet(`sessions/${sessionId}`, {
+          ...sess,
+          paymentId: payment.id,
+          plan: 'subscription',
+          subscriptionEmail: user.email
+        });
       }
 
       return {
@@ -39,18 +38,22 @@ exports.handler = async (event) => {
       };
     }
 
-    // ─── COUPLE (€9 eenmalig) ─────────────────────────────────────────────────
+    // ─── COUPLE (€9 eenmalig) ────────────────────────────────────────────────
     let token = null;
     if (plan === 'couple') {
       token = Math.random().toString(36).slice(2, 10).toUpperCase();
-      const couples = getStore('couples');
-      await couples.setJSON(token, {
-        token, mainSessionId: sessionId, partnerSessionId: null,
-        plan, paid: false, reportSent: false, createdAt: Date.now()
+      await dbSet(`couples/${token}`, {
+        token,
+        mainSessionId: sessionId,
+        partnerSessionId: null,
+        plan,
+        paid: false,
+        reportSent: false,
+        createdAt: Date.now()
       });
     }
 
-    // ─── SOLO (€5) + COUPLE (€9) ──────────────────────────────────────────────
+    // ─── SOLO (€5) + COUPLE (€9) ─────────────────────────────────────────────
     const amount = plan === 'couple' ? '9.00' : '5.00';
     const description = plan === 'couple' ? 'Hechtingtest koppels-rapport' : 'Hechtingtest solo rapport';
 
@@ -62,14 +65,15 @@ exports.handler = async (event) => {
       metadata: { sessionId, plan, userEmail: user.email, token }
     });
 
-    // Sessie opslaan
-    const sessions = getStore('sessions');
-    const sess = await sessions.get(sessionId, { type: 'json' });
+    // Sessie updaten in Firebase
+    const sess = await dbGet(`sessions/${sessionId}`);
     if (sess) {
-      sess.paymentId = payment.id;
-      sess.plan = plan;
-      sess.token = token;
-      await sessions.setJSON(sessionId, sess);
+      await dbSet(`sessions/${sessionId}`, {
+        ...sess,
+        paymentId: payment.id,
+        plan,
+        token
+      });
     }
 
     return {

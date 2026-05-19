@@ -1,54 +1,51 @@
 const Anthropic = require('@anthropic-ai/sdk');
-const { getStore } = require('@netlify/blobs');
+const { dbGet, dbSet } = require('./_lib/firebase-admin');
 const { STYLES, classifyStyle, getNormalized, buildSoloPrompt } = require('./_lib/helpers');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method not allowed' };
+
   try {
-    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const { user, scores, answers, isPartner, coupleToken } = JSON.parse(event.body);
-    
     const styleKey = classifyStyle(scores);
     const style = STYLES[styleKey];
     const normalized = getNormalized(scores);
+    const sessionId = 'sess_' + Math.random().toString(36).slice(2, 11) + Date.now().toString(36);
 
-    // Generate preview via Claude
-    const prompt = buildSoloPrompt({
-      user,
-      styleKey,
-      scores: { anxiety: scores.anxiety, avoidance: scores.avoidance },
-      normalized,
-      answers
+    // Sessie opslaan in Firebase
+    await dbSet(`sessions/${sessionId}`, {
+      sessionId, user, scores, normalized, answers, styleKey, style,
+      isPartner: !!isPartner, coupleToken: coupleToken || null,
+      paid: false, reportSent: false, createdAt: Date.now()
     });
 
-    const resp = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 400,
-      messages: [{ role: 'user', content: prompt }]
-    });
+    // Als partner: koppel aan couple record
+    if (isPartner && coupleToken) {
+      const couple = await dbGet(`couples/${coupleToken}`);
+      if (couple) {
+        await dbSet(`couples/${coupleToken}`, {
+          ...couple,
+          partnerSessionId: sessionId
+        });
+      }
+    }
 
-    const preview = resp.content[0].type === 'text' 
-      ? resp.content[0].text.substring(0, 300) + '…' 
-      : 'Rapport volgt…';
-
-    // Save session to Netlify Blobs
-    const sessionId = 'sess_' + Math.random().toString(36).slice(2, 11);
-    const sessions = getStore('sessions');
-    await sessions.setJSON(sessionId, {
-      sessionId,
-      user,
-      scores,
-      answers,
-      styleKey,
-      style,
-      normalized,
-      preview,
-      isPartner,
-      coupleToken,
-      paid: false,
-      reportSent: false,
-      createdAt: Date.now()
-    });
+    // Preview genereren (alleen voor hoofd-gebruiker, niet partner)
+    let preview = 'Je rapport wordt zo gegenereerd.';
+    if (!isPartner && process.env.ANTHROPIC_API_KEY) {
+      try {
+        const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+        const prompt = buildSoloPrompt({ user, styleKey, scores, normalized, answers });
+        const resp = await anthropic.messages.create({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 250,
+          messages: [{ role: 'user', content: prompt + '\n\nGeef ALLEEN een korte preview (3-4 zinnen, geen HTML).' }]
+        });
+        preview = resp.content[0].text + '…';
+      } catch (e) {
+        console.error('preview err:', e.message);
+      }
+    }
 
     return {
       statusCode: 200,
@@ -61,7 +58,7 @@ exports.handler = async (event) => {
       })
     };
   } catch (err) {
-    console.error('process-quiz error:', err);
+    console.error(err);
     return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
 };
