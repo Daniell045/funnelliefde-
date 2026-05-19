@@ -1,0 +1,34 @@
+[build]
+publish = "."
+functions = "netlify/functions"
+
+[functions]
+node_bundler = "esbuild"
+external_node_modules = ["@netlify/blobs"]
+
+# Background functions (.background.js suffix) krijgen automatisch
+# 15 min timeout op alle Netlify plans (ook free). Geen config nodig.
+# Sync functions op free = 10 sec max.
+
+# Webhook moet snel zijn (Mollie wacht max ~15 sec)
+[functions."mollie-webhook"]
+timeout = 10
+
+[functions."create-payment"]
+timeout = 10
+
+# process-quiz roept Claude aan voor preview (~5 sec)
+[functions."process-quiz"]
+timeout = 10
+
+[[headers]]
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+for = "/*.html"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"

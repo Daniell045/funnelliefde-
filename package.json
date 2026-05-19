@@ -1,0 +1,10 @@
+{
+  "name": "hechtingtest",
+  "version": "1.0.0",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.0",
+    "@mollie/api-client": "^3.7.0",
+    "@netlify/blobs": "^7.0.0",
+    "resend": "^3.2.0"
+  }
+}
