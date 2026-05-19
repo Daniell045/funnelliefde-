@@ -1,16 +1,10 @@
 {
   "name": "hechtingtest",
   "version": "1.0.0",
-  "description": "Hechtingtest funnel",
-  "private": true,
-  "scripts": {
-    "dev": "netlify dev",
-    "deploy": "netlify deploy --prod"
-  },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.30.0",
-    "@mollie/api-client": "^4.0.0",
-    "@netlify/blobs": "^8.0.0",
-    "resend": "^4.0.0"
+    "firebase-admin": "^12.0.0",
+    "@mollie/api-client": "latest",
+    "@anthropic-ai/sdk": "latest",
+    "resend": "latest"
   }
 }
