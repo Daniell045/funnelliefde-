@@ -1,0 +1,21 @@
+[build]
+publish = "."
+functions = "netlify/functions"
+
+[functions]
+node_bundler = "esbuild"
+
+[functions."mollie-webhook"]
+timeout = 30
+
+[[headers]]
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+for = "/*.html"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
