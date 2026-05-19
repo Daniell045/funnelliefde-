@@ -1,4 +1,4 @@
-const { dbGet } = require('./_lib/firebase-admin');
+const { dbGet, dbSet } = require('./_lib/firebase-admin');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method not allowed' };
@@ -7,14 +7,11 @@ exports.handler = async (event) => {
     const { token } = JSON.parse(event.body);
     if (!token) return { statusCode: 400, body: 'No token' };
 
-    // GECORRIGEERD: Haalt data nu op uit Firebase Realtime Database ipv Netlify Blobs!
     const couple = await dbGet(`couples/${token}`);
     if (!couple) return { statusCode: 404, body: 'Couple not found' };
 
-    // Als main paid + partner done → trigger report
     if (couple.paid && couple.partnerSessionId && !couple.reportSent) {
-      // Lazy require naar de nieuwe background function bestandsnaam
-      const { generateAndSendCouple } = require('./mollie-webhook-background');
+      const { generateAndSendCouple } = require('./mollie-webhook');
       await generateAndSendCouple(token);
     }
 
