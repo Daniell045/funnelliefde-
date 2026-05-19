@@ -9,6 +9,9 @@ exports.handler = async (event) => {
     const mollie = mollieClient.default({ apiKey: process.env.MOLLIE_API_KEY });
     const siteUrl = process.env.SITE_URL || 'https://hechtingtest.nl';
 
+    // Update webhookUrl naar de nieuwe background function naam
+    const webhookUrl = `${siteUrl}/.netlify/functions/mollie-webhook-background`;
+
     // ─── SUBSCRIPTION (premium €9,99/maand) ──────────────────────────────────
     if (plan === 'subscription') {
       const payment = await mollie.payments.create({
@@ -16,7 +19,7 @@ exports.handler = async (event) => {
         description: 'Hechtingtest Premium — eerste maand',
         sequenceType: 'first',
         redirectUrl: `${siteUrl}/success.html?session=${sessionId}&plan=subscription`,
-        webhookUrl: `${siteUrl}/.netlify/functions/mollie-webhook`,
+        webhookUrl: webhookUrl,
         metadata: { sessionId, plan: 'subscription', userEmail: user.email }
       });
 
@@ -61,7 +64,7 @@ exports.handler = async (event) => {
       amount: { currency: 'EUR', value: amount },
       description,
       redirectUrl: `${siteUrl}/success.html?session=${sessionId}&plan=${plan}${token ? '&token=' + token : ''}`,
-      webhookUrl: `${siteUrl}/.netlify/functions/mollie-webhook`,
+      webhookUrl: webhookUrl,
       metadata: { sessionId, plan, userEmail: user.email, token }
     });
 
