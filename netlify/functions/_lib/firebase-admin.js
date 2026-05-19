@@ -10,8 +10,7 @@ function getDb() {
       credential: admin.credential.cert({
         projectId: process.env.FIREBASE_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        // Netlify slaat \n op als letterlijke \n in env vars — dit fixt dat
-        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\\n'),
       }),
       databaseURL: process.env.FIREBASE_DATABASE_URL,
     });
@@ -20,8 +19,6 @@ function getDb() {
   db = admin.database();
   return db;
 }
-
-// Helpers die de Netlify Blobs API nabootsen maar Firebase gebruiken
 
 async function dbGet(path) {
   const snap = await getDb().ref(path).once('value');
