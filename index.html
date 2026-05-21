@@ -45,19 +45,56 @@ body {
 .btn-primary:hover { background: var(--primary-soft); transform: translateY(-1px); }
 .btn-primary[disabled] { opacity: 0.4; cursor: not-allowed; }
 
-.quiz { gap: 1.75rem; }
-.quiz-question { font-size: clamp(1.625rem, 5.5vw, 2.25rem); font-weight: 400; line-height: 1.15; max-width: 540px; }
-.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; margin-top: 0.5rem; }
-.option {
-  background: var(--surface); border: 1.5px solid var(--border); border-radius: 18px;
-  padding: 0; cursor: pointer; overflow: hidden; display: flex; flex-direction: column;
-  transition: all 0.25s; font-family: inherit; text-align: left; color: var(--text);
+.quiz { gap: 2rem; padding-top: 2.5rem; }
+.quiz-question { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 400; line-height: 1.25; max-width: 540px; }
+.quiz-hint { font-size: 0.9375rem; color: var(--text-muted); margin-top: -0.75rem; }
+
+.slider-wrap { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; }
+.slider-value-display { display: flex; justify-content: space-between; align-items: center; }
+.slider-value-label { font-size: 1rem; font-weight: 500; color: var(--primary); transition: all 0.2s; }
+.slider-value-percent { font-size: 1.125rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+.slider-value-percent.dimmed { color: var(--text-muted); opacity: 0.4; }
+
+.slider-track-wrap { position: relative; padding: 1rem 0; touch-action: pan-y; }
+.slider-range {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 6px; border-radius: 999px;
+  background: var(--surface-2); outline: none; cursor: pointer;
+  margin: 0;
 }
-.option:hover, .option:focus-visible { border-color: var(--primary); transform: translateY(-2px); outline: none; }
-.option.selected { border-color: var(--primary); background: var(--primary); color: var(--surface); }
-.option-illustration { aspect-ratio: 1; width: 100%; background: var(--surface-2); display: flex; align-items: center; justify-content: center; }
-.option-text { padding: 0.875rem 1rem 1.125rem; display: flex; flex-direction: column; gap: 0.25rem; }
-.option-title { font-size: 0.9375rem; font-weight: 500; line-height: 1.35; }
+.slider-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--surface); border: 3px solid var(--primary);
+  cursor: grab; box-shadow: var(--shadow-md);
+  transition: transform 0.15s, border-color 0.2s;
+}
+.slider-range::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.15); }
+.slider-range::-moz-range-thumb {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--surface); border: 3px solid var(--primary);
+  cursor: grab; box-shadow: var(--shadow-md);
+}
+.slider-range.touched::-webkit-slider-thumb { border-color: var(--accent); }
+.slider-range.touched::-moz-range-thumb { border-color: var(--accent); }
+
+.slider-fill {
+  position: absolute; top: 50%; left: 0; height: 6px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transform: translateY(-50%); pointer-events: none;
+  width: 50%; transition: width 0.1s;
+}
+
+.slider-labels { display: flex; justify-content: space-between; font-size: 0.8125rem; color: var(--text-muted); margin-top: -0.5rem; }
+
+.quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; gap: 1rem; }
+.btn-secondary {
+  background: transparent; color: var(--text-muted); border: none;
+  font-size: 0.9375rem; font-weight: 500; cursor: pointer;
+  padding: 0.75rem 1rem; border-radius: 999px; font-family: inherit;
+}
+.btn-secondary:hover { color: var(--text); }
+.btn-secondary:disabled { opacity: 0.3; cursor: not-allowed; }
 
 .capture { gap: 1.5rem; padding-top: 3rem; }
 .capture-title { font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 400; line-height: 1.05; }
@@ -113,7 +150,7 @@ body {
 <div class="app">
   <header class="header" id="header" style="display: none;">
     <div class="logo"><span class="logo-dot"></span> Hechtingtest</div>
-    <div id="progressCounter">Vraag 1 / 12</div>
+    <div id="progressCounter">Vraag 1 / 15</div>
   </header>
   <div class="progress-track" id="progressTrack" style="display: none;"><div class="progress-fill" id="progressFill"></div></div>
 
@@ -126,7 +163,25 @@ body {
 
   <section class="screen quiz" id="screen-quiz">
     <h2 class="quiz-question" id="quizQuestion">Vraag laadt…</h2>
-    <div class="quiz-options" id="quizOptions"></div>
+    <p class="quiz-hint">Sleep de bol om aan te geven hoe sterk dit klopt voor jou.</p>
+    <div class="slider-wrap">
+      <div class="slider-value-display">
+        <span class="slider-value-label" id="sliderLabel">Beweeg de bol</span>
+        <span class="slider-value-percent dimmed" id="sliderPercent">—</span>
+      </div>
+      <div class="slider-track-wrap">
+        <input type="range" min="0" max="100" value="50" step="1" class="slider-range" id="quizSlider">
+        <div class="slider-fill" id="sliderFill"></div>
+      </div>
+      <div class="slider-labels">
+        <span>Helemaal niet</span>
+        <span>Helemaal mee eens</span>
+      </div>
+    </div>
+    <div class="quiz-nav">
+      <button class="btn-secondary" id="quizBack" onclick="prevQuestion()">← Terug</button>
+      <button class="btn-primary" id="quizNext" onclick="nextQuestion()" disabled>Volgende</button>
+    </div>
   </section>
 
   <section class="screen capture" id="screen-capture">
@@ -241,20 +296,32 @@ Hechtingtest geeft inzicht voor zelfreflectie. Dit is geen diagnose of medische 
 </div>
 
 <script>
+// 15 ECR-R-geinspireerde stellingen.
+// Per vraag: stelling + weegfactoren voor anxiety/avoidance.
+// 'reverse: true' = stelling is omgekeerd (hoge slider = lage score op dimensie)
+// Slider geeft 0-100; we normaliseren naar bijdrage 0-100 per dimensie.
 const QUESTIONS = [
-  { q: "Het is jullie eerste afspraakje. Hoe voel jij je het meest?", a: { t: "Ik geef snel openheid en voel me meteen verbonden", an: 1, av: -1 }, b: { t: "Ik houd bewust afstand om eerst te kijken", an: -1, av: 1 } },
-  { q: "Je partner is een dag afstandelijk. Wat doe jij?", a: { t: "Ik vraag direct wat er is, ik kan het niet laten rusten", an: 2, av: -1 }, b: { t: "Ik geef ze ruimte en wacht tot ze erover spreken", an: -1, av: 1 } },
-  { q: "Jullie hebben ruzie. Wat is jouw natuurlijke reactie?", a: { t: "Niet slapen voor het is uitgepraat", an: 2, av: -1 }, b: { t: "Ik trek me terug en moet alleen afkoelen", an: 0, av: 2 } },
-  { q: "Je krijgt een groot compliment van je partner.", a: { t: "Ik geniet ervan en voel me oprecht gezien", an: -1, av: -1 }, b: { t: "Ik twijfel of ze het echt menen", an: 2, av: 1 } },
-  { q: "Stel je een ideale vakantie met je partner voor.", a: { t: "24/7 samen, dat is juist het mooie", an: 1, av: -2 }, b: { t: "Wel samen, maar ook tijd voor jezelf is essentieel", an: -1, av: 1 } },
-  { q: "Iets kwetsbaars over jezelf delen — hoe gaat dat?", a: { t: "Ik deel het vrij snel, ik wil echt gekend worden", an: 1, av: -2 }, b: { t: "Ik houd het lang voor mezelf, soms jaren", an: 1, av: 2 } },
-  { q: "Je partner heeft een drukke periode op werk.", a: { t: "Ik voel me snel verwaarloosd of weggeschoven", an: 2, av: 0 }, b: { t: "Geen probleem, ik vermaak me prima alleen", an: -2, av: 1 } },
-  { q: "Verliefd worden — hoe pak jij dat aan?", a: { t: "Ik ga er helemaal in op, hoofd en hart tegelijk", an: 2, av: -1 }, b: { t: "Ik kijk eerst rustig of het echt klopt", an: -1, av: 1 } },
-  { q: "Toekomstplannen maken met je partner.", a: { t: "Ik plan graag ver vooruit, samen", an: 0, av: -2 }, b: { t: "Ik houd het liefst flexibel, hou niet van vastleggen", an: 1, av: 2 } },
-  { q: "Je partner is verdrietig en huilt.", a: { t: "Ik wil meteen troosten en het oplossen", an: 1, av: -1 }, b: { t: "Ik geef ruimte tot ze er klaar voor zijn", an: -1, av: 2 } },
-  { q: "Een relatie loopt op zijn eind.", a: { t: "Heel zwaar, ik laat lang niet los", an: 2, av: -1 }, b: { t: "Snel weer 'fine', ik ga makkelijk door", an: -1, av: 2 } },
-  { q: "Vertrouwen geven aan een nieuwe partner.", a: { t: "Vrij snel en volledig, ik geloof in mensen", an: 1, av: -1 }, b: { t: "Moet verdiend worden over tijd", an: 0, av: 2 } }
+  // ── Anxiety items (hechtingsangst, behoefte aan nabijheid) ───────────────
+  { q: "Ik maak me zorgen dat mijn partner me niet zoveel waardeert als ik hen.", dim: "anxiety", reverse: false },
+  { q: "Ik voel me snel onzeker als mijn partner afstand neemt, zelfs kort.", dim: "anxiety", reverse: false },
+  { q: "Ik heb sterke behoefte aan bevestiging dat ik geliefd ben.", dim: "anxiety", reverse: false },
+  { q: "Als mijn partner niet snel reageert op berichten, denk ik snel dat er iets mis is.", dim: "anxiety", reverse: false },
+  { q: "Ik ben bang om verlaten te worden door iemand om wie ik geef.", dim: "anxiety", reverse: false },
+  { q: "Ik kan goed alleen zijn zonder me eenzaam te voelen.", dim: "anxiety", reverse: true },
+  { q: "Ik voel me rustig en zeker in mijn relaties, ook zonder constant contact.", dim: "anxiety", reverse: true },
+
+  // ── Avoidance items (vermijding van intimiteit, behoefte aan afstand) ────
+  { q: "Ik vind het lastig om volledig op mijn partner te leunen of afhankelijk te zijn.", dim: "avoidance", reverse: false },
+  { q: "Ik houd liever wat emotionele afstand in relaties.", dim: "avoidance", reverse: false },
+  { q: "Ik vind het moeilijk om mijn diepste gevoelens met iemand te delen.", dim: "avoidance", reverse: false },
+  { q: "Als iemand te dichtbij komt, voel ik de neiging me terug te trekken.", dim: "avoidance", reverse: false },
+  { q: "Ik vertrouw liever op mezelf dan op iemand anders, ook in moeilijke tijden.", dim: "avoidance", reverse: false },
+  { q: "Ik vind het fijn om me kwetsbaar op te stellen tegenover mijn partner.", dim: "avoidance", reverse: true },
+  { q: "Ik voel me comfortabel met diepe emotionele nabijheid.", dim: "avoidance", reverse: true },
+  { q: "Ik praat makkelijk over wat er in mij omgaat.", dim: "avoidance", reverse: true }
 ];
+
+const TOTAL_Q = QUESTIONS.length;
 
 const STYLES = {
   secure: { name: "Veilig hechtende stijl", title: "Verbinder" },
@@ -264,14 +331,21 @@ const STYLES = {
 };
 
 var state = {
-  currentQuestion: 0, answers: [], scores: { anxiety: 0, avoidance: 0 },
-  style: null, user: { name: '', email: '' }, plan: null, coupleToken: null,
-  isPartner: false, sessionId: null
+  currentQuestion: 0,
+  answers: [],          // [{ q, value, dim, reverse }]
+  style: null,
+  user: { name: '', email: '' },
+  plan: null,
+  coupleToken: null,
+  isPartner: false,
+  sessionId: null
 };
 
 function startQuiz() {
   document.getElementById('header').style.display = 'flex';
   document.getElementById('progressTrack').style.display = 'block';
+  state.currentQuestion = 0;
+  state.answers = [];
   showScreen('quiz');
   renderQuestion();
 }
@@ -282,39 +356,112 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
-function renderQuestion() {
-  const q = QUESTIONS[state.currentQuestion];
-  const n = state.currentQuestion + 1;
-  document.getElementById('quizQuestion').textContent = q.q;
-  document.getElementById('progressCounter').textContent = `Vraag ${n} / 12`;
-  document.getElementById('progressFill').style.width = ((n - 1) / 12 * 100) + '%';
+// Live label op basis van slider-waarde
+function valueLabel(v) {
+  if (v < 15) return "Helemaal niet";
+  if (v < 35) return "Beetje niet";
+  if (v < 50) return "Eerder niet";
+  if (v === 50) return "Beweeg de bol";
+  if (v < 65) return "Een beetje";
+  if (v < 85) return "Best wel";
+  return "Helemaal";
+}
 
-  const opts = document.getElementById('quizOptions');
-  opts.innerHTML = '';
-  ['a', 'b'].forEach(choice => {
-    const data = q[choice];
-    const btn = document.createElement('button');
-    btn.className = 'option';
-    btn.innerHTML = `<div class="option-illustration"><div style="font-size: 3rem;">◆</div></div><div class="option-text"><div class="option-title">${data.t}</div></div>`;
-    btn.onclick = () => {
-      document.querySelectorAll('#quizOptions .option').forEach(o => o.classList.remove('selected'));
-      btn.classList.add('selected');
-      setTimeout(() => {
-        state.answers.push({ q: q.q, chosen: data.t, anxiety: data.an, avoidance: data.av });
-        state.scores.anxiety += data.an;
-        state.scores.avoidance += data.av;
-        state.currentQuestion++;
-        if (state.currentQuestion >= 12) {
-          document.getElementById('header').style.display = 'none';
-          document.getElementById('progressTrack').style.display = 'none';
-          showScreen('capture');
-        } else {
-          renderQuestion();
-        }
-      }, 280);
-    };
-    opts.appendChild(btn);
+function renderQuestion() {
+  const idx = state.currentQuestion;
+  const q = QUESTIONS[idx];
+  const n = idx + 1;
+
+  document.getElementById('quizQuestion').textContent = q.q;
+  document.getElementById('progressCounter').textContent = `Vraag ${n} / ${TOTAL_Q}`;
+  document.getElementById('progressFill').style.width = ((n - 1) / TOTAL_Q * 100) + '%';
+
+  const slider = document.getElementById('quizSlider');
+  const fill = document.getElementById('sliderFill');
+  const label = document.getElementById('sliderLabel');
+  const percent = document.getElementById('sliderPercent');
+  const nextBtn = document.getElementById('quizNext');
+  const backBtn = document.getElementById('quizBack');
+
+  // Eerder beantwoord? Toon dan vorige waarde en activeer 'Volgende'.
+  const prev = state.answers[idx];
+  if (prev) {
+    slider.value = prev.value;
+    slider.classList.add('touched');
+    label.textContent = valueLabel(prev.value);
+    percent.textContent = prev.value + '%';
+    percent.classList.remove('dimmed');
+    fill.style.width = prev.value + '%';
+    nextBtn.disabled = false;
+  } else {
+    slider.value = 50;
+    slider.classList.remove('touched');
+    label.textContent = "Beweeg de bol";
+    percent.textContent = '—';
+    percent.classList.add('dimmed');
+    fill.style.width = '50%';
+    nextBtn.disabled = true;
+  }
+
+  backBtn.disabled = idx === 0;
+  nextBtn.textContent = (idx === TOTAL_Q - 1) ? 'Klaar →' : 'Volgende';
+
+  // Verwijder vorige listeners door slider element te clonen
+  const newSlider = slider.cloneNode(true);
+  slider.parentNode.replaceChild(newSlider, slider);
+
+  newSlider.addEventListener('input', () => {
+    const v = parseInt(newSlider.value, 10);
+    fill.style.width = v + '%';
+    label.textContent = valueLabel(v);
+    percent.textContent = v + '%';
+    percent.classList.remove('dimmed');
+    newSlider.classList.add('touched');
+    nextBtn.disabled = false;
   });
+}
+
+function nextQuestion() {
+  const idx = state.currentQuestion;
+  const q = QUESTIONS[idx];
+  const slider = document.getElementById('quizSlider');
+  const v = parseInt(slider.value, 10);
+
+  // Sla antwoord op (overschrijf als ze terug zijn gegaan)
+  state.answers[idx] = { q: q.q, value: v, dim: q.dim, reverse: q.reverse };
+
+  if (idx + 1 >= TOTAL_Q) {
+    // Klaar — bereken scores en ga naar capture
+    computeScores();
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('header').style.display = 'none';
+    document.getElementById('progressTrack').style.display = 'none';
+    showScreen('capture');
+    return;
+  }
+
+  state.currentQuestion++;
+  renderQuestion();
+}
+
+function prevQuestion() {
+  if (state.currentQuestion === 0) return;
+  state.currentQuestion--;
+  renderQuestion();
+}
+
+// Reken scores uit: per dimensie het gemiddelde van alle items, op schaal 0-100
+function computeScores() {
+  const sums = { anxiety: { total: 0, count: 0 }, avoidance: { total: 0, count: 0 } };
+  state.answers.forEach(a => {
+    const score = a.reverse ? (100 - a.value) : a.value;
+    sums[a.dim].total += score;
+    sums[a.dim].count += 1;
+  });
+  state.scores = {
+    anxiety: sums.anxiety.count ? Math.round(sums.anxiety.total / sums.anxiety.count) : 50,
+    avoidance: sums.avoidance.count ? Math.round(sums.avoidance.total / sums.avoidance.count) : 50
+  };
 }
 
 async function submitEmail() {
