@@ -1,12 +1,9 @@
 const Anthropic = require('@anthropic-ai/sdk');
 const { dbGet, dbSet } = require('./_lib/storage');
-const { STYLES, classifyStyle, getNormalized, buildSoloPrompt } = require('./_lib/helpers');
+const { STYLES, classifyStyle, getNormalized } = require('./_lib/helpers');
 
-// Aparte korte prompt voor de preview - geen full rapport!
-// Doel: 3-4 zinnen die nieuwsgierig maken en doen verlangen naar het volledige rapport
 function buildPreviewPrompt({ user, styleKey, normalized }) {
   const style = STYLES[styleKey];
-
   return `Schrijf een korte preview-tekst voor ${user.name} over hun hechtingsstijl. STRIKT MAX 3 ZINNEN.
 
 Stijl: ${style.title} (${style.name})
@@ -29,6 +26,11 @@ exports.handler = async (event) => {
 
   try {
     const { user, scores, answers, isPartner, coupleToken } = JSON.parse(event.body);
+
+    if (!scores || typeof scores.anxiety !== 'number' || typeof scores.avoidance !== 'number') {
+      return { statusCode: 400, body: JSON.stringify({ error: 'Invalid scores format' }) };
+    }
+
     const styleKey = classifyStyle(scores);
     const style = STYLES[styleKey];
     const normalized = getNormalized(scores);
@@ -40,38 +42,28 @@ exports.handler = async (event) => {
       paid: false, reportSent: false, createdAt: Date.now()
     });
 
-    // Als partner: koppel aan couple record
     if (isPartner && coupleToken) {
       const couple = await dbGet(`couples/${coupleToken}`);
       if (couple) {
-        await dbSet(`couples/${coupleToken}`, {
-          ...couple,
-          partnerSessionId: sessionId
-        });
+        await dbSet(`couples/${coupleToken}`, { ...couple, partnerSessionId: sessionId });
       }
     }
 
-    // Preview genereren (alleen voor hoofd-gebruiker, niet partner)
     let preview = `Jouw resultaat laat een interessant patroon zien. In het volledige rapport ontdek je hoe jouw stijl je relaties beïnvloedt.`;
 
     if (!isPartner && process.env.ANTHROPIC_API_KEY) {
       try {
         const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
         const previewPrompt = buildPreviewPrompt({ user, styleKey, normalized });
-
         const resp = await anthropic.messages.create({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 150,
           messages: [{ role: 'user', content: previewPrompt }]
         });
-
-        // Clean: haal eventuele HTML/markdown weg en trim
         preview = resp.content[0].text
-          .replace(/<[^>]+>/g, '')      // strip HTML tags
-          .replace(/^\s*[#*-]+\s*/gm, '') // strip markdown headers/bullets
+          .replace(/<[^>]+>/g, '')
+          .replace(/^\s*[#*-]+\s*/gm, '')
           .trim();
-
-        // Veiligheidsnet: als Claude toch een rapport begint, knip af
         if (preview.length > 400) {
           preview = preview.substring(0, 350).split('.').slice(0, -1).join('.') + '…';
         }
