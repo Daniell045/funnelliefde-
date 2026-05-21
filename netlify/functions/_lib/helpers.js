@@ -5,62 +5,81 @@ const STYLES = {
   fearful: { name: 'Angstig-vermijdende stijl', title: 'Beschermer in nood' }
 };
 
+// Scores komen nu binnen als percentage 0-100 per dimensie (anxiety/avoidance)
+// 50 = neutraal, >50 = hoge score op die dimensie, <50 = lage score
 function classifyStyle(scores) {
   const a = scores.anxiety, v = scores.avoidance;
-  const highA = a > 3, highV = v > 3;
+  // Drempel op 55% (iets boven neutraal) om grijs gebied te vermijden
+  const highA = a > 55, highV = v > 55;
   if (!highA && !highV) return 'secure';
   if (highA && !highV) return 'anxious';
   if (!highA && highV) return 'avoidant';
   return 'fearful';
 }
 
-function normalize(score, min, max) {
-  const clamped = Math.max(min, Math.min(max, score));
-  return Math.round((clamped - min) / (max - min) * 100);
-}
-
+// Scores zijn nu al 0-100, dus geen normalisering meer nodig.
+// Behouden voor backwards compatibility.
 function getNormalized(scores) {
   return {
-    anxiety: normalize(scores.anxiety, -9, 14),
-    avoidance: normalize(scores.avoidance, -9, 14),
-    secure: 100 - Math.max(normalize(scores.anxiety, -9, 14), normalize(scores.avoidance, -9, 14))
+    anxiety: Math.round(scores.anxiety),
+    avoidance: Math.round(scores.avoidance),
+    secure: Math.round(100 - Math.max(scores.anxiety, scores.avoidance))
   };
 }
 
 function buildSoloPrompt({ user, styleKey, scores, normalized, answers }) {
   const style = STYLES[styleKey];
-  const answersText = answers.map((a, i) => `Vraag ${i+1}: "${a.chosen}"`).join('\n');
 
-  return `Je bent een warme, ervaren hechtingstherapeut. Schrijf een persoonlijk hechtingsrapport van circa 1200 woorden voor ${user.name} in geldige HTML (alleen body content - geen <html>, <head>, of <body> tags).
+  // Antwoorden zijn nu sliders 0-100. Vertaal naar leesbare tekst voor Claude.
+  const answersText = answers.map((a, i) => {
+    const intensity =
+      a.value < 20 ? 'helemaal niet' :
+      a.value < 40 ? 'beetje niet' :
+      a.value < 60 ? 'neutraal/twijfel' :
+      a.value < 80 ? 'best wel' : 'helemaal';
+    return `Vraag ${i + 1}: "${a.q}" — antwoord: ${intensity} (${a.value}/100)`;
+  }).join('\n');
+
+  return `Je bent een warme, ervaren hechtingstherapeut. Schrijf een persoonlijk hechtingsrapport van circa 1400 woorden voor ${user.name} in geldige HTML (alleen body content - geen <html>, <head>, of <body> tags).
 
 Profiel: ${style.name} (${style.title})
 Scores: Verbinding ${normalized.secure}%, Onzekerheid bij afstand ${normalized.anxiety}%, Behoefte aan afstand ${normalized.avoidance}%
 
-12 antwoorden:
+15 antwoorden (op 0-100 schaal, hoe meer richting 100 hoe sterker mee eens):
 ${answersText}
 
 Structuur (gebruik <h2>, <h3>, <p>, <ul>, <li>, <em>, <strong>):
 1. <h2>Hallo ${user.name}</h2> - warme opening, erken dat ze de moeite namen
 2. <h2>Jouw stijl: ${style.title}</h2> - wat dit betekent, geen jargon, geen "stoornis"
 3. <h2>Hoe dit speelt in je relaties</h2> - concrete voorbeelden uit hun antwoorden
-4. <h2>Het patroon achter jouw antwoorden</h2> - verwijs naar minstens 3 specifieke antwoorden
+4. <h2>Het patroon achter jouw antwoorden</h2> - verwijs naar minstens 3 specifieke antwoorden met hun score-intensiteit (bv. "Je gaf 'helemaal' aan bij vraag X, dat suggereert...")
 5. <h2>Hoe je hecht aan andere stijlen</h2> - korte match-analyse
 6. <h2>Drie oefeningen voor deze week</h2> - concreet, doe-baar
 7. <h2>Tot slot</h2> - hoopvolle afsluiter
 
-Toon: warm, professioneel, in 2e persoon. Nederlands. Geen claims over therapie/diagnose. Echt persoonlijk, geen platitudes.`;
+Toon: warm, professioneel, in 2e persoon. Nederlands. Geen claims over therapie/diagnose. Echt persoonlijk, geen platitudes. Maak gebruik van de score-intensiteit (helemaal vs beetje) voor diepgang.`;
 }
 
 function buildCouplePrompt({ p1, p2 }) {
   const s1 = STYLES[p1.styleKey];
   const s2 = STYLES[p2.styleKey];
-  return `Je bent een ervaren relatie- en hechtingstherapeut. Schrijf een koppels-rapport van circa 1500 woorden voor ${p1.user.name} en ${p2.user.name} in geldige HTML (alleen body content).
+
+  const formatAnswers = (answers) => answers.slice(0, 8).map(a => {
+    const intensity =
+      a.value < 20 ? 'helemaal niet' :
+      a.value < 40 ? 'beetje niet' :
+      a.value < 60 ? 'neutraal' :
+      a.value < 80 ? 'best wel' : 'helemaal';
+    return `"${a.q}" → ${intensity}`;
+  }).join(' | ');
+
+  return `Je bent een ervaren relatie- en hechtingstherapeut. Schrijf een koppels-rapport van circa 1700 woorden voor ${p1.user.name} en ${p2.user.name} in geldige HTML (alleen body content).
 
 ${p1.user.name}: ${s1.title} (${s1.name}) | Verbinding ${p1.normalized.secure}%, Onzekerheid ${p1.normalized.anxiety}%, Afstand ${p1.normalized.avoidance}%
 ${p2.user.name}: ${s2.title} (${s2.name}) | Verbinding ${p2.normalized.secure}%, Onzekerheid ${p2.normalized.anxiety}%, Afstand ${p2.normalized.avoidance}%
 
-Belangrijkste antwoorden ${p1.user.name}: ${p1.answers.slice(0, 6).map(a => `"${a.chosen}"`).join(', ')}
-Belangrijkste antwoorden ${p2.user.name}: ${p2.answers.slice(0, 6).map(a => `"${a.chosen}"`).join(', ')}
+Kern-antwoorden ${p1.user.name}: ${formatAnswers(p1.answers)}
+Kern-antwoorden ${p2.user.name}: ${formatAnswers(p2.answers)}
 
 Structuur:
 1. <h2>Voor ${p1.user.name} en ${p2.user.name}</h2> - opening
@@ -87,4 +106,4 @@ ${htmlContent}
 </div></body></html>`;
 }
 
-module.exports = { STYLES, classifyStyle, normalize, getNormalized, buildSoloPrompt, buildCouplePrompt, emailWrapper };
+module.exports = { STYLES, classifyStyle, getNormalized, buildSoloPrompt, buildCouplePrompt, emailWrapper };
