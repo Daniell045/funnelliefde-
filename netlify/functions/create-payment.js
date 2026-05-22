@@ -7,7 +7,7 @@ exports.handler = async (event) => {
   try {
     const { sessionId, plan, user } = JSON.parse(event.body);
     const mollie = mollieClient.default({ apiKey: process.env.MOLLIE_API_KEY });
-    const siteUrl = process.env.SITE_URL || 'https://hechtingtest.nl';
+    const siteUrl = process.env.SITE_URL || 'https://hechtingstest.nl';
 
     // ─── SUBSCRIPTION (premium €9,99/maand) ──────────────────────────────────
     if (plan === 'subscription') {
