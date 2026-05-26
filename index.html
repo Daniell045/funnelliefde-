@@ -19,6 +19,8 @@ body {
   font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); color: var(--text);
   line-height: 1.5; min-height: 100vh; overflow-x: hidden;
 }
+
+/* ── BESTAANDE STIJLEN ── */
 .app { position: relative; min-height: 100vh; display: flex; flex-direction: column; }
 .header {
   padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center;
@@ -59,15 +61,13 @@ body {
 .slider-range {
   -webkit-appearance: none; appearance: none;
   width: 100%; height: 6px; border-radius: 999px;
-  background: var(--surface-2); outline: none; cursor: pointer;
-  margin: 0;
+  background: var(--surface-2); outline: none; cursor: pointer; margin: 0;
 }
 .slider-range::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 32px; height: 32px; border-radius: 50%;
   background: var(--surface); border: 3px solid var(--primary);
-  cursor: grab; box-shadow: var(--shadow-md);
-  transition: transform 0.15s, border-color 0.2s;
+  cursor: grab; box-shadow: var(--shadow-md); transition: transform 0.15s, border-color 0.2s;
 }
 .slider-range::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.15); }
 .slider-range::-moz-range-thumb {
@@ -81,10 +81,8 @@ body {
 .slider-fill {
   position: absolute; top: 50%; left: 0; height: 6px; border-radius: 999px;
   background: linear-gradient(90deg, var(--primary), var(--accent));
-  transform: translateY(-50%); pointer-events: none;
-  width: 50%; transition: width 0.1s;
+  transform: translateY(-50%); pointer-events: none; width: 50%; transition: width 0.1s;
 }
-
 .slider-labels { display: flex; justify-content: space-between; font-size: 0.8125rem; color: var(--text-muted); margin-top: -0.5rem; }
 
 .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; gap: 1rem; }
@@ -101,8 +99,7 @@ body {
 .capture-form { display: flex; flex-direction: column; gap: 0.875rem; width: 100%; max-width: 420px; margin-top: 0.5rem; }
 .input {
   background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px;
-  padding: 1.125rem 1.25rem; font-family: inherit; font-size: 1rem; color: var(--text);
-  min-height: 56px;
+  padding: 1.125rem 1.25rem; font-family: inherit; font-size: 1rem; color: var(--text); min-height: 56px;
 }
 .input:focus { outline: none; border-color: var(--primary); }
 
@@ -142,12 +139,157 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .disclaimer { padding: 1.5rem; font-size: 0.75rem; color: var(--text-muted); text-align: center; line-height: 1.5; max-width: 540px; margin: 0 auto; }
+
+/* ── COACH SCREEN ── */
+.coach-screen {
+  display: none; flex-direction: column;
+  height: 100vh; overflow: hidden;
+  background: var(--bg);
+}
+.coach-screen.active { display: flex; }
+
+.coach-header {
+  padding: 1rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(244,239,230,0.95);
+  flex-shrink: 0; position: sticky; top: 0; z-index: 10;
+}
+.coach-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.luna-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+}
+.luna-info h2 { font-size: 0.9375rem; font-weight: 600; line-height: 1.2; }
+.luna-info span { font-size: 0.75rem; color: var(--text-muted); }
+.online-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4CAF50; margin-right: 3px; }
+.coach-header-right { display: flex; align-items: center; gap: 0.75rem; }
+.limiet-badge {
+  font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
+  background: var(--surface-2); border-radius: 999px; padding: 0.25rem 0.75rem;
+}
+.limiet-badge.laag { color: var(--accent); }
+.btn-nieuw-gesprek {
+  background: transparent; border: 1px solid var(--border); border-radius: 999px;
+  padding: 0.375rem 0.875rem; font-size: 0.8125rem; font-weight: 600;
+  color: var(--text-muted); cursor: pointer; font-family: inherit; transition: all 0.2s;
+}
+.btn-nieuw-gesprek:hover { border-color: var(--primary); color: var(--primary); }
+
+.chat-area {
+  flex: 1; overflow-y: auto; padding: 1.25rem 1rem;
+  display: flex; flex-direction: column; gap: 0.875rem;
+  scroll-behavior: smooth;
+}
+.chat-area::-webkit-scrollbar { width: 4px; }
+.chat-area::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 2px; }
+
+.bericht { display: flex; gap: 0.625rem; max-width: 100%; animation: berichtIn 0.3s ease both; }
+.bericht.gebruiker { flex-direction: row-reverse; }
+@keyframes berichtIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.bericht-avatar {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.625rem; font-weight: 700; margin-top: 2px;
+}
+.bericht.luna-msg .bericht-avatar { background: var(--primary); color: white; }
+.bericht.gebruiker-msg .bericht-avatar { background: var(--surface-2); color: var(--text-muted); }
+
+.bericht-bubble {
+  max-width: calc(100% - 80px); padding: 0.75rem 1rem;
+  border-radius: 18px; font-size: 0.9375rem; line-height: 1.6;
+}
+.bericht.luna-msg .bericht-bubble {
+  background: var(--surface); border: 1px solid var(--border);
+  border-bottom-left-radius: 4px; box-shadow: var(--shadow-sm);
+}
+.bericht.gebruiker-msg .bericht-bubble {
+  background: var(--primary); color: var(--surface); border-bottom-right-radius: 4px;
+}
+.bericht-tijd { font-size: 0.6875rem; color: var(--text-muted); margin-top: 0.25rem; padding: 0 0.25rem; }
+.bericht.luna-msg .bericht-tijd { text-align: left; }
+.bericht.gebruiker-msg .bericht-tijd { text-align: right; }
+
+.typing-wrap { display: flex; gap: 0.625rem; }
+.typing-dots {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; border-bottom-left-radius: 4px;
+  padding: 0.875rem 1rem; display: flex; gap: 4px; align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); animation: dotBounce 1.2s infinite; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotBounce { 0%,60%,100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+.welkom-coach {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding: 2rem 1.5rem;
+  flex: 1;
+}
+.welkom-coach-avatar {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: 700; margin-bottom: 1.125rem;
+}
+.welkom-coach h2 { font-size: 1.5rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.375rem; }
+.welkom-coach h2 em { font-style: italic; }
+.welkom-coach p { font-size: 0.9375rem; color: var(--text-muted); line-height: 1.65; max-width: 300px; margin-bottom: 1.25rem; }
+.starters { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; max-width: 360px; }
+.starter-btn {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 0.875rem 1rem; font-family: inherit; font-size: 0.875rem; color: var(--text);
+  cursor: pointer; text-align: left; transition: all 0.2s; line-height: 1.4;
+}
+.starter-btn:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+
+.limiet-melding-chat {
+  background: var(--surface-2); border-radius: 12px; padding: 0.875rem 1rem;
+  text-align: center; font-size: 0.875rem; color: var(--text-muted); line-height: 1.5;
+  margin: 0.5rem 0;
+}
+.limiet-melding-chat strong { color: var(--text); display: block; margin-bottom: 0.25rem; }
+
+.coach-input-area {
+  padding: 0.75rem 1rem 1rem; border-top: 1px solid var(--border);
+  background: rgba(244,239,230,0.95); flex-shrink: 0;
+}
+.coach-input-wrap {
+  display: flex; gap: 0.5rem; align-items: flex-end;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 16px; padding: 0.5rem 0.5rem 0.5rem 1rem;
+  transition: border-color 0.2s;
+}
+.coach-input-wrap:focus-within { border-color: rgba(42,31,26,0.2); }
+.chat-input {
+  flex: 1; border: none; background: transparent; outline: none;
+  font-family: inherit; font-size: 0.9375rem; color: var(--text);
+  resize: none; max-height: 120px; line-height: 1.5; padding: 0.375rem 0;
+}
+.chat-input::placeholder { color: var(--text-muted); }
+.send-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--primary); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.2s;
+}
+.send-btn:hover { background: var(--primary-soft); transform: scale(1.05); }
+.send-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.input-footer-coach {
+  display: flex; justify-content: space-between;
+  margin-top: 0.375rem; padding: 0 0.25rem;
+}
+.input-hint { font-size: 0.75rem; color: var(--text-muted); }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="app">
+<div class="app" id="mainApp">
   <header class="header" id="header" style="display: none;">
     <div class="logo"><span class="logo-dot"></span> Hechtingtest</div>
     <div id="progressCounter">Vraag 1 / 15</div>
@@ -173,10 +315,7 @@ body {
         <input type="range" min="0" max="100" value="50" step="1" class="slider-range" id="quizSlider">
         <div class="slider-fill" id="sliderFill"></div>
       </div>
-      <div class="slider-labels">
-        <span>Helemaal niet</span>
-        <span>Helemaal mee eens</span>
-      </div>
+      <div class="slider-labels"><span>Helemaal niet</span><span>Helemaal mee eens</span></div>
     </div>
     <div class="quiz-nav">
       <button class="btn-secondary" id="quizBack" onclick="prevQuestion()">← Terug</button>
@@ -206,15 +345,11 @@ body {
   <section class="screen result" id="screen-result">
     <div style="font-size: 0.75rem; color: var(--accent); font-weight: 600;">JOUW HECHTINGSPROFIEL</div>
     <h2 class="result-title" id="resultTitle">Jij bent een…</h2>
-
     <div class="result-card">
       <div style="font-size: 1.5rem; color: var(--primary);" id="resultStyleName">…</div>
       <div id="resultPreviewText" style="background: var(--surface-2); padding: 1.25rem; border-radius: 14px; font-size: 0.9375rem; line-height: 1.6;">Laden…</div>
     </div>
-
     <div class="pricing-choice">
-
-      <!-- SOLO -->
       <div class="price-option">
         <div style="font-size: 0.6875rem; color: var(--accent); font-weight: 600; letter-spacing: 0.06em;">EENMALIG</div>
         <div class="price-option-title">Solo rapport</div>
@@ -228,12 +363,8 @@ body {
           <li>Hoe je hecht aan andere stijlen</li>
           <li>Concrete oefeningen voor groei</li>
         </ul>
-        <button class="btn-primary" onclick="goToPayment('solo', this)" style="width: 100%; background: var(--accent); color: var(--text);">
-          Bestellen — €5
-        </button>
+        <button class="btn-primary" onclick="goToPayment('solo', this)" style="width: 100%; background: var(--accent); color: var(--text);">Bestellen — €5</button>
       </div>
-
-      <!-- COUPLE -->
       <div class="price-option">
         <div style="font-size: 0.6875rem; color: var(--accent); font-weight: 600; letter-spacing: 0.06em;">SAMEN</div>
         <div class="price-option-title">Koppels-rapport</div>
@@ -247,31 +378,25 @@ body {
           <li>Waarom jullie botsen én aanvullen</li>
           <li>Oefeningen voor jullie samen</li>
         </ul>
-        <button class="btn-primary" onclick="goToPayment('couple', this)" style="width: 100%; background: var(--accent-soft); color: var(--text);">
-          Samen doen — €9
-        </button>
+        <button class="btn-primary" onclick="goToPayment('couple', this)" style="width: 100%; background: var(--accent-soft); color: var(--text);">Samen doen — €9</button>
       </div>
-
-      <!-- PREMIUM / SUBSCRIPTION - WAITLIST -->
       <div class="price-option featured">
-        <div style="font-size: 0.6875rem; color: var(--accent-soft); font-weight: 600; letter-spacing: 0.06em;">BINNENKORT</div>
-        <div class="price-option-title">Premium abonnement</div>
+        <div style="font-size: 0.6875rem; color: var(--accent-soft); font-weight: 600; letter-spacing: 0.06em;">PERSOONLIJKE COACH</div>
+        <div class="price-option-title">Luna — AI Coach</div>
         <div style="display: flex; align-items: baseline; gap: 0.4rem;">
-          <span style="font-size: 2.25rem; font-weight: 500;">€9,99</span>
+          <span style="font-size: 2.25rem; font-weight: 500;">€14,99</span>
           <span style="font-size: 0.875rem; opacity: 0.7;">/maand</span>
         </div>
         <ul style="opacity: 0.9;">
-          <li>Persoonlijk dashboard met inzichten</li>
-          <li>Wekelijkse vragen + AI-feedback</li>
-          <li>Solo €9,99 / Koppel €14,95 p/m</li>
-          <li>Groei week na week, samen of alleen</li>
+          <li>Kent jouw hechtingsstijl van dag 1</li>
+          <li>Stuur je situatie, krijg jouw antwoord</li>
+          <li>Onthoudt eerdere gesprekken</li>
+          <li>10 berichten per dag — bewust zo</li>
           <li>Altijd opzegbaar</li>
         </ul>
-        <button class="btn-primary" onclick="openWaitlist()" style="width: 100%; background: var(--accent); color: var(--text);">
-          Zet me op de lijst →
-        </button>
+        <button class="btn-primary" onclick="goToPayment('coach', this)" style="width: 100%; background: var(--accent); color: var(--text);">3 dagen gratis proberen →</button>
+        <p style="font-size: 0.75rem; opacity: 0.6; text-align: center; margin-top: 0.25rem;">3 dagen gratis · Daarna €14,99/maand · Opzegbaar via mail</p>
       </div>
-
     </div>
   </section>
 
@@ -280,7 +405,7 @@ body {
     <p style="color: var(--text-muted); margin: 0.5rem 0; max-width: 460px;">Stuur deze link naar je partner. Zodra hij/zij de test heeft gedaan, krijgen jullie samen het koppels-rapport.</p>
     <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 1.75rem;">
       <div class="share-link">
-        <input type="text" id="shareLink" readonly value="https://hechtingtest.nl/?k=loading">
+        <input type="text" id="shareLink" readonly value="https://hechtingstest.nl/?k=loading">
         <button onclick="copyShare()">Kopieer</button>
       </div>
       <div class="share-buttons">
@@ -291,293 +416,52 @@ body {
   </section>
 
   <footer class="disclaimer">
-Hechtingtest geeft inzicht voor zelfreflectie. Dit is geen diagnose of medische behandeling. Bij ernstige klachten: raadpleeg een professional.
+    Hechtingtest geeft inzicht voor zelfreflectie. Dit is geen diagnose of medische behandeling. Bij ernstige klachten: raadpleeg een professional.
   </footer>
 </div>
 
-<script>
-// 15 ECR-R-geinspireerde stellingen.
-// Per vraag: stelling + weegfactoren voor anxiety/avoidance.
-// 'reverse: true' = stelling is omgekeerd (hoge slider = lage score op dimensie)
-// Slider geeft 0-100; we normaliseren naar bijdrage 0-100 per dimensie.
-const QUESTIONS = [
-  // ── Anxiety items (hechtingsangst, behoefte aan nabijheid) ───────────────
-  { q: "Ik maak me zorgen dat mijn partner me niet zoveel waardeert als ik hen.", dim: "anxiety", reverse: false },
-  { q: "Ik voel me snel onzeker als mijn partner afstand neemt, zelfs kort.", dim: "anxiety", reverse: false },
-  { q: "Ik heb sterke behoefte aan bevestiging dat ik geliefd ben.", dim: "anxiety", reverse: false },
-  { q: "Als mijn partner niet snel reageert op berichten, denk ik snel dat er iets mis is.", dim: "anxiety", reverse: false },
-  { q: "Ik ben bang om verlaten te worden door iemand om wie ik geef.", dim: "anxiety", reverse: false },
-  { q: "Ik kan goed alleen zijn zonder me eenzaam te voelen.", dim: "anxiety", reverse: true },
-  { q: "Ik voel me rustig en zeker in mijn relaties, ook zonder constant contact.", dim: "anxiety", reverse: true },
+<!-- ── COACH SCREEN (buiten .app) ── -->
+<div class="coach-screen" id="coachScreen">
 
-  // ── Avoidance items (vermijding van intimiteit, behoefte aan afstand) ────
-  { q: "Ik vind het lastig om volledig op mijn partner te leunen of afhankelijk te zijn.", dim: "avoidance", reverse: false },
-  { q: "Ik houd liever wat emotionele afstand in relaties.", dim: "avoidance", reverse: false },
-  { q: "Ik vind het moeilijk om mijn diepste gevoelens met iemand te delen.", dim: "avoidance", reverse: false },
-  { q: "Als iemand te dichtbij komt, voel ik de neiging me terug te trekken.", dim: "avoidance", reverse: false },
-  { q: "Ik vertrouw liever op mezelf dan op iemand anders, ook in moeilijke tijden.", dim: "avoidance", reverse: false },
-  { q: "Ik vind het fijn om me kwetsbaar op te stellen tegenover mijn partner.", dim: "avoidance", reverse: true },
-  { q: "Ik voel me comfortabel met diepe emotionele nabijheid.", dim: "avoidance", reverse: true },
-  { q: "Ik praat makkelijk over wat er in mij omgaat.", dim: "avoidance", reverse: true }
-];
+  <header class="coach-header">
+    <div class="coach-header-left">
+      <div class="luna-avatar">L</div>
+      <div class="luna-info">
+        <h2>Luna</h2>
+        <span><span class="online-dot"></span>Jouw hechtingscoach</span>
+      </div>
+    </div>
+    <div class="coach-header-right">
+      <div class="limiet-badge" id="limietBadge">— / 10</div>
+      <button class="btn-nieuw-gesprek" onclick="nieuwGesprek()">Nieuw gesprek</button>
+    </div>
+  </header>
 
-const TOTAL_Q = QUESTIONS.length;
+  <div class="chat-area" id="chatArea"></div>
 
-const STYLES = {
-  secure: { name: "Veilig hechtende stijl", title: "Verbinder" },
-  anxious: { name: "Angstig-gepreoccupeerde stijl", title: "Zoeker" },
-  avoidant: { name: "Vermijdend-onthechte stijl", title: "Beschermer" },
-  fearful: { name: "Angstig-vermijdende stijl", title: "Beschermer in nood" }
-};
+  <div class="coach-input-area">
+    <div class="coach-input-wrap">
+      <textarea
+        class="chat-input" id="chatInput"
+        placeholder="Vertel Luna wat er speelt…"
+        rows="1"
+        onkeydown="handleKeydown(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" onclick="verstuurBericht()" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+    <div class="input-footer-coach">
+      <span class="input-hint">Enter om te versturen · Shift+Enter voor nieuwe regel</span>
+      <span class="input-hint" id="resterendLabel"></span>
+    </div>
+  </div>
 
-var state = {
-  currentQuestion: 0,
-  answers: [],          // [{ q, value, dim, reverse }]
-  style: null,
-  user: { name: '', email: '' },
-  plan: null,
-  coupleToken: null,
-  isPartner: false,
-  sessionId: null
-};
-
-function startQuiz() {
-  document.getElementById('header').style.display = 'flex';
-  document.getElementById('progressTrack').style.display = 'block';
-  state.currentQuestion = 0;
-  state.answers = [];
-  showScreen('quiz');
-  renderQuestion();
-}
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-// Live label op basis van slider-waarde
-function valueLabel(v) {
-  if (v < 15) return "Helemaal niet";
-  if (v < 35) return "Beetje niet";
-  if (v < 50) return "Eerder niet";
-  if (v === 50) return "Beweeg de bol";
-  if (v < 65) return "Een beetje";
-  if (v < 85) return "Best wel";
-  return "Helemaal";
-}
-
-function renderQuestion() {
-  const idx = state.currentQuestion;
-  const q = QUESTIONS[idx];
-  const n = idx + 1;
-
-  document.getElementById('quizQuestion').textContent = q.q;
-  document.getElementById('progressCounter').textContent = `Vraag ${n} / ${TOTAL_Q}`;
-  document.getElementById('progressFill').style.width = ((n - 1) / TOTAL_Q * 100) + '%';
-
-  const slider = document.getElementById('quizSlider');
-  const fill = document.getElementById('sliderFill');
-  const label = document.getElementById('sliderLabel');
-  const percent = document.getElementById('sliderPercent');
-  const nextBtn = document.getElementById('quizNext');
-  const backBtn = document.getElementById('quizBack');
-
-  // Eerder beantwoord? Toon dan vorige waarde en activeer 'Volgende'.
-  const prev = state.answers[idx];
-  if (prev) {
-    slider.value = prev.value;
-    slider.classList.add('touched');
-    label.textContent = valueLabel(prev.value);
-    percent.textContent = prev.value + '%';
-    percent.classList.remove('dimmed');
-    fill.style.width = prev.value + '%';
-    nextBtn.disabled = false;
-  } else {
-    slider.value = 50;
-    slider.classList.remove('touched');
-    label.textContent = "Beweeg de bol";
-    percent.textContent = '—';
-    percent.classList.add('dimmed');
-    fill.style.width = '50%';
-    nextBtn.disabled = true;
-  }
-
-  backBtn.disabled = idx === 0;
-  nextBtn.textContent = (idx === TOTAL_Q - 1) ? 'Klaar →' : 'Volgende';
-
-  // Verwijder vorige listeners door slider element te clonen
-  const newSlider = slider.cloneNode(true);
-  slider.parentNode.replaceChild(newSlider, slider);
-
-  newSlider.addEventListener('input', () => {
-    const v = parseInt(newSlider.value, 10);
-    fill.style.width = v + '%';
-    label.textContent = valueLabel(v);
-    percent.textContent = v + '%';
-    percent.classList.remove('dimmed');
-    newSlider.classList.add('touched');
-    nextBtn.disabled = false;
-  });
-}
-
-function nextQuestion() {
-  const idx = state.currentQuestion;
-  const q = QUESTIONS[idx];
-  const slider = document.getElementById('quizSlider');
-  const v = parseInt(slider.value, 10);
-
-  // Sla antwoord op (overschrijf als ze terug zijn gegaan)
-  state.answers[idx] = { q: q.q, value: v, dim: q.dim, reverse: q.reverse };
-
-  if (idx + 1 >= TOTAL_Q) {
-    // Klaar — bereken scores en ga naar capture
-    computeScores();
-    document.getElementById('progressFill').style.width = '100%';
-    document.getElementById('header').style.display = 'none';
-    document.getElementById('progressTrack').style.display = 'none';
-    showScreen('capture');
-    return;
-  }
-
-  state.currentQuestion++;
-  renderQuestion();
-}
-
-function prevQuestion() {
-  if (state.currentQuestion === 0) return;
-  state.currentQuestion--;
-  renderQuestion();
-}
-
-// Reken scores uit: per dimensie het gemiddelde van alle items, op schaal 0-100
-function computeScores() {
-  const sums = { anxiety: { total: 0, count: 0 }, avoidance: { total: 0, count: 0 } };
-  state.answers.forEach(a => {
-    const score = a.reverse ? (100 - a.value) : a.value;
-    sums[a.dim].total += score;
-    sums[a.dim].count += 1;
-  });
-  state.scores = {
-    anxiety: sums.anxiety.count ? Math.round(sums.anxiety.total / sums.anxiety.count) : 50,
-    avoidance: sums.avoidance.count ? Math.round(sums.avoidance.total / sums.avoidance.count) : 50
-  };
-}
-
-async function submitEmail() {
-  const name = document.getElementById('inputName').value.trim();
-  const email = document.getElementById('inputEmail').value.trim();
-  if (!name || !email) return;
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-    document.getElementById('inputEmail').style.borderColor = 'var(--accent)';
-    document.getElementById('emailError').style.display = 'block';
-    return;
-  }
-  document.getElementById('emailError').style.display = 'none';
-  document.getElementById('inputEmail').style.borderColor = '';
-
-  state.user = { name, email };
-  document.getElementById('submitBtn').disabled = true;
-  showScreen('loading');
-
-  try {
-    const res = await fetch('/.netlify/functions/process-quiz', {
-      method: 'POST',
-      body: JSON.stringify({
-        user: state.user, scores: state.scores, answers: state.answers,
-        isPartner: state.isPartner, coupleToken: state.coupleToken
-      })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Error');
-    
-    state.sessionId = data.sessionId;
-    state.style = data.style;
-    
-    if (state.isPartner) {
-      // Notify backend partner is done
-      await fetch('/.netlify/functions/submit-partner', {
-        method: 'POST', body: JSON.stringify({ token: state.coupleToken })
-      });
-      // Show waiting screen
-      document.getElementById('resultTitle').innerHTML = 'Bedankt — bijna klaar';
-      document.getElementById('resultStyleName').textContent = 'Wachtend op rapport';
-      document.getElementById('resultPreviewText').textContent = 'Zodra je partner ook klaar is met betalen, krijgen jullie samen het rapport in jullie mailbox. Meestal binnen een paar minuten.';
-      document.querySelector('#screen-result .pricing-choice').style.display = 'none';
-      showScreen('result');
-      return;
-    }
-    
-    renderResult(data);
-    showScreen('result');
-  } catch (err) {
-    alert('Fout: ' + err.message);
-    document.getElementById('submitBtn').disabled = false;
-    showScreen('capture');
-  }
-}
-
-function renderResult(data) {
-  document.getElementById('resultTitle').innerHTML = `Jij bent een <em>${state.style.title}</em>`;
-  document.getElementById('resultStyleName').textContent = state.style.name;
-  document.getElementById('resultPreviewText').textContent = data.preview;
-}
-
-async function goToPayment(plan, btnEl) {
-  state.plan = plan;
-  const btn = btnEl || event?.currentTarget || event?.target;
-  if (btn) btn.disabled = true;
-
-  try {
-    const res = await fetch('/.netlify/functions/create-payment', {
-      method: 'POST',
-      body: JSON.stringify({ sessionId: state.sessionId, plan, user: state.user })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
-
-    if (plan === 'couple') {
-      state.coupleToken = data.token;
-      showCoupleShare(data);
-    } else {
-      window.location.href = data.checkoutUrl;
-    }
-  } catch (err) {
-    alert('Betaling kan niet starten: ' + err.message);
-    btn.disabled = false;
-  }
-}
-
-function showCoupleShare(data) {
-  const url = window.location.origin + '/?k=' + data.token;
-  document.getElementById('shareLink').value = url;
-  const msg = encodeURIComponent(`Hey, ik deed deze hechtingstest en de uitkomst was bizar herkenbaar. Doe jij hem ook? Dan krijgen we samen een rapport: ${url}`);
-  document.getElementById('whatsappBtn').href = `https://wa.me/?text=${msg}`;
-  document.getElementById('messengerBtn').href = `sms:?body=${msg}`;
-  showScreen('share');
-}
-
-function copyShare() {
-  const inp = document.getElementById('shareLink');
-  inp.select();
-  navigator.clipboard.writeText(inp.value);
-  const btn = event.target;
-  btn.textContent = 'Gekopieerd ✓';
-  setTimeout(() => btn.textContent = 'Kopieer', 2000);
-}
-
-// Detect partner mode
-const params = new URLSearchParams(window.location.search);
-if (params.has('k')) {
-  state.isPartner = true;
-  state.coupleToken = params.get('k');
-  document.querySelector('.intro-title').innerHTML = 'Jullie samen.<br><em>Begin met jouw stem.</em>';
-  document.querySelector('.intro-body').textContent = 'Je partner heeft deze test gedaan en wil het samen met jou doen. 12 vragen, 3 minuten — daarna krijgen jullie samen een koppels-rapport.';
-}
-
-// Allow Enter in email
-document.getElementById('inputEmail')?.addEventListener('keydown', e => { if (e.key === 'Enter') submitEmail(); });
-</script>
+</div>
 
 <!-- Waitlist Modal -->
 <div id="waitlistModal" style="display:none; position:fixed; inset:0; background:rgba(42,31,26,0.6); z-index:100; align-items:center; justify-content:center; padding:1.5rem;">
@@ -594,40 +478,428 @@ document.getElementById('inputEmail')?.addEventListener('keydown', e => { if (e.
 </div>
 
 <script>
+// ════════════════════════════════════════
+// QUIZ LOGICA (ongewijzigd)
+// ════════════════════════════════════════
+const QUESTIONS = [
+  { q: "Ik maak me zorgen dat mijn partner me niet zoveel waardeert als ik hen.", dim: "anxiety", reverse: false },
+  { q: "Ik voel me snel onzeker als mijn partner afstand neemt, zelfs kort.", dim: "anxiety", reverse: false },
+  { q: "Ik heb sterke behoefte aan bevestiging dat ik geliefd ben.", dim: "anxiety", reverse: false },
+  { q: "Als mijn partner niet snel reageert op berichten, denk ik snel dat er iets mis is.", dim: "anxiety", reverse: false },
+  { q: "Ik ben bang om verlaten te worden door iemand om wie ik geef.", dim: "anxiety", reverse: false },
+  { q: "Ik kan goed alleen zijn zonder me eenzaam te voelen.", dim: "anxiety", reverse: true },
+  { q: "Ik voel me rustig en zeker in mijn relaties, ook zonder constant contact.", dim: "anxiety", reverse: true },
+  { q: "Ik vind het lastig om volledig op mijn partner te leunen of afhankelijk te zijn.", dim: "avoidance", reverse: false },
+  { q: "Ik houd liever wat emotionele afstand in relaties.", dim: "avoidance", reverse: false },
+  { q: "Ik vind het moeilijk om mijn diepste gevoelens met iemand te delen.", dim: "avoidance", reverse: false },
+  { q: "Als iemand te dichtbij komt, voel ik de neiging me terug te trekken.", dim: "avoidance", reverse: false },
+  { q: "Ik vertrouw liever op mezelf dan op iemand anders, ook in moeilijke tijden.", dim: "avoidance", reverse: false },
+  { q: "Ik vind het fijn om me kwetsbaar op te stellen tegenover mijn partner.", dim: "avoidance", reverse: true },
+  { q: "Ik voel me comfortabel met diepe emotionele nabijheid.", dim: "avoidance", reverse: true },
+  { q: "Ik praat makkelijk over wat er in mij omgaat.", dim: "avoidance", reverse: true }
+];
+const TOTAL_Q = QUESTIONS.length;
+
+var state = {
+  currentQuestion: 0, answers: [], style: null,
+  user: { name: '', email: '' }, plan: null,
+  coupleToken: null, isPartner: false, sessionId: null, scores: null
+};
+
+function startQuiz() {
+  document.getElementById('header').style.display = 'flex';
+  document.getElementById('progressTrack').style.display = 'block';
+  state.currentQuestion = 0; state.answers = [];
+  showScreen('quiz'); renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function valueLabel(v) {
+  if (v < 15) return "Helemaal niet";
+  if (v < 35) return "Beetje niet";
+  if (v < 50) return "Eerder niet";
+  if (v === 50) return "Beweeg de bol";
+  if (v < 65) return "Een beetje";
+  if (v < 85) return "Best wel";
+  return "Helemaal";
+}
+
+function renderQuestion() {
+  const idx = state.currentQuestion;
+  const q = QUESTIONS[idx];
+  const n = idx + 1;
+  document.getElementById('quizQuestion').textContent = q.q;
+  document.getElementById('progressCounter').textContent = `Vraag ${n} / ${TOTAL_Q}`;
+  document.getElementById('progressFill').style.width = ((n - 1) / TOTAL_Q * 100) + '%';
+  const slider = document.getElementById('quizSlider');
+  const fill = document.getElementById('sliderFill');
+  const label = document.getElementById('sliderLabel');
+  const percent = document.getElementById('sliderPercent');
+  const nextBtn = document.getElementById('quizNext');
+  const backBtn = document.getElementById('quizBack');
+  const prev = state.answers[idx];
+  if (prev) {
+    slider.value = prev.value; slider.classList.add('touched');
+    label.textContent = valueLabel(prev.value); percent.textContent = prev.value + '%';
+    percent.classList.remove('dimmed'); fill.style.width = prev.value + '%'; nextBtn.disabled = false;
+  } else {
+    slider.value = 50; slider.classList.remove('touched');
+    label.textContent = "Beweeg de bol"; percent.textContent = '—';
+    percent.classList.add('dimmed'); fill.style.width = '50%'; nextBtn.disabled = true;
+  }
+  backBtn.disabled = idx === 0;
+  nextBtn.textContent = (idx === TOTAL_Q - 1) ? 'Klaar →' : 'Volgende';
+  const newSlider = slider.cloneNode(true);
+  slider.parentNode.replaceChild(newSlider, slider);
+  newSlider.addEventListener('input', () => {
+    const v = parseInt(newSlider.value, 10);
+    fill.style.width = v + '%'; label.textContent = valueLabel(v);
+    percent.textContent = v + '%'; percent.classList.remove('dimmed');
+    newSlider.classList.add('touched'); nextBtn.disabled = false;
+  });
+}
+
+function nextQuestion() {
+  const idx = state.currentQuestion;
+  const q = QUESTIONS[idx];
+  const slider = document.getElementById('quizSlider');
+  const v = parseInt(slider.value, 10);
+  state.answers[idx] = { q: q.q, value: v, dim: q.dim, reverse: q.reverse };
+  if (idx + 1 >= TOTAL_Q) {
+    computeScores();
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('header').style.display = 'none';
+    document.getElementById('progressTrack').style.display = 'none';
+    showScreen('capture'); return;
+  }
+  state.currentQuestion++; renderQuestion();
+}
+
+function prevQuestion() {
+  if (state.currentQuestion === 0) return;
+  state.currentQuestion--; renderQuestion();
+}
+
+function computeScores() {
+  const sums = { anxiety: { total: 0, count: 0 }, avoidance: { total: 0, count: 0 } };
+  state.answers.forEach(a => {
+    const score = a.reverse ? (100 - a.value) : a.value;
+    sums[a.dim].total += score; sums[a.dim].count += 1;
+  });
+  state.scores = {
+    anxiety: sums.anxiety.count ? Math.round(sums.anxiety.total / sums.anxiety.count) : 50,
+    avoidance: sums.avoidance.count ? Math.round(sums.avoidance.total / sums.avoidance.count) : 50
+  };
+}
+
+async function submitEmail() {
+  const name = document.getElementById('inputName').value.trim();
+  const email = document.getElementById('inputEmail').value.trim();
+  if (!name || !email) return;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    document.getElementById('inputEmail').style.borderColor = 'var(--accent)';
+    document.getElementById('emailError').style.display = 'block'; return;
+  }
+  document.getElementById('emailError').style.display = 'none';
+  document.getElementById('inputEmail').style.borderColor = '';
+  state.user = { name, email };
+  document.getElementById('submitBtn').disabled = true;
+  showScreen('loading');
+  try {
+    const res = await fetch('/.netlify/functions/process-quiz', {
+      method: 'POST',
+      body: JSON.stringify({ user: state.user, scores: state.scores, answers: state.answers, isPartner: state.isPartner, coupleToken: state.coupleToken })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error');
+    state.sessionId = data.sessionId; state.style = data.style;
+    if (state.isPartner) {
+      await fetch('/.netlify/functions/submit-partner', { method: 'POST', body: JSON.stringify({ token: state.coupleToken }) });
+      document.getElementById('resultTitle').innerHTML = 'Bedankt — bijna klaar';
+      document.getElementById('resultStyleName').textContent = 'Wachtend op rapport';
+      document.getElementById('resultPreviewText').textContent = 'Zodra je partner ook klaar is met betalen, krijgen jullie samen het rapport in jullie mailbox.';
+      document.querySelector('#screen-result .pricing-choice').style.display = 'none';
+      showScreen('result'); return;
+    }
+    renderResult(data); showScreen('result');
+  } catch (err) {
+    alert('Fout: ' + err.message);
+    document.getElementById('submitBtn').disabled = false; showScreen('capture');
+  }
+}
+
+function renderResult(data) {
+  document.getElementById('resultTitle').innerHTML = `Jij bent een <em>${state.style.title}</em>`;
+  document.getElementById('resultStyleName').textContent = state.style.name;
+  document.getElementById('resultPreviewText').textContent = data.preview;
+}
+
+async function goToPayment(plan, btnEl) {
+  state.plan = plan;
+  const btn = btnEl || event?.currentTarget;
+  if (btn) btn.disabled = true;
+  try {
+    if (plan === 'coach') {
+      // Coach abonnement via aparte flow
+      const res = await fetch('/.netlify/functions/create-coach-payment', {
+        method: 'POST',
+        body: JSON.stringify({
+          naam: state.user.name, email: state.user.email,
+          stijl: state.style?.name || '', sessionId: state.sessionId,
+          anxietyScore: state.scores?.anxiety || 50,
+          avoidanceScore: state.scores?.avoidance || 50
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      window.location.href = data.checkoutUrl;
+      return;
+    }
+    const res = await fetch('/.netlify/functions/create-payment', {
+      method: 'POST',
+      body: JSON.stringify({ sessionId: state.sessionId, plan, user: state.user })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    if (plan === 'couple') { state.coupleToken = data.token; showCoupleShare(data); }
+    else { window.location.href = data.checkoutUrl; }
+  } catch (err) {
+    alert('Betaling kan niet starten: ' + err.message);
+    if (btn) btn.disabled = false;
+  }
+}
+
+function showCoupleShare(data) {
+  const url = window.location.origin + '/?k=' + data.token;
+  document.getElementById('shareLink').value = url;
+  const msg = encodeURIComponent(`Ik deed deze hechtingstest en de uitkomst was bizar herkenbaar. Doe jij hem ook? Dan krijgen we samen een rapport: ${url}`);
+  document.getElementById('whatsappBtn').href = `https://wa.me/?text=${msg}`;
+  document.getElementById('messengerBtn').href = `sms:?body=${msg}`;
+  showScreen('share');
+}
+
+function copyShare() {
+  const inp = document.getElementById('shareLink');
+  inp.select(); navigator.clipboard.writeText(inp.value);
+  const btn = event.target; btn.textContent = 'Gekopieerd ✓';
+  setTimeout(() => btn.textContent = 'Kopieer', 2000);
+}
+
+// Partner mode
+const params = new URLSearchParams(window.location.search);
+if (params.has('k') && !params.has('token')) {
+  state.isPartner = true; state.coupleToken = params.get('k');
+  document.querySelector('.intro-title').innerHTML = 'Jullie samen.<br><em>Begin met jouw stem.</em>';
+  document.querySelector('.intro-body').textContent = 'Je partner heeft deze test gedaan en wil het samen met jou doen. Doe de test — daarna krijgen jullie samen een koppels-rapport.';
+}
+
+document.getElementById('inputEmail')?.addEventListener('keydown', e => { if (e.key === 'Enter') submitEmail(); });
+
+// ════════════════════════════════════════
+// COACH / LUNA LOGICA
+// ════════════════════════════════════════
+var coachToken = params.get('token');
+var gesprekId = null;
+var bezig = false;
+var resterend = 10;
+var lunaProf = null;
+
+if (coachToken) {
+  // Verberg quiz app, toon coach screen
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('coachScreen').classList.add('active');
+  laadLunaProfiel();
+}
+
+function laadLunaProfiel() {
+  fetch('/.netlify/functions/luna-profiel?token=' + coachToken)
+    .then(r => r.json())
+    .then(data => {
+      if (data.error) { toonCoachFout(data.error); return; }
+      lunaProf = data;
+      toonWelkomLuna();
+    })
+    .catch(() => { lunaProf = { naam: 'daar' }; toonWelkomLuna(); });
+}
+
+function toonWelkomLuna() {
+  var naam = lunaProf?.naam ? lunaProf.naam.split(' ')[0] : 'daar';
+  var chatArea = document.getElementById('chatArea');
+  chatArea.innerHTML = '';
+  var welkom = document.createElement('div');
+  welkom.className = 'welkom-coach'; welkom.id = 'welkomScherm';
+  welkom.innerHTML = `
+    <div class="welkom-coach-avatar">L</div>
+    <h2>Hoi ${naam},<br><em>ik ben Luna.</em></h2>
+    <p>Vertel me wat er speelt — een situatie, een gevoel, een patroon. Ik luister.</p>
+    <div class="starters">
+      <button class="starter-btn" onclick="startMetVraag(this)">Ik had een ruzie en weet niet hoe ik ermee om moet gaan</button>
+      <button class="starter-btn" onclick="startMetVraag(this)">Ik merk dat ik steeds hetzelfde patroon herhaal in relaties</button>
+      <button class="starter-btn" onclick="startMetVraag(this)">Ik voel me onzeker over hoe iemand over me denkt</button>
+    </div>
+  `;
+  chatArea.appendChild(welkom);
+  updateLimietBadge();
+  document.getElementById('chatInput').addEventListener('input', function() {
+    document.getElementById('sendBtn').disabled = this.value.trim() === '' || bezig;
+  });
+}
+
+function startMetVraag(btn) {
+  document.getElementById('chatInput').value = btn.textContent;
+  autoResize(document.getElementById('chatInput'));
+  document.getElementById('sendBtn').disabled = false;
+  var w = document.getElementById('welkomScherm');
+  if (w) w.remove();
+  verstuurBericht();
+}
+
+function handleKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    if (!document.getElementById('sendBtn').disabled) verstuurBericht();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function verstuurBericht() {
+  var input = document.getElementById('chatInput');
+  var tekst = input.value.trim();
+  if (!tekst || bezig) return;
+  var w = document.getElementById('welkomScherm');
+  if (w) w.remove();
+  voegBerichtToe('gebruiker', tekst);
+  input.value = ''; input.style.height = 'auto';
+  document.getElementById('sendBtn').disabled = true;
+  bezig = true;
+  var typing = voegTypingToe();
+  fetch('/.netlify/functions/luna-chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token: coachToken, bericht: tekst, gesprekId: gesprekId })
+  })
+  .then(r => r.json())
+  .then(data => {
+    typing.remove(); bezig = false;
+    if (data.code === 'LIMIT') { voegLimietMeldingToe(); return; }
+    if (data.error) { voegBerichtToe('luna', 'Er ging iets mis. Probeer het opnieuw.'); return; }
+    gesprekId = data.gesprekId; resterend = data.resterend;
+    updateLimietBadge(); voegBerichtToe('luna', data.antwoord);
+    if (resterend <= 2 && resterend > 0) {
+      setTimeout(() => voegBerichtToe('luna', `Je hebt nog ${resterend} bericht${resterend === 1 ? '' : 'en'} voor vandaag.`), 800);
+    }
+    document.getElementById('sendBtn').disabled = document.getElementById('chatInput').value.trim() === '';
+  })
+  .catch(() => {
+    typing.remove(); bezig = false;
+    voegBerichtToe('luna', 'Even geen verbinding. Probeer het opnieuw.');
+    document.getElementById('sendBtn').disabled = false;
+  });
+}
+
+function voegBerichtToe(van, tekst) {
+  var chatArea = document.getElementById('chatArea');
+  var div = document.createElement('div');
+  div.className = 'bericht ' + (van === 'luna' ? 'luna-msg' : 'gebruiker-msg');
+  var initiaal = van === 'luna' ? 'L' : (lunaProf?.naam ? lunaProf.naam[0].toUpperCase() : 'J');
+  var tijd = new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+  var html = tekst.replace(/\n/g, '<br>');
+  div.innerHTML = `
+    <div class="bericht-avatar">${initiaal}</div>
+    <div>
+      <div class="bericht-bubble">${html}</div>
+      <div class="bericht-tijd">${tijd}</div>
+    </div>
+  `;
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  return div;
+}
+
+function voegTypingToe() {
+  var chatArea = document.getElementById('chatArea');
+  var div = document.createElement('div');
+  div.className = 'bericht luna-msg';
+  div.innerHTML = `
+    <div class="bericht-avatar">L</div>
+    <div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  `;
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  return div;
+}
+
+function voegLimietMeldingToe() {
+  var chatArea = document.getElementById('chatArea');
+  var div = document.createElement('div');
+  div.className = 'limiet-melding-chat';
+  div.innerHTML = `<strong>Daglimiet bereikt.</strong>Je hebt je 10 berichten voor vandaag gebruikt. Morgen kun je weer verder — neem de tijd om te reflecteren.`;
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  document.getElementById('chatInput').disabled = true;
+  document.getElementById('sendBtn').disabled = true;
+  updateLimietBadge();
+}
+
+function updateLimietBadge() {
+  var gebruikt = 10 - resterend;
+  var badge = document.getElementById('limietBadge');
+  badge.textContent = gebruikt + ' / 10';
+  badge.className = 'limiet-badge' + (resterend <= 2 ? ' laag' : '');
+  document.getElementById('resterendLabel').textContent = resterend > 0 ? resterend + ' over vandaag' : 'Limiet bereikt';
+}
+
+function nieuwGesprek() {
+  if (bezig) return;
+  gesprekId = null;
+  var chatArea = document.getElementById('chatArea');
+  chatArea.innerHTML = '';
+  var scheiding = document.createElement('div');
+  scheiding.style.cssText = 'text-align:center;font-size:0.75rem;color:var(--text-muted);padding:0.5rem 0;';
+  scheiding.textContent = '— Nieuw gesprek —';
+  chatArea.appendChild(scheiding);
+  toonWelkomLuna();
+}
+
+function toonCoachFout(msg) {
+  document.getElementById('chatArea').innerHTML = `
+    <div style="text-align:center;padding:3rem 1.5rem;">
+      <p style="font-size:1rem;color:var(--text-muted);line-height:1.6;max-width:300px;margin:0 auto 1rem;">${msg}</p>
+      <a href="mailto:info@hechtingstest.nl" style="color:var(--primary);font-size:0.875rem;">info@hechtingstest.nl</a>
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════
+// WAITLIST
+// ════════════════════════════════════════
 function openWaitlist() {
   var m = document.getElementById('waitlistModal');
   m.style.display = 'flex';
-  // Pre-fill met bekende email als die er al is
   if (state.user.name) document.getElementById('waitlistName').value = state.user.name;
   if (state.user.email) document.getElementById('waitlistEmail').value = state.user.email;
 }
-function closeWaitlist() {
-  document.getElementById('waitlistModal').style.display = 'none';
-}
+function closeWaitlist() { document.getElementById('waitlistModal').style.display = 'none'; }
 async function submitWaitlist() {
   var name = document.getElementById('waitlistName').value.trim();
   var email = document.getElementById('waitlistEmail').value.trim();
   if (!name || !email) return;
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-    document.getElementById('waitlistError').style.display = 'block';
-    return;
-  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { document.getElementById('waitlistError').style.display = 'block'; return; }
   document.getElementById('waitlistError').style.display = 'none';
-  var btn = document.getElementById('waitlistBtn');
-  btn.disabled = true;
-  btn.textContent = 'Bezig…';
-  try {
-    await fetch('/.netlify/functions/waitlist', {
-      method: 'POST',
-      body: JSON.stringify({ name: name, email: email, style: state.style?.title || '' })
-    });
-  } catch(e) {}
-  // Altijd success tonen, ook als fetch faalt
+  var btn = document.getElementById('waitlistBtn'); btn.disabled = true; btn.textContent = 'Bezig…';
+  try { await fetch('/.netlify/functions/waitlist', { method: 'POST', body: JSON.stringify({ name, email, style: state.style?.title || '' }) }); } catch(e) {}
   document.getElementById('waitlistModal').innerHTML = '<div style="background:var(--surface); border-radius:24px; padding:2rem; max-width:420px; width:100%; text-align:center; box-shadow:var(--shadow-md);"><div style="font-size:3rem;">✓</div><h3 style="margin:1rem 0; font-size:1.5rem; font-weight:400;">Je staat op de lijst!</h3><p style="color:var(--text-muted);">We laten je weten zodra Premium live gaat.</p><button onclick="closeWaitlist()" style="margin-top:1.5rem; background:none; border:1px solid var(--border); border-radius:999px; padding:0.75rem 1.5rem; cursor:pointer; font-size:0.9rem;">Sluiten</button></div>';
 }
-document.getElementById('waitlistModal').addEventListener('click', function(e) {
-  if (e.target === this) closeWaitlist();
-});
+document.getElementById('waitlistModal').addEventListener('click', function(e) { if (e.target === this) closeWaitlist(); });
 </script>
 </body>
 </html>
