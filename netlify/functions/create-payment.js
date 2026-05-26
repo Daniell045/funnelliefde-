@@ -15,11 +15,10 @@ exports.handler = async (event) => {
         amount: { currency: 'EUR', value: '9.99' },
         description: 'Hechtingtest Premium — eerste maand',
         sequenceType: 'first',
-        redirectUrl: `${siteUrl}/success.html?session=${sessionId}&plan=subscription`,
+        redirectUrl: `${siteUrl}/bedankt.html?session=${sessionId}&plan=subscription`,
         webhookUrl: `${siteUrl}/.netlify/functions/mollie-webhook`,
         metadata: { sessionId, plan: 'subscription', userEmail: user.email }
       });
-
       const sess = await dbGet(`sessions/${sessionId}`);
       if (sess) {
         await dbSet(`sessions/${sessionId}`, {
@@ -29,7 +28,6 @@ exports.handler = async (event) => {
           subscriptionEmail: user.email
         });
       }
-
       return {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json' },
@@ -59,7 +57,7 @@ exports.handler = async (event) => {
     const payment = await mollie.payments.create({
       amount: { currency: 'EUR', value: amount },
       description,
-      redirectUrl: `${siteUrl}/success.html?session=${sessionId}&plan=${plan}${token ? '&token=' + token : ''}`,
+      redirectUrl: `${siteUrl}/bedankt.html?session=${sessionId}&plan=${plan}${token ? '&token=' + token : ''}`,
       webhookUrl: `${siteUrl}/.netlify/functions/mollie-webhook`,
       metadata: { sessionId, plan, userEmail: user.email, token }
     });
@@ -84,4 +82,5 @@ exports.handler = async (event) => {
     console.error(err);
     return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
+};
 };
