@@ -1,15 +1,15 @@
-// netlify/functions/process-payment-bg.js
+// netlify/functions/process-payment-background.js
 //
-// Background worker: doet het zware werk (Claude rapport genereren +
-// Resend mail sturen) na een betaling. Wordt async getriggerd door
-// de mollie-webhook met paymentId.
+// KRITIEK: Mollie verwacht een 200 OK binnen ~15 sec. Zo niet, retryt
+// hij met exponential backoff (tot ~24u). Dat is waarom mails 5-10x
+// werden verstuurd: webhook deed 3x Claude calls + 2x Resend voor de
+// 200 terugkwam, dus Mollie dacht dat 't faalde.
 //
-// Let op de filename: "-bg" suffix is OPTIONEEL, maar als je hem ".background.js"
-// noemt of via netlify.toml als background function configureert, krijg
-// je 15 min runtime ipv 10 sec. Standaard sync function is 10 sec — te
-// kort voor een couple rapport (3x Claude calls).
-//
-// → Zie netlify.toml: deze function heeft timeout = 900 (15 min).
+// FIX:
+//   1. Check idempotency direct (paymentId al verwerkt? klaar.)
+//   2. Markeer als processed VOOR het zware werk start
+//   3. Return 200 direct
+//   4. Doe Claude/Resend werk async via background fetch
 
 const mollieClient = require('@mollie/api-client');
 const Anthropic = require('@anthropic-ai/sdk');
@@ -18,7 +18,6 @@ const { dbGet, dbSet } = require('./_lib/storage');
 const { buildSoloPrompt, buildCouplePrompt, emailWrapper } = require('./_lib/helpers');
 
 exports.handler = async (event) => {
-  // Simpele secret check zodat niemand anders dit endpoint kan triggeren
   const secret = event.headers['x-internal-secret'];
   if (secret !== (process.env.INTERNAL_SECRET || 'dev')) {
     return { statusCode: 401, body: 'Unauthorized' };
@@ -43,25 +42,21 @@ exports.handler = async (event) => {
     const { sessionId, plan, token } = payment.metadata;
     console.log(`[bg] processing ${paymentId} plan=${plan} session=${sessionId}`);
 
-    // ─── SUBSCRIPTION: eerste betaling ───────────────────────────────
     if (plan === 'subscription') {
       await handleSubscriptionFirst({ mollie, payment, sessionId });
       return { statusCode: 200, body: 'Subscription done' };
     }
 
-    // ─── SUBSCRIPTION: herhalende betaling ───────────────────────────
     if (plan === 'subscription_recurring') {
       await handleSubscriptionRecurring({ payment });
       return { statusCode: 200, body: 'Recurring done' };
     }
 
-    // ─── SOLO (€5) ───────────────────────────────────────────────────
     if (plan === 'solo') {
       await handleSolo({ sessionId });
       return { statusCode: 200, body: 'Solo done' };
     }
 
-    // ─── COUPLE (€9) ─────────────────────────────────────────────────
     if (plan === 'couple') {
       await handleCouple({ sessionId, token });
       return { statusCode: 200, body: 'Couple recorded' };
@@ -71,8 +66,6 @@ exports.handler = async (event) => {
 
   } catch (err) {
     console.error(`[bg] ${paymentId} failed:`, err);
-    // Geen retry-trigger; we hebben de paymentId al gemarkeerd als
-    // processed. Bij echte failures moet je dit handmatig oppakken.
     return { statusCode: 500, body: err.message };
   }
 };
@@ -105,7 +98,6 @@ async function handleCouple({ sessionId, token }) {
 
   await dbSet(`couples/${token}`, { ...couple, paid: true });
 
-  // Alleen rapport sturen als partner ook klaar is
   if (couple.partnerSessionId && !couple.reportSent) {
     await generateAndSendCouple(token);
   } else {
@@ -121,7 +113,6 @@ async function handleSubscriptionFirst({ mollie, payment, sessionId }) {
     return;
   }
 
-  // Mollie klant aanmaken voor recurring
   let customerId = sess.mollieCustomerId;
   if (!customerId) {
     const customer = await mollie.customers.create({
@@ -164,8 +155,6 @@ async function handleSubscriptionFirst({ mollie, payment, sessionId }) {
       ${html}
       <hr style="margin: 2rem 0; border: none; border-top: 1px solid #EBE3D4;">
       <p style="color: #8C7B6B; font-size: 0.9rem;">
-        Je kunt jouw dashboard bekijken op
-        <a href="${process.env.SITE_URL}/dashboard.html" style="color: #C97B5F;">hechtingtest.nl/dashboard</a>.
         Je abonnement verlengt automatisch elke maand voor €9,99.
       </p>
     `)
@@ -200,11 +189,6 @@ async function handleSubscriptionRecurring({ payment }) {
       <p style="color: #5C4A32;">
         Bekijk jouw persoonlijke dashboard voor nieuwe oefeningen en reflecties.
       </p>
-      <a href="${process.env.SITE_URL}/dashboard.html"
-         style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem;
-                background: #C97B5F; color: white; text-decoration: none; border-radius: 8px;">
-        Open jouw dashboard
-      </a>
     `)
   );
 }
@@ -235,7 +219,6 @@ async function generateAndSendCouple(token) {
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  // 3x Claude calls parallel (was ook al zo, maar nu in background = oké)
   const [mainReport, partnerReport, coupleReport] = await Promise.all([
     anthropic.messages.create({
       model: 'claude-sonnet-4-20250514', max_tokens: 4000,
@@ -292,13 +275,16 @@ async function generateAndSendCouple(token) {
   await dbSet(`couples/${token}`, { ...couple, reportSent: true });
 }
 
+// ─── MAIL ────────────────────────────────────────────────────────────
+
 async function sendMail(to, subject, html) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   return resend.emails.send({
-    from: 'Hechtingtest <hello@hechtingtest.nl>',
-    to, subject, html
+    from: 'Hechtingtest <hello@hechtingstest.nl>',
+    to,
+    subject,
+    html
   });
 }
 
-// Exporteer zodat submit-partner.js dit kan triggeren
 module.exports.generateAndSendCouple = generateAndSendCouple;
