@@ -15,17 +15,9 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body {
-  font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); color: var(--text);
-  line-height: 1.5; min-height: 100vh; overflow-x: hidden;
-}
-
-/* ── BESTAANDE STIJLEN ── */
+body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh; overflow-x: hidden; }
 .app { position: relative; min-height: 100vh; display: flex; flex-direction: column; }
-.header {
-  padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 1px solid var(--border); background: rgba(244, 239, 230, 0.85); sticky; top: 0; z-index: 10;
-}
+.header { padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(244, 239, 230, 0.85); position: sticky; top: 0; z-index: 10; }
 .logo { font-weight: 500; font-size: 1.25rem; color: var(--primary); display: flex; gap: 0.5rem; }
 .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
 .progress-track { height: 3px; background: var(--surface-2); }
@@ -33,89 +25,43 @@ body {
 .screen { flex: 1; display: none; flex-direction: column; padding: 2rem 1.5rem 3rem; max-width: 640px; width: 100%; margin: 0 auto; }
 .screen.active { display: flex; animation: in 0.5s ease; }
 @keyframes in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
 .intro { gap: 2rem; padding-top: 3rem; }
 .intro-title { font-size: clamp(2.5rem, 8vw, 4.25rem); font-weight: 400; line-height: 0.95; }
 .intro-body { font-size: 1.0625rem; color: var(--text-muted); line-height: 1.6; max-width: 480px; }
-
-.btn-primary {
-  background: var(--primary); color: var(--surface); border: none; padding: 1.125rem 2rem;
-  font-size: 1rem; font-weight: 600; border-radius: 999px; cursor: pointer;
-  display: inline-flex; gap: 0.5rem; transition: all 0.25s;
-  min-height: 56px; align-self: flex-start;
-}
+.btn-primary { background: var(--primary); color: var(--surface); border: none; padding: 1.125rem 2rem; font-size: 1rem; font-weight: 600; border-radius: 999px; cursor: pointer; display: inline-flex; gap: 0.5rem; transition: all 0.25s; min-height: 56px; align-self: flex-start; }
 .btn-primary:hover { background: var(--primary-soft); transform: translateY(-1px); }
 .btn-primary[disabled] { opacity: 0.4; cursor: not-allowed; }
-
 .quiz { gap: 2rem; padding-top: 2.5rem; }
 .quiz-question { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 400; line-height: 1.25; max-width: 540px; }
 .quiz-hint { font-size: 0.9375rem; color: var(--text-muted); margin-top: -0.75rem; }
-
 .slider-wrap { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; }
 .slider-value-display { display: flex; justify-content: space-between; align-items: center; }
 .slider-value-label { font-size: 1rem; font-weight: 500; color: var(--primary); transition: all 0.2s; }
 .slider-value-percent { font-size: 1.125rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
 .slider-value-percent.dimmed { color: var(--text-muted); opacity: 0.4; }
-
 .slider-track-wrap { position: relative; padding: 1rem 0; touch-action: pan-y; }
-.slider-range {
-  -webkit-appearance: none; appearance: none;
-  width: 100%; height: 6px; border-radius: 999px;
-  background: var(--surface-2); outline: none; cursor: pointer; margin: 0;
-}
-.slider-range::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none;
-  width: 32px; height: 32px; border-radius: 50%;
-  background: var(--surface); border: 3px solid var(--primary);
-  cursor: grab; box-shadow: var(--shadow-md); transition: transform 0.15s, border-color 0.2s;
-}
+.slider-range { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px; background: var(--surface-2); outline: none; cursor: pointer; margin: 0; }
+.slider-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 3px solid var(--primary); cursor: grab; box-shadow: var(--shadow-md); transition: transform 0.15s, border-color 0.2s; }
 .slider-range::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.15); }
-.slider-range::-moz-range-thumb {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: var(--surface); border: 3px solid var(--primary);
-  cursor: grab; box-shadow: var(--shadow-md);
-}
+.slider-range::-moz-range-thumb { width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 3px solid var(--primary); cursor: grab; box-shadow: var(--shadow-md); }
 .slider-range.touched::-webkit-slider-thumb { border-color: var(--accent); }
 .slider-range.touched::-moz-range-thumb { border-color: var(--accent); }
-
-.slider-fill {
-  position: absolute; top: 50%; left: 0; height: 6px; border-radius: 999px;
-  background: linear-gradient(90deg, var(--primary), var(--accent));
-  transform: translateY(-50%); pointer-events: none; width: 50%; transition: width 0.1s;
-}
+.slider-fill { position: absolute; top: 50%; left: 0; height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: translateY(-50%); pointer-events: none; width: 50%; transition: width 0.1s; }
 .slider-labels { display: flex; justify-content: space-between; font-size: 0.8125rem; color: var(--text-muted); margin-top: -0.5rem; }
-
 .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; gap: 1rem; }
-.btn-secondary {
-  background: transparent; color: var(--text-muted); border: none;
-  font-size: 0.9375rem; font-weight: 500; cursor: pointer;
-  padding: 0.75rem 1rem; border-radius: 999px; font-family: inherit;
-}
+.btn-secondary { background: transparent; color: var(--text-muted); border: none; font-size: 0.9375rem; font-weight: 500; cursor: pointer; padding: 0.75rem 1rem; border-radius: 999px; font-family: inherit; }
 .btn-secondary:hover { color: var(--text); }
 .btn-secondary:disabled { opacity: 0.3; cursor: not-allowed; }
-
 .capture { gap: 1.5rem; padding-top: 3rem; }
 .capture-title { font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 400; line-height: 1.05; }
 .capture-form { display: flex; flex-direction: column; gap: 0.875rem; width: 100%; max-width: 420px; margin-top: 0.5rem; }
-.input {
-  background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px;
-  padding: 1.125rem 1.25rem; font-family: inherit; font-size: 1rem; color: var(--text); min-height: 56px;
-}
+.input { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 1.125rem 1.25rem; font-family: inherit; font-size: 1rem; color: var(--text); min-height: 56px; }
 .input:focus { outline: none; border-color: var(--primary); }
-
 .result { gap: 1.5rem; padding-top: 1.5rem; }
 .result-title { font-size: clamp(2rem, 7vw, 3rem); font-weight: 400; line-height: 1.05; }
-.result-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 24px;
-  padding: 1.75rem; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 1.25rem;
-}
-
+.result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 1.75rem; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 1.25rem; }
 .pricing-choice { display: flex; flex-direction: column; gap: 0.875rem; margin-top: 0.5rem; }
-.price-option {
-  background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px;
-  padding: 1.5rem; display: flex; flex-direction: column; gap: 0.875rem;
-  transition: all 0.25s; cursor: pointer;
-}
+.price-option { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.875rem; transition: all 0.25s; }
 .price-option:hover { border-color: var(--primary); box-shadow: var(--shadow-md); }
 .price-option.featured { border-color: var(--primary); background: var(--primary); color: var(--surface); }
 .price-option.featured .price-option-title { color: var(--surface); }
@@ -125,7 +71,6 @@ body {
 .price-option ul li::before { content: '✓'; font-weight: bold; color: var(--accent); }
 .price-option .btn-primary { width: 100%; margin-top: 0.5rem; }
 .price-option.featured .btn-primary { background: var(--accent); color: var(--text); }
-
 .share { gap: 1.5rem; padding-top: 2rem; }
 .share-link { display: flex; gap: 0.5rem; background: var(--surface-2); padding: 0.625rem; border-radius: 12px; align-items: center; }
 .share-link input { flex: 1; background: transparent; border: none; outline: none; font-size: 0.875rem; min-width: 0; }
@@ -133,156 +78,64 @@ body {
 .share-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; margin-top: 0.25rem; }
 .share-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); padding: 0.875rem 1rem; border-radius: 12px; text-decoration: none; font-size: 0.875rem; font-weight: 500; cursor: pointer; }
 .share-btn:hover { background: var(--primary); color: var(--surface); }
-
 .loading { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding: 4rem 1.5rem; text-align: center; }
 .spinner { width: 48px; height: 48px; border: 3px solid var(--surface-2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
 .disclaimer { padding: 1.5rem; font-size: 0.75rem; color: var(--text-muted); text-align: center; line-height: 1.5; max-width: 540px; margin: 0 auto; }
 
 /* ── COACH SCREEN ── */
-.coach-screen {
-  display: none; flex-direction: column;
-  height: 100vh; overflow: hidden;
-  background: var(--bg);
-}
+.coach-screen { display: none; flex-direction: column; height: 100vh; overflow: hidden; background: var(--bg); }
 .coach-screen.active { display: flex; }
-
-.coach-header {
-  padding: 1rem 1.25rem;
-  display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-  background: rgba(244,239,230,0.95);
-  flex-shrink: 0; position: sticky; top: 0; z-index: 10;
-}
+.coach-header { padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: rgba(244,239,230,0.95); flex-shrink: 0; position: sticky; top: 0; z-index: 10; }
 .coach-header-left { display: flex; align-items: center; gap: 0.75rem; }
-.luna-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--primary); color: white;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
-}
+.luna-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
 .luna-info h2 { font-size: 0.9375rem; font-weight: 600; line-height: 1.2; }
 .luna-info span { font-size: 0.75rem; color: var(--text-muted); }
 .online-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4CAF50; margin-right: 3px; }
 .coach-header-right { display: flex; align-items: center; gap: 0.75rem; }
-.limiet-badge {
-  font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
-  background: var(--surface-2); border-radius: 999px; padding: 0.25rem 0.75rem;
-}
+.limiet-badge { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); background: var(--surface-2); border-radius: 999px; padding: 0.25rem 0.75rem; }
 .limiet-badge.laag { color: var(--accent); }
-.btn-nieuw-gesprek {
-  background: transparent; border: 1px solid var(--border); border-radius: 999px;
-  padding: 0.375rem 0.875rem; font-size: 0.8125rem; font-weight: 600;
-  color: var(--text-muted); cursor: pointer; font-family: inherit; transition: all 0.2s;
-}
+.btn-nieuw-gesprek { background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 0.375rem 0.875rem; font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); cursor: pointer; font-family: inherit; transition: all 0.2s; }
 .btn-nieuw-gesprek:hover { border-color: var(--primary); color: var(--primary); }
-
-.chat-area {
-  flex: 1; overflow-y: auto; padding: 1.25rem 1rem;
-  display: flex; flex-direction: column; gap: 0.875rem;
-  scroll-behavior: smooth;
-}
+.chat-area { flex: 1; overflow-y: auto; padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: 0.875rem; scroll-behavior: smooth; }
 .chat-area::-webkit-scrollbar { width: 4px; }
 .chat-area::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 2px; }
-
 .bericht { display: flex; gap: 0.625rem; max-width: 100%; animation: berichtIn 0.3s ease both; }
 .bericht.gebruiker { flex-direction: row-reverse; }
 @keyframes berichtIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.bericht-avatar {
-  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.625rem; font-weight: 700; margin-top: 2px;
-}
+.bericht-avatar { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; margin-top: 2px; }
 .bericht.luna-msg .bericht-avatar { background: var(--primary); color: white; }
 .bericht.gebruiker-msg .bericht-avatar { background: var(--surface-2); color: var(--text-muted); }
-
-.bericht-bubble {
-  max-width: calc(100% - 80px); padding: 0.75rem 1rem;
-  border-radius: 18px; font-size: 0.9375rem; line-height: 1.6;
-}
-.bericht.luna-msg .bericht-bubble {
-  background: var(--surface); border: 1px solid var(--border);
-  border-bottom-left-radius: 4px; box-shadow: var(--shadow-sm);
-}
-.bericht.gebruiker-msg .bericht-bubble {
-  background: var(--primary); color: var(--surface); border-bottom-right-radius: 4px;
-}
+.bericht-bubble { max-width: calc(100% - 80px); padding: 0.75rem 1rem; border-radius: 18px; font-size: 0.9375rem; line-height: 1.6; }
+.bericht.luna-msg .bericht-bubble { background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 4px; box-shadow: var(--shadow-sm); }
+.bericht.gebruiker-msg .bericht-bubble { background: var(--primary); color: var(--surface); border-bottom-right-radius: 4px; }
 .bericht-tijd { font-size: 0.6875rem; color: var(--text-muted); margin-top: 0.25rem; padding: 0 0.25rem; }
 .bericht.luna-msg .bericht-tijd { text-align: left; }
 .bericht.gebruiker-msg .bericht-tijd { text-align: right; }
-
-.typing-wrap { display: flex; gap: 0.625rem; }
-.typing-dots {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 18px; border-bottom-left-radius: 4px;
-  padding: 0.875rem 1rem; display: flex; gap: 4px; align-items: center;
-  box-shadow: var(--shadow-sm);
-}
+.typing-dots { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; border-bottom-left-radius: 4px; padding: 0.875rem 1rem; display: flex; gap: 4px; align-items: center; box-shadow: var(--shadow-sm); }
 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); animation: dotBounce 1.2s infinite; }
 .dot:nth-child(2) { animation-delay: 0.2s; }
 .dot:nth-child(3) { animation-delay: 0.4s; }
 @keyframes dotBounce { 0%,60%,100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-5px); opacity: 1; } }
-
-.welkom-coach {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; text-align: center; padding: 2rem 1.5rem;
-  flex: 1;
-}
-.welkom-coach-avatar {
-  width: 56px; height: 56px; border-radius: 50%;
-  background: var(--primary); color: white;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem; font-weight: 700; margin-bottom: 1.125rem;
-}
+.welkom-coach { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem 1.5rem; flex: 1; }
+.welkom-coach-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; margin-bottom: 1.125rem; }
 .welkom-coach h2 { font-size: 1.5rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.375rem; }
 .welkom-coach h2 em { font-style: italic; }
 .welkom-coach p { font-size: 0.9375rem; color: var(--text-muted); line-height: 1.65; max-width: 300px; margin-bottom: 1.25rem; }
 .starters { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; max-width: 360px; }
-.starter-btn {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-  padding: 0.875rem 1rem; font-family: inherit; font-size: 0.875rem; color: var(--text);
-  cursor: pointer; text-align: left; transition: all 0.2s; line-height: 1.4;
-}
+.starter-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.875rem 1rem; font-family: inherit; font-size: 0.875rem; color: var(--text); cursor: pointer; text-align: left; transition: all 0.2s; line-height: 1.4; }
 .starter-btn:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
-
-.limiet-melding-chat {
-  background: var(--surface-2); border-radius: 12px; padding: 0.875rem 1rem;
-  text-align: center; font-size: 0.875rem; color: var(--text-muted); line-height: 1.5;
-  margin: 0.5rem 0;
-}
+.limiet-melding-chat { background: var(--surface-2); border-radius: 12px; padding: 0.875rem 1rem; text-align: center; font-size: 0.875rem; color: var(--text-muted); line-height: 1.5; margin: 0.5rem 0; }
 .limiet-melding-chat strong { color: var(--text); display: block; margin-bottom: 0.25rem; }
-
-.coach-input-area {
-  padding: 0.75rem 1rem 1rem; border-top: 1px solid var(--border);
-  background: rgba(244,239,230,0.95); flex-shrink: 0;
-}
-.coach-input-wrap {
-  display: flex; gap: 0.5rem; align-items: flex-end;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 16px; padding: 0.5rem 0.5rem 0.5rem 1rem;
-  transition: border-color 0.2s;
-}
+.coach-input-area { padding: 0.75rem 1rem 1rem; border-top: 1px solid var(--border); background: rgba(244,239,230,0.95); flex-shrink: 0; }
+.coach-input-wrap { display: flex; gap: 0.5rem; align-items: flex-end; background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 0.5rem 0.5rem 0.5rem 1rem; transition: border-color 0.2s; }
 .coach-input-wrap:focus-within { border-color: rgba(42,31,26,0.2); }
-.chat-input {
-  flex: 1; border: none; background: transparent; outline: none;
-  font-family: inherit; font-size: 0.9375rem; color: var(--text);
-  resize: none; max-height: 120px; line-height: 1.5; padding: 0.375rem 0;
-}
+.chat-input { flex: 1; border: none; background: transparent; outline: none; font-family: inherit; font-size: 0.9375rem; color: var(--text); resize: none; max-height: 120px; line-height: 1.5; padding: 0.375rem 0; }
 .chat-input::placeholder { color: var(--text-muted); }
-.send-btn {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--primary); border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: all 0.2s;
-}
+.send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
 .send-btn:hover { background: var(--primary-soft); transform: scale(1.05); }
 .send-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-.input-footer-coach {
-  display: flex; justify-content: space-between;
-  margin-top: 0.375rem; padding: 0 0.25rem;
-}
+.input-footer-coach { display: flex; justify-content: space-between; margin-top: 0.375rem; padding: 0 0.25rem; }
 .input-hint { font-size: 0.75rem; color: var(--text-muted); }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
@@ -420,9 +273,8 @@ body {
   </footer>
 </div>
 
-<!-- ── COACH SCREEN (buiten .app) ── -->
+<!-- ── COACH SCREEN ── -->
 <div class="coach-screen" id="coachScreen">
-
   <header class="coach-header">
     <div class="coach-header-left">
       <div class="luna-avatar">L</div>
@@ -436,18 +288,10 @@ body {
       <button class="btn-nieuw-gesprek" onclick="nieuwGesprek()">Nieuw gesprek</button>
     </div>
   </header>
-
   <div class="chat-area" id="chatArea"></div>
-
   <div class="coach-input-area">
     <div class="coach-input-wrap">
-      <textarea
-        class="chat-input" id="chatInput"
-        placeholder="Vertel Luna wat er speelt…"
-        rows="1"
-        onkeydown="handleKeydown(event)"
-        oninput="autoResize(this)"
-      ></textarea>
+      <textarea class="chat-input" id="chatInput" placeholder="Vertel Luna wat er speelt…" rows="1" onkeydown="handleKeydown(event)" oninput="autoResize(this)"></textarea>
       <button class="send-btn" id="sendBtn" onclick="verstuurBericht()" disabled>
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
           <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -460,28 +304,19 @@ body {
       <span class="input-hint" id="resterendLabel"></span>
     </div>
   </div>
-
-</div>
-
-<!-- Waitlist Modal -->
-<div id="waitlistModal" style="display:none; position:fixed; inset:0; background:rgba(42,31,26,0.6); z-index:100; align-items:center; justify-content:center; padding:1.5rem;">
-  <div style="background:var(--surface); border-radius:24px; padding:2rem; max-width:420px; width:100%; display:flex; flex-direction:column; gap:1.25rem; box-shadow:var(--shadow-md);">
-    <div style="font-size:0.75rem; color:var(--accent); font-weight:600; letter-spacing:0.06em;">BINNENKORT BESCHIKBAAR</div>
-    <h3 style="font-size:1.75rem; font-weight:400; line-height:1.1;">Wil je als eerste toegang?</h3>
-    <p style="color:var(--text-muted); font-size:0.9375rem; line-height:1.6;">We bouwen nu het Premium dashboard met wekelijkse vragen en persoonlijke AI-feedback. Zet je naam op de lijst — je hoort het als eerste.</p>
-    <input type="text" class="input" id="waitlistName" placeholder="Je voornaam">
-    <input type="email" class="input" id="waitlistEmail" placeholder="jouw@email.nl">
-    <div id="waitlistError" style="display:none; color:var(--accent); font-size:0.875rem; margin-top:-0.5rem;">Vul een geldig e-mailadres in.</div>
-    <button class="btn-primary" id="waitlistBtn" onclick="submitWaitlist()" style="width:100%; background:var(--accent); color:var(--text);">Zet me op de lijst</button>
-    <button onclick="closeWaitlist()" style="background:none; border:none; color:var(--text-muted); font-size:0.875rem; cursor:pointer;">Sluiten</button>
-  </div>
 </div>
 
 <script>
 // ════════════════════════════════════════
-// QUIZ LOGICA (ongewijzigd)
+// STATE & VRAGEN
 // ════════════════════════════════════════
-const QUESTIONS = [
+var state = {
+  currentQuestion: 0, answers: [], style: null,
+  user: { name: '', email: '' }, plan: null,
+  coupleToken: null, isPartner: false, sessionId: null, scores: null
+};
+
+var QUESTIONS = [
   { q: "Ik maak me zorgen dat mijn partner me niet zoveel waardeert als ik hen.", dim: "anxiety", reverse: false },
   { q: "Ik voel me snel onzeker als mijn partner afstand neemt, zelfs kort.", dim: "anxiety", reverse: false },
   { q: "Ik heb sterke behoefte aan bevestiging dat ik geliefd ben.", dim: "anxiety", reverse: false },
@@ -498,14 +333,11 @@ const QUESTIONS = [
   { q: "Ik voel me comfortabel met diepe emotionele nabijheid.", dim: "avoidance", reverse: true },
   { q: "Ik praat makkelijk over wat er in mij omgaat.", dim: "avoidance", reverse: true }
 ];
-const TOTAL_Q = QUESTIONS.length;
+var TOTAL_Q = QUESTIONS.length;
 
-var state = {
-  currentQuestion: 0, answers: [], style: null,
-  user: { name: '', email: '' }, plan: null,
-  coupleToken: null, isPartner: false, sessionId: null, scores: null
-};
-
+// ════════════════════════════════════════
+// QUIZ
+// ════════════════════════════════════════
 function startQuiz() {
   document.getElementById('header').style.display = 'flex';
   document.getElementById('progressTrack').style.display = 'block';
@@ -514,7 +346,7 @@ function startQuiz() {
 }
 
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
   document.getElementById('screen-' + id).classList.add('active');
   window.scrollTo(0, 0);
 }
@@ -530,19 +362,19 @@ function valueLabel(v) {
 }
 
 function renderQuestion() {
-  const idx = state.currentQuestion;
-  const q = QUESTIONS[idx];
-  const n = idx + 1;
+  var idx = state.currentQuestion;
+  var q = QUESTIONS[idx];
+  var n = idx + 1;
   document.getElementById('quizQuestion').textContent = q.q;
-  document.getElementById('progressCounter').textContent = `Vraag ${n} / ${TOTAL_Q}`;
+  document.getElementById('progressCounter').textContent = 'Vraag ' + n + ' / ' + TOTAL_Q;
   document.getElementById('progressFill').style.width = ((n - 1) / TOTAL_Q * 100) + '%';
-  const slider = document.getElementById('quizSlider');
-  const fill = document.getElementById('sliderFill');
-  const label = document.getElementById('sliderLabel');
-  const percent = document.getElementById('sliderPercent');
-  const nextBtn = document.getElementById('quizNext');
-  const backBtn = document.getElementById('quizBack');
-  const prev = state.answers[idx];
+  var slider = document.getElementById('quizSlider');
+  var fill = document.getElementById('sliderFill');
+  var label = document.getElementById('sliderLabel');
+  var percent = document.getElementById('sliderPercent');
+  var nextBtn = document.getElementById('quizNext');
+  var backBtn = document.getElementById('quizBack');
+  var prev = state.answers[idx];
   if (prev) {
     slider.value = prev.value; slider.classList.add('touched');
     label.textContent = valueLabel(prev.value); percent.textContent = prev.value + '%';
@@ -554,10 +386,10 @@ function renderQuestion() {
   }
   backBtn.disabled = idx === 0;
   nextBtn.textContent = (idx === TOTAL_Q - 1) ? 'Klaar →' : 'Volgende';
-  const newSlider = slider.cloneNode(true);
+  var newSlider = slider.cloneNode(true);
   slider.parentNode.replaceChild(newSlider, slider);
-  newSlider.addEventListener('input', () => {
-    const v = parseInt(newSlider.value, 10);
+  newSlider.addEventListener('input', function() {
+    var v = parseInt(newSlider.value, 10);
     fill.style.width = v + '%'; label.textContent = valueLabel(v);
     percent.textContent = v + '%'; percent.classList.remove('dimmed');
     newSlider.classList.add('touched'); nextBtn.disabled = false;
@@ -565,10 +397,10 @@ function renderQuestion() {
 }
 
 function nextQuestion() {
-  const idx = state.currentQuestion;
-  const q = QUESTIONS[idx];
-  const slider = document.getElementById('quizSlider');
-  const v = parseInt(slider.value, 10);
+  var idx = state.currentQuestion;
+  var q = QUESTIONS[idx];
+  var slider = document.getElementById('quizSlider');
+  var v = parseInt(slider.value, 10);
   state.answers[idx] = { q: q.q, value: v, dim: q.dim, reverse: q.reverse };
   if (idx + 1 >= TOTAL_Q) {
     computeScores();
@@ -586,9 +418,9 @@ function prevQuestion() {
 }
 
 function computeScores() {
-  const sums = { anxiety: { total: 0, count: 0 }, avoidance: { total: 0, count: 0 } };
-  state.answers.forEach(a => {
-    const score = a.reverse ? (100 - a.value) : a.value;
+  var sums = { anxiety: { total: 0, count: 0 }, avoidance: { total: 0, count: 0 } };
+  state.answers.forEach(function(a) {
+    var score = a.reverse ? (100 - a.value) : a.value;
     sums[a.dim].total += score; sums[a.dim].count += 1;
   });
   state.scores = {
@@ -598,8 +430,8 @@ function computeScores() {
 }
 
 async function submitEmail() {
-  const name = document.getElementById('inputName').value.trim();
-  const email = document.getElementById('inputEmail').value.trim();
+  var name = document.getElementById('inputName').value.trim();
+  var email = document.getElementById('inputEmail').value.trim();
   if (!name || !email) return;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
     document.getElementById('inputEmail').style.borderColor = 'var(--accent)';
@@ -607,17 +439,29 @@ async function submitEmail() {
   }
   document.getElementById('emailError').style.display = 'none';
   document.getElementById('inputEmail').style.borderColor = '';
-  state.user = { name, email };
+  state.user = { name: name, email: email };
+
+  // Sla op in localStorage zodat bedankt.html er bij kan
+  localStorage.setItem('userName', name);
+  localStorage.setItem('userEmail', email);
+  localStorage.setItem('anxietyScore', state.scores ? state.scores.anxiety : 50);
+  localStorage.setItem('avoidanceScore', state.scores ? state.scores.avoidance : 50);
+
   document.getElementById('submitBtn').disabled = true;
   showScreen('loading');
   try {
-    const res = await fetch('/.netlify/functions/process-quiz', {
+    var res = await fetch('/.netlify/functions/process-quiz', {
       method: 'POST',
       body: JSON.stringify({ user: state.user, scores: state.scores, answers: state.answers, isPartner: state.isPartner, coupleToken: state.coupleToken })
     });
-    const data = await res.json();
+    var data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Error');
     state.sessionId = data.sessionId; state.style = data.style;
+
+    // Sla stijl en sessie op voor bedankt.html
+    localStorage.setItem('hechtingsstijl', state.style ? state.style.name : '');
+    localStorage.setItem('userId', state.sessionId || '');
+
     if (state.isPartner) {
       await fetch('/.netlify/functions/submit-partner', { method: 'POST', body: JSON.stringify({ token: state.coupleToken }) });
       document.getElementById('resultTitle').innerHTML = 'Bedankt — bijna klaar';
@@ -634,40 +478,42 @@ async function submitEmail() {
 }
 
 function renderResult(data) {
-  document.getElementById('resultTitle').innerHTML = `Jij bent een <em>${state.style.title}</em>`;
+  document.getElementById('resultTitle').innerHTML = 'Jij bent een <em>' + state.style.title + '</em>';
   document.getElementById('resultStyleName').textContent = state.style.name;
   document.getElementById('resultPreviewText').textContent = data.preview;
 }
 
 async function goToPayment(plan, btnEl) {
   state.plan = plan;
-  const btn = btnEl || event?.currentTarget;
+  var btn = btnEl;
   if (btn) btn.disabled = true;
   try {
     if (plan === 'coach') {
-      // Coach abonnement via aparte flow
-      const res = await fetch('/.netlify/functions/create-coach-payment', {
+      var res = await fetch('/.netlify/functions/create-coach-payment', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          naam: state.user.name, email: state.user.email,
-          stijl: state.style?.name || '', sessionId: state.sessionId,
-          anxietyScore: state.scores?.anxiety || 50,
-          avoidanceScore: state.scores?.avoidance || 50
+          naam: state.user.name,
+          email: state.user.email,
+          stijl: state.style ? state.style.name : '',
+          sessionId: state.sessionId,
+          anxietyScore: state.scores ? state.scores.anxiety : 50,
+          avoidanceScore: state.scores ? state.scores.avoidance : 50
         })
       });
-      const data = await res.json();
+      var data = await res.json();
       if (!res.ok) throw new Error(data.error);
       window.location.href = data.checkoutUrl;
       return;
     }
-    const res = await fetch('/.netlify/functions/create-payment', {
+    var res2 = await fetch('/.netlify/functions/create-payment', {
       method: 'POST',
-      body: JSON.stringify({ sessionId: state.sessionId, plan, user: state.user })
+      body: JSON.stringify({ sessionId: state.sessionId, plan: plan, user: state.user })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
-    if (plan === 'couple') { state.coupleToken = data.token; showCoupleShare(data); }
-    else { window.location.href = data.checkoutUrl; }
+    var data2 = await res2.json();
+    if (!res2.ok) throw new Error(data2.error);
+    if (plan === 'couple') { state.coupleToken = data2.token; showCoupleShare(data2); }
+    else { window.location.href = data2.checkoutUrl; }
   } catch (err) {
     alert('Betaling kan niet starten: ' + err.message);
     if (btn) btn.disabled = false;
@@ -675,33 +521,33 @@ async function goToPayment(plan, btnEl) {
 }
 
 function showCoupleShare(data) {
-  const url = window.location.origin + '/?k=' + data.token;
+  var url = window.location.origin + '/?k=' + data.token;
   document.getElementById('shareLink').value = url;
-  const msg = encodeURIComponent(`Ik deed deze hechtingstest en de uitkomst was bizar herkenbaar. Doe jij hem ook? Dan krijgen we samen een rapport: ${url}`);
-  document.getElementById('whatsappBtn').href = `https://wa.me/?text=${msg}`;
-  document.getElementById('messengerBtn').href = `sms:?body=${msg}`;
+  var msg = encodeURIComponent('Ik deed deze hechtingstest en de uitkomst was bizar herkenbaar. Doe jij hem ook? Dan krijgen we samen een rapport: ' + url);
+  document.getElementById('whatsappBtn').href = 'https://wa.me/?text=' + msg;
+  document.getElementById('messengerBtn').href = 'sms:?body=' + msg;
   showScreen('share');
 }
 
 function copyShare() {
-  const inp = document.getElementById('shareLink');
+  var inp = document.getElementById('shareLink');
   inp.select(); navigator.clipboard.writeText(inp.value);
-  const btn = event.target; btn.textContent = 'Gekopieerd ✓';
-  setTimeout(() => btn.textContent = 'Kopieer', 2000);
+  var btn = event.target; btn.textContent = 'Gekopieerd ✓';
+  setTimeout(function() { btn.textContent = 'Kopieer'; }, 2000);
 }
 
 // Partner mode
-const params = new URLSearchParams(window.location.search);
+var params = new URLSearchParams(window.location.search);
 if (params.has('k') && !params.has('token')) {
   state.isPartner = true; state.coupleToken = params.get('k');
   document.querySelector('.intro-title').innerHTML = 'Jullie samen.<br><em>Begin met jouw stem.</em>';
   document.querySelector('.intro-body').textContent = 'Je partner heeft deze test gedaan en wil het samen met jou doen. Doe de test — daarna krijgen jullie samen een koppels-rapport.';
 }
 
-document.getElementById('inputEmail')?.addEventListener('keydown', e => { if (e.key === 'Enter') submitEmail(); });
+document.getElementById('inputEmail').addEventListener('keydown', function(e) { if (e.key === 'Enter') submitEmail(); });
 
 // ════════════════════════════════════════
-// COACH / LUNA LOGICA
+// COACH / LUNA
 // ════════════════════════════════════════
 var coachToken = params.get('token');
 var gesprekId = null;
@@ -710,7 +556,6 @@ var resterend = 10;
 var lunaProf = null;
 
 if (coachToken) {
-  // Verberg quiz app, toon coach screen
   document.getElementById('mainApp').style.display = 'none';
   document.getElementById('coachScreen').classList.add('active');
   laadLunaProfiel();
@@ -718,31 +563,28 @@ if (coachToken) {
 
 function laadLunaProfiel() {
   fetch('/.netlify/functions/luna-profiel?token=' + coachToken)
-    .then(r => r.json())
-    .then(data => {
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
       if (data.error) { toonCoachFout(data.error); return; }
-      lunaProf = data;
-      toonWelkomLuna();
+      lunaProf = data; toonWelkomLuna();
     })
-    .catch(() => { lunaProf = { naam: 'daar' }; toonWelkomLuna(); });
+    .catch(function() { lunaProf = { naam: 'daar' }; toonWelkomLuna(); });
 }
 
 function toonWelkomLuna() {
-  var naam = lunaProf?.naam ? lunaProf.naam.split(' ')[0] : 'daar';
+  var naam = lunaProf && lunaProf.naam ? lunaProf.naam.split(' ')[0] : 'daar';
   var chatArea = document.getElementById('chatArea');
   chatArea.innerHTML = '';
   var welkom = document.createElement('div');
   welkom.className = 'welkom-coach'; welkom.id = 'welkomScherm';
-  welkom.innerHTML = `
-    <div class="welkom-coach-avatar">L</div>
-    <h2>Hoi ${naam},<br><em>ik ben Luna.</em></h2>
-    <p>Vertel me wat er speelt — een situatie, een gevoel, een patroon. Ik luister.</p>
-    <div class="starters">
-      <button class="starter-btn" onclick="startMetVraag(this)">Ik had een ruzie en weet niet hoe ik ermee om moet gaan</button>
-      <button class="starter-btn" onclick="startMetVraag(this)">Ik merk dat ik steeds hetzelfde patroon herhaal in relaties</button>
-      <button class="starter-btn" onclick="startMetVraag(this)">Ik voel me onzeker over hoe iemand over me denkt</button>
-    </div>
-  `;
+  welkom.innerHTML = '<div class="welkom-coach-avatar">L</div>' +
+    '<h2>Hoi ' + naam + ',<br><em>ik ben Luna.</em></h2>' +
+    '<p>Vertel me wat er speelt — een situatie, een gevoel, een patroon. Ik luister.</p>' +
+    '<div class="starters">' +
+    '<button class="starter-btn" onclick="startMetVraag(this)">Ik had een ruzie en weet niet hoe ik ermee om moet gaan</button>' +
+    '<button class="starter-btn" onclick="startMetVraag(this)">Ik merk dat ik steeds hetzelfde patroon herhaal in relaties</button>' +
+    '<button class="starter-btn" onclick="startMetVraag(this)">Ik voel me onzeker over hoe iemand over me denkt</button>' +
+    '</div>';
   chatArea.appendChild(welkom);
   updateLimietBadge();
   document.getElementById('chatInput').addEventListener('input', function() {
@@ -787,19 +629,19 @@ function verstuurBericht() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ token: coachToken, bericht: tekst, gesprekId: gesprekId })
   })
-  .then(r => r.json())
-  .then(data => {
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
     typing.remove(); bezig = false;
     if (data.code === 'LIMIT') { voegLimietMeldingToe(); return; }
     if (data.error) { voegBerichtToe('luna', 'Er ging iets mis. Probeer het opnieuw.'); return; }
     gesprekId = data.gesprekId; resterend = data.resterend;
     updateLimietBadge(); voegBerichtToe('luna', data.antwoord);
     if (resterend <= 2 && resterend > 0) {
-      setTimeout(() => voegBerichtToe('luna', `Je hebt nog ${resterend} bericht${resterend === 1 ? '' : 'en'} voor vandaag.`), 800);
+      setTimeout(function() { voegBerichtToe('luna', 'Je hebt nog ' + resterend + ' bericht' + (resterend === 1 ? '' : 'en') + ' voor vandaag.'); }, 800);
     }
     document.getElementById('sendBtn').disabled = document.getElementById('chatInput').value.trim() === '';
   })
-  .catch(() => {
+  .catch(function() {
     typing.remove(); bezig = false;
     voegBerichtToe('luna', 'Even geen verbinding. Probeer het opnieuw.');
     document.getElementById('sendBtn').disabled = false;
@@ -810,16 +652,10 @@ function voegBerichtToe(van, tekst) {
   var chatArea = document.getElementById('chatArea');
   var div = document.createElement('div');
   div.className = 'bericht ' + (van === 'luna' ? 'luna-msg' : 'gebruiker-msg');
-  var initiaal = van === 'luna' ? 'L' : (lunaProf?.naam ? lunaProf.naam[0].toUpperCase() : 'J');
+  var initiaal = van === 'luna' ? 'L' : (lunaProf && lunaProf.naam ? lunaProf.naam[0].toUpperCase() : 'J');
   var tijd = new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
   var html = tekst.replace(/\n/g, '<br>');
-  div.innerHTML = `
-    <div class="bericht-avatar">${initiaal}</div>
-    <div>
-      <div class="bericht-bubble">${html}</div>
-      <div class="bericht-tijd">${tijd}</div>
-    </div>
-  `;
+  div.innerHTML = '<div class="bericht-avatar">' + initiaal + '</div><div><div class="bericht-bubble">' + html + '</div><div class="bericht-tijd">' + tijd + '</div></div>';
   chatArea.appendChild(div);
   chatArea.scrollTop = chatArea.scrollHeight;
   return div;
@@ -829,10 +665,7 @@ function voegTypingToe() {
   var chatArea = document.getElementById('chatArea');
   var div = document.createElement('div');
   div.className = 'bericht luna-msg';
-  div.innerHTML = `
-    <div class="bericht-avatar">L</div>
-    <div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  `;
+  div.innerHTML = '<div class="bericht-avatar">L</div><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
   chatArea.appendChild(div);
   chatArea.scrollTop = chatArea.scrollHeight;
   return div;
@@ -842,7 +675,7 @@ function voegLimietMeldingToe() {
   var chatArea = document.getElementById('chatArea');
   var div = document.createElement('div');
   div.className = 'limiet-melding-chat';
-  div.innerHTML = `<strong>Daglimiet bereikt.</strong>Je hebt je 10 berichten voor vandaag gebruikt. Morgen kun je weer verder — neem de tijd om te reflecteren.`;
+  div.innerHTML = '<strong>Daglimiet bereikt.</strong>Je hebt je 10 berichten voor vandaag gebruikt. Morgen kun je weer verder.';
   chatArea.appendChild(div);
   chatArea.scrollTop = chatArea.scrollHeight;
   document.getElementById('chatInput').disabled = true;
@@ -871,35 +704,8 @@ function nieuwGesprek() {
 }
 
 function toonCoachFout(msg) {
-  document.getElementById('chatArea').innerHTML = `
-    <div style="text-align:center;padding:3rem 1.5rem;">
-      <p style="font-size:1rem;color:var(--text-muted);line-height:1.6;max-width:300px;margin:0 auto 1rem;">${msg}</p>
-      <a href="mailto:info@hechtingstest.nl" style="color:var(--primary);font-size:0.875rem;">info@hechtingstest.nl</a>
-    </div>
-  `;
+  document.getElementById('chatArea').innerHTML = '<div style="text-align:center;padding:3rem 1.5rem;"><p style="font-size:1rem;color:var(--text-muted);line-height:1.6;max-width:300px;margin:0 auto 1rem;">' + msg + '</p><a href="mailto:info@hechtingstest.nl" style="color:var(--primary);font-size:0.875rem;">info@hechtingstest.nl</a></div>';
 }
-
-// ════════════════════════════════════════
-// WAITLIST
-// ════════════════════════════════════════
-function openWaitlist() {
-  var m = document.getElementById('waitlistModal');
-  m.style.display = 'flex';
-  if (state.user.name) document.getElementById('waitlistName').value = state.user.name;
-  if (state.user.email) document.getElementById('waitlistEmail').value = state.user.email;
-}
-function closeWaitlist() { document.getElementById('waitlistModal').style.display = 'none'; }
-async function submitWaitlist() {
-  var name = document.getElementById('waitlistName').value.trim();
-  var email = document.getElementById('waitlistEmail').value.trim();
-  if (!name || !email) return;
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { document.getElementById('waitlistError').style.display = 'block'; return; }
-  document.getElementById('waitlistError').style.display = 'none';
-  var btn = document.getElementById('waitlistBtn'); btn.disabled = true; btn.textContent = 'Bezig…';
-  try { await fetch('/.netlify/functions/waitlist', { method: 'POST', body: JSON.stringify({ name, email, style: state.style?.title || '' }) }); } catch(e) {}
-  document.getElementById('waitlistModal').innerHTML = '<div style="background:var(--surface); border-radius:24px; padding:2rem; max-width:420px; width:100%; text-align:center; box-shadow:var(--shadow-md);"><div style="font-size:3rem;">✓</div><h3 style="margin:1rem 0; font-size:1.5rem; font-weight:400;">Je staat op de lijst!</h3><p style="color:var(--text-muted);">We laten je weten zodra Premium live gaat.</p><button onclick="closeWaitlist()" style="margin-top:1.5rem; background:none; border:1px solid var(--border); border-radius:999px; padding:0.75rem 1.5rem; cursor:pointer; font-size:0.9rem;">Sluiten</button></div>';
-}
-document.getElementById('waitlistModal').addEventListener('click', function(e) { if (e.target === this) closeWaitlist(); });
 </script>
 </body>
 </html>
