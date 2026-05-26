@@ -16,239 +16,80 @@
   --shadow-md: 0 4px 12px rgba(42,31,26,0.06), 0 12px 32px rgba(42,31,26,0.08);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Manrope', system-ui, sans-serif;
-  background: var(--bg); color: var(--text);
-  line-height: 1.5; min-height: 100vh;
-}
-
-/* HEADER */
-.header {
-  padding: 1.25rem 1.5rem;
-  display: flex; align-items: center;
-  border-bottom: 1px solid var(--border);
-  background: rgba(244,239,230,0.9);
-  position: sticky; top: 0; z-index: 10;
-}
+body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh; }
+.header { padding: 1.25rem 1.5rem; display: flex; align-items: center; border-bottom: 1px solid var(--border); background: rgba(244,239,230,0.9); position: sticky; top: 0; z-index: 10; }
 .logo { font-weight: 500; font-size: 1.125rem; color: var(--primary); display: flex; gap: 0.5rem; align-items: center; }
 .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-
-/* PAGE */
 .page { max-width: 560px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
-
-/* INTRO */
 .intro { margin-bottom: 3.5rem; }
-.intro-tag {
-  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em;
-  text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;
-}
-.intro h1 {
-  font-size: clamp(2.25rem, 8vw, 3.5rem);
-  font-weight: 400; line-height: 0.95;
-  margin-bottom: 1rem;
-}
+.intro-tag { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+.intro h1 { font-size: clamp(2.25rem, 8vw, 3.5rem); font-weight: 400; line-height: 0.95; margin-bottom: 1rem; }
 .intro h1 em { font-style: italic; }
 .intro p { font-size: 1rem; color: var(--text-muted); line-height: 1.65; max-width: 400px; margin-bottom: 1.5rem; }
-.stijl-badge {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 999px; padding: 0.5rem 1.125rem;
-  font-size: 0.875rem; font-weight: 500; color: var(--text-muted);
-}
+.stijl-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 0.5rem 1.125rem; font-size: 0.875rem; font-weight: 500; color: var(--text-muted); }
 .stijl-badge strong { color: var(--primary); }
-
-/* SECTION */
-.section-label {
-  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em;
-  text-transform: uppercase; color: var(--accent);
-  margin-bottom: 0.375rem;
-}
-.section-title {
-  font-size: clamp(1.625rem, 5vw, 2rem);
-  font-weight: 400; line-height: 1.1; margin-bottom: 0.5rem;
-}
+.section-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.375rem; }
+.section-title { font-size: clamp(1.625rem, 5vw, 2rem); font-weight: 400; line-height: 1.1; margin-bottom: 0.5rem; }
 .section-title em { font-style: italic; }
-.section-sub {
-  font-size: 0.9375rem; color: var(--text-muted);
-  line-height: 1.6; margin-bottom: 1.25rem;
-}
-
-/* CARD */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px; padding: 1.625rem;
-  box-shadow: var(--shadow-sm);
-}
-
-/* PARTNER FACES */
-.partner-faces {
-  display: flex; justify-content: center; margin-bottom: 1.25rem;
-}
-.face {
-  width: 44px; height: 44px; border-radius: 50%;
-  border: 2.5px solid var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.6875rem; font-weight: 700; color: white;
-  box-shadow: var(--shadow-sm);
-}
+.section-sub { font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.625rem; box-shadow: var(--shadow-sm); }
+.partner-faces { display: flex; justify-content: center; margin-bottom: 1.25rem; }
+.face { width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid var(--bg); display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; font-weight: 700; color: white; box-shadow: var(--shadow-sm); }
 .face:nth-child(1) { background: var(--primary); margin-right: -8px; z-index: 2; }
 .face:nth-child(2) { background: var(--accent); z-index: 1; }
-.face-plus {
-  width: 44px; height: 44px; border-radius: 50%;
-  background: var(--surface-2); border: 2.5px dashed rgba(42,31,26,0.18);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem; color: var(--text-muted);
-  margin-left: -8px; z-index: 0;
-}
-.card-title {
-  font-size: 1.25rem; font-weight: 400;
-  text-align: center; margin-bottom: 0.375rem; line-height: 1.2;
-}
-.card-sub {
-  font-size: 0.875rem; color: var(--text-muted);
-  text-align: center; line-height: 1.6; margin-bottom: 1.125rem;
-}
-
-/* LINK BOX */
-.link-box {
-  display: flex; gap: 0.5rem;
-  background: var(--surface-2); padding: 0.5rem 0.5rem 0.5rem 0.875rem;
-  border-radius: 10px; align-items: center; margin-bottom: 0.625rem;
-}
-.link-box input {
-  flex: 1; background: transparent; border: none; outline: none;
-  font-size: 0.8125rem; color: var(--text-muted);
-  font-family: inherit; min-width: 0;
-}
-.link-box button {
-  background: var(--primary); color: var(--surface);
-  border: none; padding: 0.5rem 0.875rem;
-  border-radius: 7px; cursor: pointer;
-  font-weight: 600; font-family: inherit; font-size: 0.8125rem;
-  transition: background 0.2s; white-space: nowrap;
-}
+.face-plus { width: 44px; height: 44px; border-radius: 50%; background: var(--surface-2); border: 2.5px dashed rgba(42,31,26,0.18); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--text-muted); margin-left: -8px; z-index: 0; }
+.card-title { font-size: 1.25rem; font-weight: 400; text-align: center; margin-bottom: 0.375rem; line-height: 1.2; }
+.card-sub { font-size: 0.875rem; color: var(--text-muted); text-align: center; line-height: 1.6; margin-bottom: 1.125rem; }
+.link-box { display: flex; gap: 0.5rem; background: var(--surface-2); padding: 0.5rem 0.5rem 0.5rem 0.875rem; border-radius: 10px; align-items: center; margin-bottom: 0.625rem; }
+.link-box input { flex: 1; background: transparent; border: none; outline: none; font-size: 0.8125rem; color: var(--text-muted); font-family: inherit; min-width: 0; }
+.link-box button { background: var(--primary); color: var(--surface); border: none; padding: 0.5rem 0.875rem; border-radius: 7px; cursor: pointer; font-weight: 600; font-family: inherit; font-size: 0.8125rem; transition: background 0.2s; white-space: nowrap; }
 .link-box button:hover { background: var(--primary-soft); }
 .link-box button.copied { background: var(--accent); }
-
-/* BUTTONS */
-.btn-primary {
-  background: var(--primary); color: var(--surface);
-  border: none; padding: 1rem 2rem;
-  font-size: 0.9375rem; font-weight: 600; border-radius: 999px;
-  cursor: pointer; width: 100%; font-family: inherit;
-  transition: all 0.2s; min-height: 52px;
-  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-}
+.btn-primary { background: var(--primary); color: var(--surface); border: none; padding: 1rem 2rem; font-size: 0.9375rem; font-weight: 600; border-radius: 999px; cursor: pointer; width: 100%; font-family: inherit; transition: all 0.2s; min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
 .btn-primary:hover { background: var(--primary-soft); transform: translateY(-1px); }
 .btn-primary.accent { background: var(--accent); color: var(--text); }
 .btn-primary.accent:hover { opacity: 0.88; transform: translateY(-1px); }
 .btn-primary.wa { background: #25D366; color: white; }
 .btn-primary.wa:hover { background: #1fba59; transform: translateY(-1px); }
 .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-
-.partner-note {
-  font-size: 0.8125rem; color: var(--text-muted);
-  text-align: center; margin-top: 0.875rem; line-height: 1.5;
-}
+.partner-note { font-size: 0.8125rem; color: var(--text-muted); text-align: center; margin-top: 0.875rem; line-height: 1.5; }
 .partner-note strong { color: var(--accent); }
-
-/* COACH CARD */
-.coach-card {
-  background: var(--primary); color: var(--surface);
-  border-radius: 20px; padding: 1.625rem;
-  box-shadow: var(--shadow-md);
-}
-.coach-tag {
-  font-size: 0.6875rem; color: var(--accent-soft);
-  font-weight: 600; letter-spacing: 0.06em;
-  text-transform: uppercase; margin-bottom: 0.75rem;
-}
-.coach-card h3 {
-  font-size: 1.375rem; font-weight: 400;
-  line-height: 1.2; margin-bottom: 0.625rem;
-}
+.coach-card { background: var(--primary); color: var(--surface); border-radius: 20px; padding: 1.625rem; box-shadow: var(--shadow-md); }
+.coach-tag { font-size: 0.6875rem; color: var(--accent-soft); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.coach-card h3 { font-size: 1.375rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.625rem; }
 .coach-card h3 em { font-style: italic; color: var(--accent-soft); }
-.coach-card > p {
-  font-size: 0.9375rem; opacity: 0.7; line-height: 1.65; margin-bottom: 1.25rem;
-}
-
-/* HOE WERKT HET */
-.steps {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 14px; padding: 1.125rem; margin-bottom: 1.25rem;
-}
-.steps-label {
-  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em;
-  text-transform: uppercase; color: var(--accent-soft); margin-bottom: 0.75rem;
-}
-.step {
-  display: flex; gap: 0.75rem; align-items: flex-start;
-  padding: 0.625rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
-}
+.coach-card > p { font-size: 0.9375rem; opacity: 0.7; line-height: 1.65; margin-bottom: 1.25rem; }
+.steps { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.125rem; margin-bottom: 1.25rem; }
+.steps-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-soft); margin-bottom: 0.75rem; }
+.step { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.625rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .step:last-child { border-bottom: none; padding-bottom: 0; }
 .step:first-of-type { padding-top: 0; }
-.step-n {
-  width: 22px; height: 22px; border-radius: 50%;
-  background: rgba(255,255,255,0.1); flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.6875rem; font-weight: 700; margin-top: 1px;
-}
+.step-n { width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.1); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; font-weight: 700; margin-top: 1px; }
 .step-body { font-size: 0.9rem; line-height: 1.5; }
 .step-body strong { color: white; display: block; }
 .step-body span { opacity: 0.5; font-size: 0.8rem; font-style: italic; }
-
-/* FEATURES */
 .features { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
 .features li { display: flex; gap: 0.5rem; font-size: 0.875rem; opacity: 0.8; }
 .features li::before { content: '✓'; color: var(--accent-soft); font-weight: 700; flex-shrink: 0; }
-
-/* LIMIET */
-.limiet {
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 12px; padding: 0.875rem 1rem;
-  font-size: 0.875rem; opacity: 0.75; line-height: 1.6; margin-bottom: 1.25rem;
-}
+.limiet { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 12px; padding: 0.875rem 1rem; font-size: 0.875rem; opacity: 0.75; line-height: 1.6; margin-bottom: 1.25rem; }
 .limiet strong { color: white; opacity: 1; }
-
-/* PRIJS */
-.price-row {
-  display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1rem;
-}
+.price-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1rem; }
 .price-main { font-size: 2rem; font-weight: 500; }
 .price-main span { font-size: 0.875rem; font-weight: 400; opacity: 0.55; }
 .price-right { text-align: right; }
-.price-old { font-size: 0.8125rem; opacity: 0.4; text-decoration: line-through; }
 .price-trial { font-size: 0.875rem; color: var(--accent-soft); font-weight: 600; }
 .cta-note { text-align: center; font-size: 0.8125rem; opacity: 0.4; margin-top: 0.625rem; }
-
-/* EBOOKS */
-.bundel-bar {
-  background: var(--accent); border-radius: 16px; padding: 1.125rem 1.25rem;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 1rem; cursor: pointer; transition: opacity 0.2s; margin-bottom: 0.75rem;
-}
+.bundel-bar { background: var(--accent); border-radius: 16px; padding: 1.125rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; transition: opacity 0.2s; margin-bottom: 0.75rem; }
 .bundel-bar:hover { opacity: 0.88; }
 .bundel-bar p { font-size: 0.9375rem; color: white; font-weight: 600; line-height: 1.3; }
 .bundel-bar p span { display: block; font-size: 0.8125rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
 .bundel-r { text-align: right; flex-shrink: 0; }
 .bundel-new { font-size: 1.375rem; font-weight: 600; color: white; }
 .bundel-old { font-size: 0.8125rem; color: rgba(255,255,255,0.55); text-decoration: line-through; }
-
-.ebook-card {
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 16px; padding: 1.125rem;
-  display: flex; gap: 0.875rem; align-items: flex-start;
-  cursor: pointer; transition: all 0.2s; margin-bottom: 0.5rem;
-}
+.ebook-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 1.125rem; display: flex; gap: 0.875rem; align-items: flex-start; cursor: pointer; transition: all 0.2s; margin-bottom: 0.5rem; }
 .ebook-card:hover { border-color: rgba(42,31,26,0.2); box-shadow: var(--shadow-sm); }
 .ebook-card.selected { border-color: var(--primary); border-width: 2px; }
-.ebook-cover {
-  width: 48px; height: 64px; border-radius: 6px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.65); letter-spacing: 0.03em;
-}
+.ebook-cover { width: 48px; height: 64px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.65); letter-spacing: 0.03em; }
 .cg { background: linear-gradient(145deg, #2D4A3E, #4a7a65); }
 .cr { background: linear-gradient(145deg, #C97B5F, #e09070); }
 .co { background: linear-gradient(145deg, #B8935A, #d4ad76); }
@@ -256,54 +97,19 @@ body {
 .ebook-info h4 { font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.25rem; line-height: 1.3; }
 .ebook-info p { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.375rem; }
 .ebook-price { font-size: 0.9375rem; font-weight: 600; color: var(--primary); }
-.ebook-chk {
-  width: 20px; height: 20px; border-radius: 50%;
-  border: 1.5px solid var(--border); flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.6875rem; transition: all 0.2s; margin-top: 2px; color: transparent;
-}
+.ebook-chk { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; transition: all 0.2s; margin-top: 2px; color: transparent; }
 .ebook-card.selected .ebook-chk { background: var(--primary); border-color: var(--primary); color: white; }
-
-.totaal-bar {
-  background: var(--surface-2); border-radius: 12px; padding: 0.875rem 1.125rem;
-  display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.625rem;
-}
+.totaal-bar { background: var(--surface-2); border-radius: 12px; padding: 0.875rem 1.125rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.625rem; }
 .totaal-bar span { font-size: 0.9rem; color: var(--text-muted); }
 .totaal-bar strong { font-size: 1rem; color: var(--primary); }
-
-/* DIVIDER */
 .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0 0; }
-
-/* FOOTER */
-.disclaimer {
-  padding: 1.5rem; font-size: 0.75rem; color: var(--text-muted);
-  text-align: center; line-height: 1.6; max-width: 480px; margin: 0 auto;
-}
-.disclaimer a { color: var(--primary); text-decoration: none; }
-
-/* TOAST */
-.toast {
-  position: fixed; bottom: 1.5rem; left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--primary); color: white;
-  padding: 0.75rem 1.375rem; border-radius: 999px;
-  font-size: 0.9rem; font-weight: 500;
-  transition: transform 0.3s ease; z-index: 99;
-  white-space: nowrap; box-shadow: var(--shadow-md);
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
-
-/* SPACING HELPERS */
 .mt-section { margin-top: 3.5rem; }
-.mt-card { margin-top: 0.75rem; }
-
+.disclaimer { padding: 1.5rem; font-size: 0.75rem; color: var(--text-muted); text-align: center; line-height: 1.6; max-width: 480px; margin: 0 auto; }
+.disclaimer a { color: var(--primary); text-decoration: none; }
+.toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--primary); color: white; padding: 0.75rem 1.375rem; border-radius: 999px; font-size: 0.9rem; font-weight: 500; transition: transform 0.3s ease; z-index: 99; white-space: nowrap; box-shadow: var(--shadow-md); }
+.toast.show { transform: translateX(-50%) translateY(0); }
 @keyframes in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .page > * { animation: in 0.45s ease both; }
-.page > *:nth-child(1) { animation-delay: 0.05s; }
-.page > *:nth-child(2) { animation-delay: 0.1s; }
-.page > *:nth-child(3) { animation-delay: 0.15s; }
-.page > *:nth-child(4) { animation-delay: 0.2s; }
-.page > *:nth-child(5) { animation-delay: 0.25s; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -320,14 +126,13 @@ body {
     <div class="intro-tag">Je rapport is verstuurd</div>
     <h1>Goed bezig.<br><em>Wat nu?</em></h1>
     <p>Je hechtingsprofiel staat in je inbox. Hieronder een paar manieren om verder te gaan.</p>
-    <div class="stijl-badge">Jouw stijl: <strong id="styleName">Angstig-gepreoccupeerd</strong></div>
+    <div class="stijl-badge">Jouw stijl: <strong id="styleName">laden…</strong></div>
   </div>
 
   <!-- PARTNER -->
   <div class="section-label">Samen doen</div>
   <h2 class="section-title">Nodig je partner<br><em>uit.</em></h2>
   <p class="section-sub">Jullie krijgen een gecombineerde analyse — waarom jullie botsen én aanvullen.</p>
-
   <div class="card">
     <div class="partner-faces">
       <div class="face">JIJ</div>
@@ -335,57 +140,42 @@ body {
       <div class="face-plus">+</div>
     </div>
     <div class="card-title">Samen begrijpen</div>
-    <p class="card-sub">Je partner doet de test via jouw link. Zodra dat klaar is, ontgrendelen jullie het koppels-rapport — jullie dynamiek, valkuilen en groeipunten.</p>
-
+    <p class="card-sub">Je partner doet de test via jouw link. Zodra dat klaar is, ontgrendelen jullie het koppels-rapport.</p>
     <div class="link-box">
       <input type="text" id="partnerLink" readonly>
       <button onclick="copyLink()" id="copyBtn">Kopieer</button>
     </div>
-
     <button class="btn-primary wa" onclick="shareWhatsApp()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       Stuur via WhatsApp
     </button>
-
-    <p class="partner-note">
-      <strong>Koppels-rapport = €9 samen.</strong><br>
-      Jij betaalde al €5 — je partner betaalt alleen €4 bij.
-    </p>
+    <p class="partner-note"><strong>Koppels-rapport = €9 samen.</strong><br>Jij betaalde al €5 — je partner betaalt alleen €4 bij.</p>
   </div>
 
   <!-- COACH -->
   <hr class="divider">
   <div class="section-label mt-section">Persoonlijke begeleiding</div>
   <h2 class="section-title">Jouw eigen<br><em>AI-coach.</em></h2>
-  <p class="section-sub">Een coach die jou kent — jouw stijl, jouw situaties, jouw patronen. Geen generiek rapport.</p>
+  <p class="section-sub">Een coach die jou kent — jouw stijl, jouw situaties, jouw patronen.</p>
 
   <div class="coach-card">
-    <div class="coach-tag">Populairste keuze</div>
+    <div class="coach-tag">Meest gekozen</div>
     <h3>Stuur je situatie.<br><em>Krijg jouw antwoord.</em></h3>
-    <p>Na een ruzie, voor een moeilijk gesprek, midden in de nacht — altijd gebaseerd op jóuw hechtingsstijl.</p>
+    <p>Na een ruzie, voor een moeilijk gesprek — altijd gebaseerd op jóuw hechtingsstijl.</p>
 
     <div class="steps">
       <div class="steps-label">Zo werkt het</div>
       <div class="step">
         <div class="step-n">1</div>
-        <div class="step-body">
-          <strong>Jij stuurt een situatie</strong>
-          <span>"Hij reageerde niet op mijn bericht en ik draaide helemaal door…"</span>
-        </div>
+        <div class="step-body"><strong>Jij stuurt een situatie</strong><span>"Hij reageerde niet op mijn bericht en ik draaide helemaal door…"</span></div>
       </div>
       <div class="step">
         <div class="step-n">2</div>
-        <div class="step-body">
-          <strong>Coach analyseert op jóuw profiel</strong>
-          <span>Niet een template — gebaseerd op wie jij bent</span>
-        </div>
+        <div class="step-body"><strong>Coach analyseert op jóuw profiel</strong><span>Niet een template — gebaseerd op wie jij bent</span></div>
       </div>
       <div class="step">
         <div class="step-n">3</div>
-        <div class="step-body">
-          <strong>Concreet inzicht + volgende stap</strong>
-          <span>Wat er speelde, waarom, en wat je kunt doen</span>
-        </div>
+        <div class="step-body"><strong>Concreet inzicht + volgende stap</strong><span>Wat er speelde, waarom, en wat je kunt doen</span></div>
       </div>
     </div>
 
@@ -393,29 +183,23 @@ body {
       <li>100% over jóuw situatie — nooit generiek</li>
       <li>Onthoudt eerdere gesprekken en jouw patroon</li>
       <li>10 berichten per dag — bewust zo gehouden</li>
-      <li>Partner toevoegen voor koppelsversie (+€2/m)</li>
-      <li>Altijd opzegbaar</li>
+      <li>Altijd opzegbaar via mail</li>
     </ul>
 
     <div class="limiet">
       <strong>Waarom 10 berichten per dag?</strong><br>
-      Echte groei komt niet van eindeloos chatten, maar van reflecteren en loslaten. Eén goed gesprek per dag is genoeg.
+      Echte groei komt niet van eindeloos chatten, maar van reflecteren. Eén goed gesprek per dag is genoeg.
     </div>
 
     <div class="price-row">
-      <div>
-        <div class="price-main">€9,99 <span>/ maand</span></div>
-        <div class="price-old">Normaal €14,99/maand</div>
-      </div>
-      <div class="price-right">
-        <div class="price-trial">Eerste maand gratis</div>
-      </div>
+      <div class="price-main">€14,99 <span>/ maand</span></div>
+      <div class="price-right"><div class="price-trial">3 dagen gratis</div></div>
     </div>
 
-    <button class="btn-primary accent" onclick="startCoach()">
-      Start eerste maand gratis →
+    <button class="btn-primary accent" id="coachBtn" onclick="startCoach()">
+      3 dagen gratis proberen →
     </button>
-    <p class="cta-note">Proefmaand gratis · Daarna €9,99/maand · Opzegbaar</p>
+    <p class="cta-note">3 dagen gratis · Daarna €14,99/maand · Opzegbaar via mail</p>
   </div>
 
   <!-- EBOOKS -->
@@ -425,9 +209,7 @@ body {
   <p class="section-sub">Praktische gidsen — vandaag nog te lezen. Direct als PDF.</p>
 
   <div class="bundel-bar" onclick="buyBundle()">
-    <p>Pak de complete bundel
-      <span>Alle 3 e-books · Bespaar 46%</span>
-    </p>
+    <p>Pak de complete bundel<span>Alle 3 e-books · Bespaar 46%</span></p>
     <div class="bundel-r">
       <div class="bundel-new">€12,99</div>
       <div class="bundel-old">€23,97</div>
@@ -472,87 +254,121 @@ body {
   <button class="btn-primary" id="ebookCta" onclick="buyEbooks()" disabled>
     Selecteer een e-book →
   </button>
-  <p style="text-align:center;font-size:0.8125rem;color:var(--text-muted);margin-top:0.625rem;">
-    Directe download na betaling · PDF
-  </p>
+  <p style="text-align:center;font-size:0.8125rem;color:var(--text-muted);margin-top:0.625rem;">Directe download na betaling · PDF</p>
 
 </div>
 
 <footer class="disclaimer">
   Vragen? <a href="mailto:info@hechtingstest.nl">info@hechtingstest.nl</a><br><br>
-  Hechtingtest geeft inzicht voor zelfreflectie. Dit is geen diagnose of medische behandeling. Bij ernstige klachten: raadpleeg een professional.
+  Hechtingtest geeft inzicht voor zelfreflectie. Dit is geen diagnose of medische behandeling.
 </footer>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  var params = new URLSearchParams(window.location.search);
-  var stijl = params.get('stijl') || localStorage.getItem('hechtingsstijl') || 'Angstig-gepreoccupeerd';
-  var uid   = params.get('uid')   || localStorage.getItem('userId') || 'ABC123';
+var params = new URLSearchParams(window.location.search);
+var sessionId = params.get('session') || '';
+var plan      = params.get('plan') || 'solo';
+var stijl     = localStorage.getItem('hechtingsstijl') || '';
+var naam      = localStorage.getItem('userName') || '';
+var email     = localStorage.getItem('userEmail') || '';
+var uid       = params.get('token') || localStorage.getItem('userId') || '';
+var anxScore  = parseInt(localStorage.getItem('anxietyScore')) || 50;
+var avoidScore = parseInt(localStorage.getItem('avoidanceScore')) || 50;
 
-  document.getElementById('styleName').textContent = stijl;
-  document.getElementById('partnerLink').value = 'hechtingstest.nl/?k=' + uid;
+document.getElementById('styleName').textContent = stijl || 'Jouw stijl';
+document.getElementById('partnerLink').value = 'hechtingstest.nl/?k=' + uid;
 
-  function copyLink() {
-    navigator.clipboard.writeText('https://' + document.getElementById('partnerLink').value).then(function() {
-      var btn = document.getElementById('copyBtn');
-      btn.textContent = 'Gekopieerd ✓';
-      btn.classList.add('copied');
-      setTimeout(function() { btn.textContent = 'Kopieer'; btn.classList.remove('copied'); }, 2500);
-    });
-  }
+// ── PARTNER ──
+function copyLink() {
+  navigator.clipboard.writeText('https://' + document.getElementById('partnerLink').value).then(function() {
+    var btn = document.getElementById('copyBtn');
+    btn.textContent = 'Gekopieerd ✓'; btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Kopieer'; btn.classList.remove('copied'); }, 2500);
+  });
+}
 
-  function shareWhatsApp() {
-    var link = 'https://' + document.getElementById('partnerLink').value;
-    var msg = encodeURIComponent('Ik deed net een hechtingstest — echt interessant. Doe jij hem ook? Dan krijgen we samen een koppelsanalyse.\n\n' + link);
-    window.open('https://wa.me/?text=' + msg, '_blank');
-  }
+function shareWhatsApp() {
+  var link = 'https://' + document.getElementById('partnerLink').value;
+  var msg = encodeURIComponent('Ik deed net een hechtingstest — echt interessant. Doe jij hem ook? Dan krijgen we samen een koppelsanalyse.\n\n' + link);
+  window.open('https://wa.me/?text=' + msg, '_blank');
+}
 
-  function startCoach() {
-    showToast('Je wordt doorgestuurd...');
-    setTimeout(function() { window.location.href = '/api/coach-abonnement'; }, 1000);
-  }
+// ── COACH ──
+function startCoach() {
+  var btn = document.getElementById('coachBtn');
+  btn.disabled = true;
+  btn.textContent = 'Bezig…';
 
-  var selectedBooks = {};
-
-  function toggleBook(el, id, price) {
-    if (selectedBooks[id]) { delete selectedBooks[id]; el.classList.remove('selected'); }
-    else { selectedBooks[id] = price; el.classList.add('selected'); }
-    updateTotal();
-  }
-
-  function updateTotal() {
-    var keys = Object.keys(selectedBooks);
-    var total = keys.reduce(function(s,k) { return s + selectedBooks[k]; }, 0);
-    var cta = document.getElementById('ebookCta');
-    var tot = document.getElementById('ebookTotal');
-    if (keys.length === 0) {
-      tot.textContent = '€0,00'; cta.disabled = true; cta.textContent = 'Selecteer een e-book →';
-    } else if (keys.length === 3) {
-      tot.textContent = '€12,99 (bundel)'; cta.disabled = false; cta.textContent = 'Pak de bundel — €12,99 →';
+  fetch('/.netlify/functions/create-coach-payment', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      naam: naam || 'Gebruiker',
+      email: email || '',
+      stijl: stijl || '',
+      anxietyScore: anxScore,
+      avoidanceScore: avoidScore,
+      sessionId: sessionId
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.checkoutUrl) {
+      window.location.href = data.checkoutUrl;
     } else {
-      tot.textContent = '€' + total.toFixed(2).replace('.',',');
-      cta.disabled = false;
-      cta.textContent = keys.length + ' e-book' + (keys.length > 1 ? 's' : '') + ' — €' + total.toFixed(2).replace('.',',') + ' →';
+      showToast('Fout: ' + (data.error || 'Probeer opnieuw'));
+      btn.disabled = false;
+      btn.textContent = '3 dagen gratis proberen →';
     }
-  }
+  })
+  .catch(function() {
+    showToast('Verbindingsfout, probeer opnieuw');
+    btn.disabled = false;
+    btn.textContent = '3 dagen gratis proberen →';
+  });
+}
 
-  function buyEbooks() {
-    if (Object.keys(selectedBooks).length === 3) { buyBundle(); return; }
-    showToast('Je wordt doorgestuurd naar betaling...');
-    setTimeout(function() { window.location.href = '/api/buy-ebooks?books=' + Object.keys(selectedBooks).join(','); }, 1000);
-  }
+// ── EBOOKS ──
+var selectedBooks = {};
 
-  function buyBundle() {
-    showToast('Je wordt doorgestuurd...');
-    setTimeout(function() { window.location.href = '/api/buy-bundle'; }, 1000);
-  }
+function toggleBook(el, id, price) {
+  if (selectedBooks[id]) { delete selectedBooks[id]; el.classList.remove('selected'); }
+  else { selectedBooks[id] = price; el.classList.add('selected'); }
+  updateTotal();
+}
 
-  function showToast(msg) {
-    var t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    setTimeout(function() { t.classList.remove('show'); }, 3000);
+function updateTotal() {
+  var keys = Object.keys(selectedBooks);
+  var total = keys.reduce(function(s,k) { return s + selectedBooks[k]; }, 0);
+  var cta = document.getElementById('ebookCta');
+  var tot = document.getElementById('ebookTotal');
+  if (keys.length === 0) {
+    tot.textContent = '€0,00'; cta.disabled = true; cta.textContent = 'Selecteer een e-book →';
+  } else if (keys.length === 3) {
+    tot.textContent = '€12,99 (bundel)'; cta.disabled = false; cta.textContent = 'Pak de bundel — €12,99 →';
+  } else {
+    tot.textContent = '€' + total.toFixed(2).replace('.',',');
+    cta.disabled = false;
+    cta.textContent = keys.length + ' e-book' + (keys.length > 1 ? 's' : '') + ' — €' + total.toFixed(2).replace('.',',') + ' →';
   }
+}
+
+function buyEbooks() {
+  if (Object.keys(selectedBooks).length === 3) { buyBundle(); return; }
+  showToast('E-books komen binnenkort beschikbaar!');
+}
+
+function buyBundle() {
+  showToast('E-books komen binnenkort beschikbaar!');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
 </script>
 </body>
 </html>
