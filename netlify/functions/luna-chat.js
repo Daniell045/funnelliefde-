@@ -5,7 +5,15 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const DAG_LIMIET = 10;
 
-// Toon per hechtingsstijl
+function getConfiguredStore() {
+  const siteID = process.env.NETLIFY_SITE_ID;
+  const token = process.env.NETLIFY_BLOBS_TOKEN;
+  if (siteID && token) {
+    return getStore({ name: 'hechtingtest', siteID, token });
+  }
+  return getStore('hechtingtest');
+}
+
 function getToonInstructie(stijl, anxietyScore, avoidanceScore) {
   const anxiety = anxietyScore > 60;
   const avoidant = avoidanceScore > 60;
@@ -20,7 +28,7 @@ Gebruik een warme maar rustige toon — niet te intens, niet te afstandelijk.`;
   if (anxiety) {
     return `Deze gebruiker heeft een angstig-gepreoccupeerde hechtingsstijl (hoge anxiety: ${anxietyScore}, lage avoidance: ${avoidanceScore}).
 Ze hebben sterke behoefte aan bevestiging en zijn snel bang voor verlating.
-Wees warm, gerustststellend en consistent. Bevestig hun gevoelens expliciet.
+Wees warm, geruststellend en consistent. Bevestig hun gevoelens expliciet.
 Vermijd vage antwoorden — die triggeren meer angst. Wees duidelijk en direct.`;
   }
 
@@ -32,7 +40,6 @@ Stel vragen die ze zelf laten nadenken — niet te veel emotionele labels plakke
 Wees professioneel maar toegankelijk, niet te emotioneel geladen.`;
   }
 
-  // Veilig hechter
   return `Deze gebruiker heeft een veilige hechtingsstijl (lage anxiety: ${anxietyScore}, lage avoidance: ${avoidanceScore}).
 Ze staan open voor verbinding en reflectie. Je kunt directe, diepgaande vragen stellen.
 Wees warm en betrokken. Ze kunnen ook kritische feedback aan.`;
@@ -61,7 +68,7 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Token en bericht zijn verplicht' }) };
   }
 
-  const store = getStore('hechtingtest');
+  const store = getConfiguredStore();
 
   // 1. Laad gebruikersprofiel
   let profiel;
@@ -70,8 +77,9 @@ exports.handler = async (event) => {
     if (!profielData) {
       return { statusCode: 401, headers, body: JSON.stringify({ error: 'Onbekende gebruiker' }) };
     }
-    profiel = JSON.parse(profielData);
-  } catch {
+    profiel = typeof profielData === 'string' ? JSON.parse(profielData) : profielData;
+  } catch (err) {
+    console.error('Profiel fout:', err);
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'Gebruiker niet gevonden' }) };
   }
 
@@ -81,13 +89,13 @@ exports.handler = async (event) => {
   }
 
   // 3. Check daglimiet
-  const vandaag = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const vandaag = new Date().toISOString().split('T')[0];
   const limitKey = `coach:user:${token}:limit:${vandaag}`;
 
   let aantalVandaag = 0;
   try {
     const limitData = await store.get(limitKey);
-    if (limitData) aantalVandaag = parseInt(limitData, 10);
+    if (limitData) aantalVandaag = parseInt(typeof limitData === 'string' ? limitData : String(limitData), 10) || 0;
   } catch { aantalVandaag = 0; }
 
   if (aantalVandaag >= DAG_LIMIET) {
@@ -97,7 +105,6 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         error: 'Daglimiet bereikt',
         code: 'LIMIT',
-        bericht: `Je hebt je ${DAG_LIMIET} berichten voor vandaag gebruikt. Morgen kun je weer verder. Neem de tijd om te reflecteren op wat je vandaag hebt gedeeld.`,
         resterend: 0
       })
     };
@@ -110,7 +117,9 @@ exports.handler = async (event) => {
   let geschiedenis = [];
   try {
     const gesprekData = await store.get(gesprekKey);
-    if (gesprekData) geschiedenis = JSON.parse(gesprekData);
+    if (gesprekData) {
+      geschiedenis = typeof gesprekData === 'string' ? JSON.parse(gesprekData) : gesprekData;
+    }
   } catch { geschiedenis = []; }
 
   // 5. Bouw systeem prompt
@@ -141,10 +150,10 @@ ALGEMENE REGELS:
 - Je hebt bewust een limiet van ${DAG_LIMIET} berichten per dag — maak elk antwoord de moeite waard
 - Gebruik de gespreksgeschiedenis om patronen te herkennen en daarop voort te bouwen`;
 
-  // 6. Voeg nieuw bericht toe aan geschiedenis
+  // 6. Voeg nieuw bericht toe
   geschiedenis.push({ role: 'user', content: bericht });
 
-  // 7. Claude API aanroep
+  // 7. Claude API
   let antwoord;
   try {
     const response = await anthropic.messages.create({
@@ -159,40 +168,36 @@ ALGEMENE REGELS:
     return { statusCode: 500, headers, body: JSON.stringify({ error: 'Luna is even niet beschikbaar. Probeer het zo opnieuw.' }) };
   }
 
-  // 8. Sla antwoord op in geschiedenis
+  // 8. Sla antwoord op
   geschiedenis.push({ role: 'assistant', content: antwoord });
 
-  // 9. Sla gesprek op
   try {
     await store.set(gesprekKey, JSON.stringify(geschiedenis));
   } catch (err) {
-    console.error('Blobs opslaan mislukt:', err);
+    console.error('Gesprek opslaan mislukt:', err);
   }
 
-  // 10. Update gesprekkenlijst
+  // 9. Update gesprekkenlijst
   try {
     const lijstKey = `coach:user:${token}:gesprekken`;
     let gesprekken = [];
     const lijstData = await store.get(lijstKey);
-    if (lijstData) gesprekken = JSON.parse(lijstData);
-
-    if (!gesprekken.find(g => g.id === huidigGesprekId)) {
-      gesprekken.unshift({
-        id: huidigGesprekId,
-        aangemaakt: new Date().toISOString(),
-        preview: bericht.substring(0, 60)
-      });
+    if (lijstData) {
+      gesprekken = typeof lijstData === 'string' ? JSON.parse(lijstData) : lijstData;
+    }
+    if (!gesprekken.find(function(g) { return g.id === huidigGesprekId; })) {
+      gesprekken.unshift({ id: huidigGesprekId, aangemaakt: new Date().toISOString(), preview: bericht.substring(0, 60) });
       await store.set(lijstKey, JSON.stringify(gesprekken));
     }
   } catch (err) {
-    console.error('Gesprekkenlijst updaten mislukt:', err);
+    console.error('Gesprekkenlijst mislukt:', err);
   }
 
-  // 11. Update dagteller
+  // 10. Update dagteller
   try {
     await store.set(limitKey, String(aantalVandaag + 1));
   } catch (err) {
-    console.error('Dagteller updaten mislukt:', err);
+    console.error('Dagteller mislukt:', err);
   }
 
   return {
