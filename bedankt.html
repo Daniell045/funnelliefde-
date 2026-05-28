@@ -121,7 +121,6 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 
 <div class="page">
 
-  <!-- INTRO -->
   <div class="intro">
     <div class="intro-tag">Je rapport is verstuurd</div>
     <h1>Goed bezig.<br><em>Wat nu?</em></h1>
@@ -129,7 +128,6 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
     <div class="stijl-badge">Jouw stijl: <strong id="styleName">laden…</strong></div>
   </div>
 
-  <!-- PARTNER -->
   <div class="section-label">Samen doen</div>
   <h2 class="section-title">Nodig je partner<br><em>uit.</em></h2>
   <p class="section-sub">Jullie krijgen een gecombineerde analyse — waarom jullie botsen én aanvullen.</p>
@@ -152,7 +150,6 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
     <p class="partner-note"><strong>Koppels-rapport = €9 samen.</strong><br>Jij betaalde al €5 — je partner betaalt alleen €4 bij.</p>
   </div>
 
-  <!-- COACH -->
   <hr class="divider">
   <div class="section-label mt-section">Persoonlijke begeleiding</div>
   <h2 class="section-title">Jouw eigen<br><em>AI-coach.</em></h2>
@@ -162,7 +159,6 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
     <div class="coach-tag">Meest gekozen</div>
     <h3>Stuur je situatie.<br><em>Krijg jouw antwoord.</em></h3>
     <p>Na een ruzie, voor een moeilijk gesprek — altijd gebaseerd op jóuw hechtingsstijl.</p>
-
     <div class="steps">
       <div class="steps-label">Zo werkt het</div>
       <div class="step">
@@ -178,31 +174,24 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
         <div class="step-body"><strong>Concreet inzicht + volgende stap</strong><span>Wat er speelde, waarom, en wat je kunt doen</span></div>
       </div>
     </div>
-
     <ul class="features">
       <li>100% over jóuw situatie — nooit generiek</li>
       <li>Onthoudt eerdere gesprekken en jouw patroon</li>
       <li>10 berichten per dag — bewust zo gehouden</li>
       <li>Altijd opzegbaar via mail</li>
     </ul>
-
     <div class="limiet">
       <strong>Waarom 10 berichten per dag?</strong><br>
       Echte groei komt niet van eindeloos chatten, maar van reflecteren. Eén goed gesprek per dag is genoeg.
     </div>
-
     <div class="price-row">
       <div class="price-main">€14,99 <span>/ maand</span></div>
       <div class="price-right"><div class="price-trial">3 dagen gratis</div></div>
     </div>
-
-    <button class="btn-primary accent" id="coachBtn" onclick="startCoach()">
-      3 dagen gratis proberen →
-    </button>
+    <button class="btn-primary accent" id="coachBtn" onclick="startCoach()">3 dagen gratis proberen →</button>
     <p class="cta-note">3 dagen gratis · Daarna €14,99/maand · Opzegbaar via mail</p>
   </div>
 
-  <!-- EBOOKS -->
   <hr class="divider">
   <div class="section-label mt-section">Verdieping</div>
   <h2 class="section-title">Leer alles over<br><em>jouw stijl.</em></h2>
@@ -210,50 +199,27 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 
   <div class="bundel-bar" onclick="buyBundle()">
     <p>Pak de complete bundel<span>Alle 3 e-books · Bespaar 46%</span></p>
-    <div class="bundel-r">
-      <div class="bundel-new">€12,99</div>
-      <div class="bundel-old">€23,97</div>
-    </div>
+    <div class="bundel-r"><div class="bundel-new">€12,99</div><div class="bundel-old">€23,97</div></div>
   </div>
 
-  <div class="ebook-card" onclick="toggleBook(this,'eb1',7.99)" data-id="eb1">
+  <div class="ebook-card" onclick="toggleBook(this,'eb1',7.99)">
     <div class="ebook-cover cg">I</div>
-    <div class="ebook-info">
-      <h4>Hechten zonder angst</h4>
-      <p>Waarom je voelt wat je voelt in relaties — en hoe je het patroon doorbreekt.</p>
-      <div class="ebook-price">€7,99</div>
-    </div>
+    <div class="ebook-info"><h4>Hechten zonder angst</h4><p>Waarom je voelt wat je voelt in relaties — en hoe je het patroon doorbreekt.</p><div class="ebook-price">€7,99</div></div>
     <div class="ebook-chk">✓</div>
   </div>
-
-  <div class="ebook-card" onclick="toggleBook(this,'eb2',7.99)" data-id="eb2">
+  <div class="ebook-card" onclick="toggleBook(this,'eb2',7.99)">
     <div class="ebook-cover cr">II</div>
-    <div class="ebook-info">
-      <h4>De gesprekken die tellen</h4>
-      <p>Scripts voor moeilijke gesprekken — gebaseerd op hechtingswetenschap.</p>
-      <div class="ebook-price">€7,99</div>
-    </div>
+    <div class="ebook-info"><h4>De gesprekken die tellen</h4><p>Scripts voor moeilijke gesprekken — gebaseerd op hechtingswetenschap.</p><div class="ebook-price">€7,99</div></div>
     <div class="ebook-chk">✓</div>
   </div>
-
-  <div class="ebook-card" onclick="toggleBook(this,'eb3',7.99)" data-id="eb3">
+  <div class="ebook-card" onclick="toggleBook(this,'eb3',7.99)">
     <div class="ebook-cover co">III</div>
-    <div class="ebook-info">
-      <h4>Veilig hechten als volwassene</h4>
-      <p>Hoe je bewust kiest voor een veiligere stijl — inclusief 30-daags oefenplan.</p>
-      <div class="ebook-price">€7,99</div>
-    </div>
+    <div class="ebook-info"><h4>Veilig hechten als volwassene</h4><p>Hoe je bewust kiest voor een veiligere stijl — inclusief 30-daags oefenplan.</p><div class="ebook-price">€7,99</div></div>
     <div class="ebook-chk">✓</div>
   </div>
 
-  <div class="totaal-bar">
-    <span>Geselecteerd:</span>
-    <strong id="ebookTotal">€0,00</strong>
-  </div>
-
-  <button class="btn-primary" id="ebookCta" onclick="buyEbooks()" disabled>
-    Selecteer een e-book →
-  </button>
+  <div class="totaal-bar"><span>Geselecteerd:</span><strong id="ebookTotal">€0,00</strong></div>
+  <button class="btn-primary" id="ebookCta" onclick="buyEbooks()" disabled>Selecteer een e-book →</button>
   <p style="text-align:center;font-size:0.8125rem;color:var(--text-muted);margin-top:0.625rem;">Directe download na betaling · PDF</p>
 
 </div>
@@ -267,19 +233,25 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 
 <script>
 var params = new URLSearchParams(window.location.search);
-var sessionId = params.get('session') || '';
-var plan      = params.get('plan') || 'solo';
-var stijl     = localStorage.getItem('hechtingsstijl') || '';
-var naam      = localStorage.getItem('userName') || '';
-var email     = localStorage.getItem('userEmail') || '';
-var uid       = params.get('token') || localStorage.getItem('userId') || '';
-var anxScore  = parseInt(localStorage.getItem('anxietyScore')) || 50;
+var sessionId  = params.get('session') || '';
+var plan       = params.get('plan') || 'solo';
+
+// Haal data op: eerst URL params, dan localStorage als fallback
+var naam      = params.get('naam')  || localStorage.getItem('userName')       || '';
+var email     = params.get('email') || localStorage.getItem('userEmail')      || '';
+var stijl     = params.get('stijl') || localStorage.getItem('hechtingsstijl') || '';
+var uid       = params.get('token') || localStorage.getItem('userId')         || '';
+var anxScore  = parseInt(localStorage.getItem('anxietyScore'))  || 50;
 var avoidScore = parseInt(localStorage.getItem('avoidanceScore')) || 50;
+
+// Sla ook op in localStorage voor volgende keer
+if (naam)  localStorage.setItem('userName', naam);
+if (email) localStorage.setItem('userEmail', email);
+if (stijl) localStorage.setItem('hechtingsstijl', stijl);
 
 document.getElementById('styleName').textContent = stijl || 'Jouw stijl';
 document.getElementById('partnerLink').value = 'hechtingstest.nl/?k=' + uid;
 
-// ── PARTNER ──
 function copyLink() {
   navigator.clipboard.writeText('https://' + document.getElementById('partnerLink').value).then(function() {
     var btn = document.getElementById('copyBtn');
@@ -294,7 +266,6 @@ function shareWhatsApp() {
   window.open('https://wa.me/?text=' + msg, '_blank');
 }
 
-// ── COACH ──
 function startCoach() {
   var btn = document.getElementById('coachBtn');
   btn.disabled = true;
@@ -306,7 +277,7 @@ function startCoach() {
     body: JSON.stringify({
       naam: naam || 'Gebruiker',
       email: email || '',
-      stijl: stijl || '',
+      stijl: stijl || 'Onbekend',
       anxietyScore: anxScore,
       avoidanceScore: avoidScore,
       sessionId: sessionId
@@ -329,7 +300,6 @@ function startCoach() {
   });
 }
 
-// ── EBOOKS ──
 var selectedBooks = {};
 
 function toggleBook(el, id, price) {
@@ -363,7 +333,6 @@ function buyBundle() {
   showToast('E-books komen binnenkort beschikbaar!');
 }
 
-// ── TOAST ──
 function showToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
