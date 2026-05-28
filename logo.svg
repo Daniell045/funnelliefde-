@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<rect width="512" height="512" fill="#2D4A3E" rx="90"/>
+<circle cx="242" cy="256" r="136" fill="#FAF6EE"/>
+<circle cx="295" cy="219" r="117" fill="#2D4A3E"/>
+<circle cx="238" cy="152" r="5" fill="#FAF6EE" opacity="0.7"/>
+<circle cx="370" cy="120" r="3" fill="#FAF6EE" opacity="0.5"/>
+<circle cx="408" cy="212" r="2" fill="#FAF6EE" opacity="0.4"/>
+<circle cx="136" cy="136" r="4" fill="#FAF6EE" opacity="0.5"/>
+<circle cx="114" cy="234" r="2" fill="#FAF6EE" opacity="0.35"/>
+<circle cx="166" cy="378" r="3" fill="#FAF6EE" opacity="0.4"/>
+<circle cx="347" cy="362" r="2" fill="#FAF6EE" opacity="0.3"/>
+<circle cx="400" cy="317" r="4" fill="#FAF6EE" opacity="0.45"/>
+<circle cx="90" cy="332" r="2" fill="#FAF6EE" opacity="0.3"/>
+<circle cx="302" cy="422" r="3" fill="#FAF6EE" opacity="0.35"/>
+<text x="256" y="430" text-anchor="middle" font-family="Georgia, serif" font-size="42" font-weight="400" fill="#FAF6EE" letter-spacing="7" opacity="0.9">LUNA</text>
+</svg>
