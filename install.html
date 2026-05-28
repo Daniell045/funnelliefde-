@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2D4A3E">
+<title>Installeer Luna</title>
+<style>
+:root {
+  --bg: #F4EFE6; --surface: #FAF6EE; --surface-2: #EBE3D4;
+  --primary: #2D4A3E; --accent: #C97B5F;
+  --text: #2A1F1A; --text-muted: #6B5D52;
+  --border: rgba(42,31,26,0.08);
+  --shadow-md: 0 4px 12px rgba(42,31,26,0.06), 0 12px 32px rgba(42,31,26,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+.page { max-width: 480px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+.logo-wrap { display: flex; justify-content: center; margin-bottom: 2rem; }
+.logo-img { width: 80px; height: 80px; border-radius: 20px; box-shadow: var(--shadow-md); }
+h1 { font-size: 2rem; font-weight: 400; line-height: 1.1; margin-bottom: 0.75rem; }
+h1 em { font-style: italic; }
+.sub { font-size: 1rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 2.5rem; }
+.os-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+.os-tab { flex: 1; padding: 0.75rem; border: 1.5px solid var(--border); border-radius: 12px; background: var(--surface); font-family: inherit; font-size: 0.9375rem; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--text-muted); }
+.os-tab.active { border-color: var(--primary); color: var(--primary); background: var(--surface); }
+.steps-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; box-shadow: var(--shadow-md); }
+.step { display: flex; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.step:last-child { border-bottom: none; padding-bottom: 0; }
+.step:first-child { padding-top: 0; }
+.step-n { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.step-body strong { display: block; font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.25rem; }
+.step-body span { font-size: 0.875rem; color: var(--text-muted); line-height: 1.5; }
+.step-icon { font-size: 1.25rem; margin-top: 2px; }
+.btn-primary { display: block; background: var(--primary); color: white; border: none; padding: 1rem 2rem; font-size: 1rem; font-weight: 600; border-radius: 999px; cursor: pointer; width: 100%; font-family: inherit; text-align: center; text-decoration: none; margin-top: 1.5rem; transition: opacity 0.2s; }
+.btn-primary:hover { opacity: 0.88; }
+.note { text-align: center; font-size: 0.8125rem; color: var(--text-muted); margin-top: 1rem; line-height: 1.5; }
+.os-panel { display: none; }
+.os-panel.active { display: block; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="page">
+
+  <div class="logo-wrap">
+    <img class="logo-img" src="/logo.png" alt="Luna logo">
+  </div>
+
+  <h1>Zet Luna op je<br><em>beginscherm.</em></h1>
+  <p class="sub">Zo heb je altijd direct toegang — als een echte app, zonder gedoe.</p>
+
+  <div class="os-tabs">
+    <button class="os-tab active" onclick="switchOS('iphone')">iPhone</button>
+    <button class="os-tab" onclick="switchOS('android')">Android</button>
+  </div>
+
+  <div class="os-panel active" id="panel-iphone">
+    <div class="steps-card">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-body">
+          <strong>Tik op het deelknopje</strong>
+          <span>Het vierkantje met het pijltje omhoog, onderaan je scherm in Safari.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-body">
+          <strong>Scroll naar beneden</strong>
+          <span>Zoek in de lijst naar "Zet op beginscherm" of "Add to Home Screen".</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-body">
+          <strong>Tik op "Voeg toe"</strong>
+          <span>Luna verschijnt nu als app op je beginscherm.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="os-panel" id="panel-android">
+    <div class="steps-card">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-body">
+          <strong>Tik op de drie puntjes</strong>
+          <span>Rechtsboven in Chrome — het menu met drie verticale puntjes.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-body">
+          <strong>Kies "Toevoegen aan startscherm"</strong>
+          <span>Of "Add to Home screen" als je telefoon in het Engels staat.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-body">
+          <strong>Tik op "Toevoegen"</strong>
+          <span>Luna staat nu als app op je startscherm klaar.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="btn-primary" id="coachLink" href="/">Start gesprek met Luna →</a>
+  <p class="note">De link in je mail werkt ook altijd — bewaar hem goed.</p>
+
+</div>
+<script>
+function switchOS(os) {
+  document.querySelectorAll('.os-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.os-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelector('.os-tab:' + (os === 'iphone' ? 'first-child' : 'last-child')).classList.add('active');
+  document.getElementById('panel-' + os).classList.add('active');
+}
+
+// Token uit URL meegeven aan coach link
+var token = new URLSearchParams(window.location.search).get('token');
+if (token) {
+  document.getElementById('coachLink').href = '/?token=' + token;
+}
+
+// Auto-detect OS
+var ua = navigator.userAgent;
+if (/android/i.test(ua)) switchOS('android');
+</script>
+</body>
+</html>
