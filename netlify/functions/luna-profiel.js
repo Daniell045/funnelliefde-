@@ -1,5 +1,14 @@
 const { getStore } = require('@netlify/blobs');
 
+function getConfiguredStore() {
+  const siteID = process.env.NETLIFY_SITE_ID;
+  const token = process.env.NETLIFY_BLOBS_TOKEN;
+  if (siteID && token) {
+    return getStore({ name: 'hechtingtest', siteID, token });
+  }
+  return getStore('hechtingtest');
+}
+
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -7,26 +16,20 @@ exports.handler = async (event) => {
   };
 
   const token = event.queryStringParameters?.token;
-
   if (!token) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Geen token' }) };
   }
 
   try {
-    const store = getStore('hechtingtest');
+    const store = getConfiguredStore();
     const data = await store.get(`coach:user:${token}:profile`);
-
     if (!data) {
       return { statusCode: 404, headers, body: JSON.stringify({ error: 'Gebruiker niet gevonden. Gebruik de link uit je welkomstmail.' }) };
     }
-
-    const profiel = JSON.parse(data);
-
+    const profiel = typeof data === 'string' ? JSON.parse(data) : data;
     if (!profiel.abonnementActief) {
       return { statusCode: 403, headers, body: JSON.stringify({ error: 'Geen actief abonnement.' }) };
     }
-
-    // Stuur alleen wat de UI nodig heeft — geen gevoelige data
     return {
       statusCode: 200,
       headers,
@@ -35,9 +38,9 @@ exports.handler = async (event) => {
         stijl: profiel.stijl
       })
     };
-
   } catch (err) {
     console.error('Profiel ophalen fout:', err);
     return { statusCode: 500, headers, body: JSON.stringify({ error: 'Fout bij ophalen profiel' }) };
   }
+};
 };
