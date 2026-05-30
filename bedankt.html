@@ -53,7 +53,8 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 .btn-primary.wa:hover { background: #1fba59; transform: translateY(-1px); }
 .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 .partner-note { font-size: 0.8125rem; color: var(--text-muted); text-align: center; margin-top: 0.875rem; line-height: 1.5; }
-.partner-note strong { color: var(--accent); }
+.wacht-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+.wacht-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--surface-2); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 .coach-card { background: var(--primary); color: var(--surface); border-radius: 20px; padding: 1.625rem; box-shadow: var(--shadow-md); }
 .coach-tag { font-size: 0.6875rem; color: var(--accent-soft); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.75rem; }
 .coach-card h3 { font-size: 1.375rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.625rem; }
@@ -79,29 +80,6 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 .price-right { text-align: right; }
 .price-trial { font-size: 0.875rem; color: var(--accent-soft); font-weight: 600; }
 .cta-note { text-align: center; font-size: 0.8125rem; opacity: 0.4; margin-top: 0.625rem; }
-.bundel-bar { background: var(--accent); border-radius: 16px; padding: 1.125rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; transition: opacity 0.2s; margin-bottom: 0.75rem; }
-.bundel-bar:hover { opacity: 0.88; }
-.bundel-bar p { font-size: 0.9375rem; color: white; font-weight: 600; line-height: 1.3; }
-.bundel-bar p span { display: block; font-size: 0.8125rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
-.bundel-r { text-align: right; flex-shrink: 0; }
-.bundel-new { font-size: 1.375rem; font-weight: 600; color: white; }
-.bundel-old { font-size: 0.8125rem; color: rgba(255,255,255,0.55); text-decoration: line-through; }
-.ebook-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 1.125rem; display: flex; gap: 0.875rem; align-items: flex-start; cursor: pointer; transition: all 0.2s; margin-bottom: 0.5rem; }
-.ebook-card:hover { border-color: rgba(42,31,26,0.2); box-shadow: var(--shadow-sm); }
-.ebook-card.selected { border-color: var(--primary); border-width: 2px; }
-.ebook-cover { width: 48px; height: 64px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.65); letter-spacing: 0.03em; }
-.cg { background: linear-gradient(145deg, #2D4A3E, #4a7a65); }
-.cr { background: linear-gradient(145deg, #C97B5F, #e09070); }
-.co { background: linear-gradient(145deg, #B8935A, #d4ad76); }
-.ebook-info { flex: 1; min-width: 0; }
-.ebook-info h4 { font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.25rem; line-height: 1.3; }
-.ebook-info p { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.375rem; }
-.ebook-price { font-size: 0.9375rem; font-weight: 600; color: var(--primary); }
-.ebook-chk { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; transition: all 0.2s; margin-top: 2px; color: transparent; }
-.ebook-card.selected .ebook-chk { background: var(--primary); border-color: var(--primary); color: white; }
-.totaal-bar { background: var(--surface-2); border-radius: 12px; padding: 0.875rem 1.125rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.625rem; }
-.totaal-bar span { font-size: 0.9rem; color: var(--text-muted); }
-.totaal-bar strong { font-size: 1rem; color: var(--primary); }
 .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0 0; }
 .mt-section { margin-top: 3.5rem; }
 .disclaimer { padding: 1.5rem; font-size: 0.75rem; color: var(--text-muted); text-align: center; line-height: 1.6; max-width: 480px; margin: 0 auto; }
@@ -122,105 +100,79 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 <div class="page">
 
   <div class="intro">
-    <div class="intro-tag">Je rapport is verstuurd</div>
-    <h1>Goed bezig.<br><em>Wat nu?</em></h1>
-    <p>Je hechtingsprofiel staat in je inbox. Hieronder een paar manieren om verder te gaan.</p>
+    <div class="intro-tag" id="introTag">Betaling ontvangen</div>
+    <h1 id="introTitle">Goed bezig.<br><em>Wat nu?</em></h1>
+    <p id="introSubtitle">Je hechtingsprofiel staat in je inbox. Hieronder een paar manieren om verder te gaan.</p>
     <div class="stijl-badge">Jouw stijl: <strong id="styleName">laden…</strong></div>
   </div>
 
-  <div class="section-label">Samen doen</div>
-  <h2 class="section-title">Nodig je partner<br><em>uit.</em></h2>
-  <p class="section-sub">Jullie krijgen een gecombineerde analyse — waarom jullie botsen én aanvullen.</p>
-  <div class="card">
-    <div class="partner-faces">
-      <div class="face">JIJ</div>
-      <div class="face">PAR</div>
-      <div class="face-plus">+</div>
-    </div>
-    <div class="card-title">Samen begrijpen</div>
-    <p class="card-sub">Je partner doet de test via jouw link. Zodra dat klaar is, ontgrendelen jullie het koppels-rapport.</p>
-    <div class="link-box">
-      <input type="text" id="partnerLink" readonly>
-      <button onclick="copyLink()" id="copyBtn">Kopieer</button>
-    </div>
-    <button class="btn-primary wa" onclick="shareWhatsApp()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Stuur via WhatsApp
-    </button>
-    <p class="partner-note"><strong>Koppels-rapport = €9 samen.</strong><br>Jij betaalde al €5 — je partner betaalt alleen €4 bij.</p>
-  </div>
-
-  <hr class="divider">
-  <div class="section-label mt-section">Persoonlijke begeleiding</div>
-  <h2 class="section-title">Jouw eigen<br><em>AI-coach.</em></h2>
-  <p class="section-sub">Een coach die jou kent — jouw stijl, jouw situaties, jouw patronen.</p>
-
-  <div class="coach-card">
-    <div class="coach-tag">Meest gekozen</div>
-    <h3>Stuur je situatie.<br><em>Krijg jouw antwoord.</em></h3>
-    <p>Na een ruzie, voor een moeilijk gesprek — altijd gebaseerd op jóuw hechtingsstijl.</p>
-    <div class="steps">
-      <div class="steps-label">Zo werkt het</div>
-      <div class="step">
-        <div class="step-n">1</div>
-        <div class="step-body"><strong>Jij stuurt een situatie</strong><span>"Hij reageerde niet op mijn bericht en ik draaide helemaal door…"</span></div>
+  <!-- COUPLE: share link sectie (alleen zichtbaar als plan=couple) -->
+  <div id="coupleSection" style="display:none;">
+    <div class="section-label">Stap 2 van 2</div>
+    <h2 class="section-title">Nodig je partner<br><em>uit.</em></h2>
+    <p class="section-sub">Stuur je partner deze link. Zodra hij/zij de test heeft ingevuld, sturen we jullie allebei het koppels-rapport.</p>
+    <div class="card">
+      <div class="partner-faces">
+        <div class="face">JIJ</div>
+        <div class="face-plus">+</div>
       </div>
-      <div class="step">
-        <div class="step-n">2</div>
-        <div class="step-body"><strong>Coach analyseert op jóuw profiel</strong><span>Niet een template — gebaseerd op wie jij bent</span></div>
+      <div class="card-title">Jij hebt betaald ✓</div>
+      <p class="card-sub">Jouw partner hoeft alleen de test in te vullen via jouw link — geen betaling nodig.</p>
+      <div class="link-box">
+        <input type="text" id="partnerLink" readonly>
+        <button onclick="copyLink()" id="copyBtn">Kopieer</button>
       </div>
-      <div class="step">
-        <div class="step-n">3</div>
-        <div class="step-body"><strong>Concreet inzicht + volgende stap</strong><span>Wat er speelde, waarom, en wat je kunt doen</span></div>
+      <button class="btn-primary wa" onclick="shareWhatsApp()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Stuur via WhatsApp
+      </button>
+      <p class="partner-note">Zodra je partner klaar is krijgen jullie <strong>allebei</strong> het rapport per mail.</p>
+    </div>
+    <hr class="divider">
+  </div>
+
+  <!-- SOLO: coach upsell -->
+  <div id="coachSection">
+    <div class="section-label mt-section">Persoonlijke begeleiding</div>
+    <h2 class="section-title">Jouw eigen<br><em>AI-coach.</em></h2>
+    <p class="section-sub">Een coach die jou kent — jouw stijl, jouw situaties, jouw patronen.</p>
+    <div class="coach-card">
+      <div class="coach-tag">Meest gekozen</div>
+      <h3>Stuur je situatie.<br><em>Krijg jouw antwoord.</em></h3>
+      <p>Na een ruzie, voor een moeilijk gesprek — altijd gebaseerd op jóuw hechtingsstijl.</p>
+      <div class="steps">
+        <div class="steps-label">Zo werkt het</div>
+        <div class="step">
+          <div class="step-n">1</div>
+          <div class="step-body"><strong>Jij stuurt een situatie</strong><span>"Hij reageerde niet op mijn bericht en ik draaide helemaal door…"</span></div>
+        </div>
+        <div class="step">
+          <div class="step-n">2</div>
+          <div class="step-body"><strong>Coach analyseert op jóuw profiel</strong><span>Niet een template — gebaseerd op wie jij bent</span></div>
+        </div>
+        <div class="step">
+          <div class="step-n">3</div>
+          <div class="step-body"><strong>Concreet inzicht + volgende stap</strong><span>Wat er speelde, waarom, en wat je kunt doen</span></div>
+        </div>
       </div>
+      <ul class="features">
+        <li>100% over jóuw situatie — nooit generiek</li>
+        <li>Onthoudt eerdere gesprekken en jouw patroon</li>
+        <li>10 berichten per dag — bewust zo gehouden</li>
+        <li>Altijd opzegbaar via mail</li>
+      </ul>
+      <div class="limiet">
+        <strong>Waarom 10 berichten per dag?</strong><br>
+        Echte groei komt niet van eindeloos chatten, maar van reflecteren. Eén goed gesprek per dag is genoeg.
+      </div>
+      <div class="price-row">
+        <div class="price-main">€14,99 <span>/ maand</span></div>
+        <div class="price-right"><div class="price-trial">3 dagen gratis</div></div>
+      </div>
+      <button class="btn-primary accent" id="coachBtn" onclick="startCoach()">3 dagen gratis proberen →</button>
+      <p class="cta-note">3 dagen gratis · Daarna €14,99/maand · Opzegbaar via mail</p>
     </div>
-    <ul class="features">
-      <li>100% over jóuw situatie — nooit generiek</li>
-      <li>Onthoudt eerdere gesprekken en jouw patroon</li>
-      <li>10 berichten per dag — bewust zo gehouden</li>
-      <li>Altijd opzegbaar via mail</li>
-    </ul>
-    <div class="limiet">
-      <strong>Waarom 10 berichten per dag?</strong><br>
-      Echte groei komt niet van eindeloos chatten, maar van reflecteren. Eén goed gesprek per dag is genoeg.
-    </div>
-    <div class="price-row">
-      <div class="price-main">€14,99 <span>/ maand</span></div>
-      <div class="price-right"><div class="price-trial">3 dagen gratis</div></div>
-    </div>
-    <button class="btn-primary accent" id="coachBtn" onclick="startCoach()">3 dagen gratis proberen →</button>
-    <p class="cta-note">3 dagen gratis · Daarna €14,99/maand · Opzegbaar via mail</p>
   </div>
-
-  <hr class="divider">
-  <div class="section-label mt-section">Verdieping</div>
-  <h2 class="section-title">Leer alles over<br><em>jouw stijl.</em></h2>
-  <p class="section-sub">Praktische gidsen — vandaag nog te lezen. Direct als PDF.</p>
-
-  <div class="bundel-bar" onclick="buyBundle()">
-    <p>Pak de complete bundel<span>Alle 3 e-books · Bespaar 46%</span></p>
-    <div class="bundel-r"><div class="bundel-new">€12,99</div><div class="bundel-old">€23,97</div></div>
-  </div>
-
-  <div class="ebook-card" onclick="toggleBook(this,'eb1',7.99)">
-    <div class="ebook-cover cg">I</div>
-    <div class="ebook-info"><h4>Hechten zonder angst</h4><p>Waarom je voelt wat je voelt in relaties — en hoe je het patroon doorbreekt.</p><div class="ebook-price">€7,99</div></div>
-    <div class="ebook-chk">✓</div>
-  </div>
-  <div class="ebook-card" onclick="toggleBook(this,'eb2',7.99)">
-    <div class="ebook-cover cr">II</div>
-    <div class="ebook-info"><h4>De gesprekken die tellen</h4><p>Scripts voor moeilijke gesprekken — gebaseerd op hechtingswetenschap.</p><div class="ebook-price">€7,99</div></div>
-    <div class="ebook-chk">✓</div>
-  </div>
-  <div class="ebook-card" onclick="toggleBook(this,'eb3',7.99)">
-    <div class="ebook-cover co">III</div>
-    <div class="ebook-info"><h4>Veilig hechten als volwassene</h4><p>Hoe je bewust kiest voor een veiligere stijl — inclusief 30-daags oefenplan.</p><div class="ebook-price">€7,99</div></div>
-    <div class="ebook-chk">✓</div>
-  </div>
-
-  <div class="totaal-bar"><span>Geselecteerd:</span><strong id="ebookTotal">€0,00</strong></div>
-  <button class="btn-primary" id="ebookCta" onclick="buyEbooks()" disabled>Selecteer een e-book →</button>
-  <p style="text-align:center;font-size:0.8125rem;color:var(--text-muted);margin-top:0.625rem;">Directe download na betaling · PDF</p>
 
 </div>
 
@@ -232,28 +184,41 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 <div class="toast" id="toast"></div>
 
 <script>
-var params = new URLSearchParams(window.location.search);
+var params     = new URLSearchParams(window.location.search);
 var sessionId  = params.get('session') || '';
-var plan       = params.get('plan') || 'solo';
+var plan       = params.get('plan')    || 'solo';
+var token      = params.get('token')   || '';
 
-// Haal data op: eerst URL params, dan localStorage als fallback
-var naam      = params.get('naam')  || localStorage.getItem('userName')       || '';
-var email     = params.get('email') || localStorage.getItem('userEmail')      || '';
-var stijl     = params.get('stijl') || localStorage.getItem('hechtingsstijl') || '';
-var uid       = params.get('token') || localStorage.getItem('userId')         || '';
-var anxScore  = parseInt(localStorage.getItem('anxietyScore'))  || 50;
+var naam       = decodeURIComponent(params.get('naam')  || '') || localStorage.getItem('userName')       || '';
+var email      = decodeURIComponent(params.get('email') || '') || localStorage.getItem('userEmail')      || '';
+var stijl      = decodeURIComponent(params.get('stijl') || '') || localStorage.getItem('hechtingsstijl') || '';
+var anxScore   = parseInt(localStorage.getItem('anxietyScore'))   || 50;
 var avoidScore = parseInt(localStorage.getItem('avoidanceScore')) || 50;
 
-// Sla ook op in localStorage voor volgende keer
 if (naam)  localStorage.setItem('userName', naam);
 if (email) localStorage.setItem('userEmail', email);
 if (stijl) localStorage.setItem('hechtingsstijl', stijl);
 
 document.getElementById('styleName').textContent = stijl || 'Jouw stijl';
-document.getElementById('partnerLink').value = 'hechtingstest.nl/?k=' + uid;
+
+// ── COUPLE FLOW ──────────────────────────────────────────────────────
+if (plan === 'couple' && token) {
+  // Toon share sectie, pas tekst aan
+  document.getElementById('coupleSection').style.display = 'block';
+  document.getElementById('introTag').textContent = 'Betaling ontvangen ✓';
+  document.getElementById('introTitle').innerHTML = 'Bijna klaar.<br><em>Nodig je partner uit.</em>';
+  document.getElementById('introSubtitle').textContent = 'Je hebt betaald. Stuur nu de link naar je partner — hij/zij hoeft alleen de test in te vullen.';
+
+  var partnerUrl = 'https://hechtingstest.nl/?k=' + token;
+  document.getElementById('partnerLink').value = partnerUrl;
+}
+
+// ── SOLO FLOW ────────────────────────────────────────────────────────
+// Coach sectie altijd zichtbaar
 
 function copyLink() {
-  navigator.clipboard.writeText('https://' + document.getElementById('partnerLink').value).then(function() {
+  var val = document.getElementById('partnerLink').value;
+  navigator.clipboard.writeText(val).then(function() {
     var btn = document.getElementById('copyBtn');
     btn.textContent = 'Gekopieerd ✓'; btn.classList.add('copied');
     setTimeout(function() { btn.textContent = 'Kopieer'; btn.classList.remove('copied'); }, 2500);
@@ -261,16 +226,14 @@ function copyLink() {
 }
 
 function shareWhatsApp() {
-  var link = 'https://' + document.getElementById('partnerLink').value;
+  var link = document.getElementById('partnerLink').value;
   var msg = encodeURIComponent('Ik deed net een hechtingstest — echt interessant. Doe jij hem ook? Dan krijgen we samen een koppelsanalyse.\n\n' + link);
   window.open('https://wa.me/?text=' + msg, '_blank');
 }
 
 function startCoach() {
   var btn = document.getElementById('coachBtn');
-  btn.disabled = true;
-  btn.textContent = 'Bezig…';
-
+  btn.disabled = true; btn.textContent = 'Bezig…';
   fetch('/.netlify/functions/create-coach-payment', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -285,52 +248,13 @@ function startCoach() {
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
-    if (data.checkoutUrl) {
-      window.location.href = data.checkoutUrl;
-    } else {
-      showToast('Fout: ' + (data.error || 'Probeer opnieuw'));
-      btn.disabled = false;
-      btn.textContent = '3 dagen gratis proberen →';
-    }
+    if (data.checkoutUrl) { window.location.href = data.checkoutUrl; }
+    else { showToast('Fout: ' + (data.error || 'Probeer opnieuw')); btn.disabled = false; btn.textContent = '3 dagen gratis proberen →'; }
   })
   .catch(function() {
     showToast('Verbindingsfout, probeer opnieuw');
-    btn.disabled = false;
-    btn.textContent = '3 dagen gratis proberen →';
+    btn.disabled = false; btn.textContent = '3 dagen gratis proberen →';
   });
-}
-
-var selectedBooks = {};
-
-function toggleBook(el, id, price) {
-  if (selectedBooks[id]) { delete selectedBooks[id]; el.classList.remove('selected'); }
-  else { selectedBooks[id] = price; el.classList.add('selected'); }
-  updateTotal();
-}
-
-function updateTotal() {
-  var keys = Object.keys(selectedBooks);
-  var total = keys.reduce(function(s,k) { return s + selectedBooks[k]; }, 0);
-  var cta = document.getElementById('ebookCta');
-  var tot = document.getElementById('ebookTotal');
-  if (keys.length === 0) {
-    tot.textContent = '€0,00'; cta.disabled = true; cta.textContent = 'Selecteer een e-book →';
-  } else if (keys.length === 3) {
-    tot.textContent = '€12,99 (bundel)'; cta.disabled = false; cta.textContent = 'Pak de bundel — €12,99 →';
-  } else {
-    tot.textContent = '€' + total.toFixed(2).replace('.',',');
-    cta.disabled = false;
-    cta.textContent = keys.length + ' e-book' + (keys.length > 1 ? 's' : '') + ' — €' + total.toFixed(2).replace('.',',') + ' →';
-  }
-}
-
-function buyEbooks() {
-  if (Object.keys(selectedBooks).length === 3) { buyBundle(); return; }
-  showToast('E-books komen binnenkort beschikbaar!');
-}
-
-function buyBundle() {
-  showToast('E-books komen binnenkort beschikbaar!');
 }
 
 function showToast(msg) {
