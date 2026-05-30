@@ -236,7 +236,7 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
         <div style="font-size:0.6875rem;color:var(--accent);font-weight:600;letter-spacing:0.06em;">EENMALIG</div>
         <div class="price-option-title">Solo rapport</div>
         <div style="display:flex;align-items:baseline;gap:0.4rem;">
-          <span style="font-size:2.25rem;font-weight:500;">€5</span>
+          <span style="font-size:2.25rem;font-weight:500;">€6</span>
           <span style="font-size:0.875rem;color:var(--text-muted);">eenmalig</span>
         </div>
         <ul>
@@ -245,14 +245,14 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
           <li>Hoe je hecht aan andere stijlen</li>
           <li>Concrete oefeningen voor groei</li>
         </ul>
-        <button class="btn-primary" onclick="goToPayment('solo', this)" style="background:var(--accent);color:var(--text);">Bestellen — €5</button>
+        <button class="btn-primary" onclick="goToPayment('solo', this)" style="background:var(--accent);color:var(--text);">Bestellen — €6</button>
       </div>
       <!-- Couple -->
       <div class="price-option" id="optionCouple">
         <div style="font-size:0.6875rem;color:var(--accent);font-weight:600;letter-spacing:0.06em;">SAMEN</div>
         <div class="price-option-title">Koppels-rapport</div>
         <div style="display:flex;align-items:baseline;gap:0.4rem;">
-          <span style="font-size:2.25rem;font-weight:500;">€9</span>
+          <span style="font-size:2.25rem;font-weight:500;">€10</span>
           <span style="font-size:0.875rem;color:var(--text-muted);">eenmalig</span>
         </div>
         <ul>
@@ -261,7 +261,7 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
           <li>Waarom jullie botsen én aanvullen</li>
           <li>Oefeningen voor jullie samen</li>
         </ul>
-        <button class="btn-primary" id="coupleBtn" onclick="goToPayment('couple', this)" style="background:var(--accent-soft);color:var(--text);">Samen doen — €9</button>
+        <button class="btn-primary" id="coupleBtn" onclick="goToPayment('couple', this)" style="background:var(--accent-soft);color:var(--text);">Samen doen — €10</button>
       </div>
       <!-- Coach -->
       <div class="price-option featured" id="optionCoach">
@@ -532,25 +532,21 @@ async function submitEmail() {
     localStorage.setItem('userId', state.sessionId || '');
 
     if (state.isPartner) {
-      // PARTNER FLOW:
-      // 1. Toon stijl resultaat
-      // 2. Toon ALLEEN de couple betaaloptie
-      // 3. Na betaling: wacht-op-rapport scherm
+      // Partner flow: hoofd-gebruiker heeft al betaald
+      // Partner doet alleen quiz, geen betaling nodig
       renderResult(data);
       document.getElementById('optionSolo').style.display = 'none';
       document.getElementById('optionCoach').style.display = 'none';
-      var coupleOpt = document.getElementById('optionCouple');
-      coupleOpt.style.borderColor = 'var(--primary)';
-      coupleOpt.querySelector('button').textContent = 'Betalen en rapport ontvangen — €9 →';
-      coupleOpt.querySelector('button').style.width = '100%';
-      coupleOpt.querySelector('button').style.justifyContent = 'center';
+      document.getElementById('optionCouple').style.display = 'none';
+      document.getElementById('pricingChoice').style.display = 'none';
       // Notify backend dat partner klaar is met quiz
       await fetch('/.netlify/functions/submit-partner', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: state.coupleToken })
       }).catch(function() {});
-      showScreen('result');
+      // Toon wacht scherm
+      showScreen('partner-wacht');
       return;
     }
 
