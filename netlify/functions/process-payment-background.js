@@ -83,10 +83,12 @@ async function handleSolo({ sessionId }) {
   await dbSet(`sessions/${sessionId}`, { ...sess, paid: true });
 
   const html = await generateSoloReport(sess);
+
+  // FIX: emailWrapper title is niet de naam — rapport opent zelf al met "Hallo {naam}"
   await sendMail(
     sess.user.email,
     `Jouw hechtingsrapport — ${sess.style?.title || ''}`,
-    emailWrapper(`Hallo ${sess.user.name}`, html)
+    emailWrapper('Jouw hechtingsrapport', html)
   );
 
   await dbSet(`sessions/${sessionId}`, { ...sess, paid: true, reportSent: true });
@@ -144,10 +146,12 @@ async function handleSubscriptionFirst({ mollie, payment, sessionId }) {
   await dbSet(`sessions/${sessionId}`, updatedSess);
 
   const html = await generateSoloReport(updatedSess);
+
+  // FIX: geen naam in emailWrapper title — rapport opent zelf al met "Hallo {naam}"
   await sendMail(
     sess.user?.email || sess.subscriptionEmail,
     'Welkom bij Hechtingtest Premium — jouw eerste rapport',
-    emailWrapper(`Welkom ${sess.user?.name || ''}!`, `
+    emailWrapper('Welkom bij Hechtingtest Premium', `
       <p style="color: #5C4A32; font-size: 1.05rem; margin-bottom: 1.5rem;">
         Bedankt voor jouw Premium abonnement. Hieronder vind je jouw persoonlijke hechtingsrapport.
         Elke maand ontvang je nieuwe inzichten en oefeningen.
@@ -156,6 +160,7 @@ async function handleSubscriptionFirst({ mollie, payment, sessionId }) {
       <hr style="margin: 2rem 0; border: none; border-top: 1px solid #EBE3D4;">
       <p style="color: #8C7B6B; font-size: 0.9rem;">
         Je abonnement verlengt automatisch elke maand voor €9,99.
+        Wil je opzeggen? Stuur een mail naar <a href="mailto:info@hechtingstest.nl" style="color: #2D4A3E;">info@hechtingstest.nl</a>.
       </p>
     `)
   );
@@ -179,10 +184,11 @@ async function handleSubscriptionRecurring({ payment }) {
   const sess = await dbGet(`sessions/${sessionIdForCustomer}`);
   if (!sess) return;
 
+  // FIX: geen naam in emailWrapper title
   await sendMail(
     sess.user?.email || sess.subscriptionEmail,
     'Jouw maandelijkse hechtings-inzichten',
-    emailWrapper(`Hallo ${sess.user?.name || ''}!`, `
+    emailWrapper('Jouw maandelijkse inzichten', `
       <p style="color: #5C4A32; font-size: 1.05rem;">
         Een nieuwe maand, nieuwe inzichten voor jouw hechtingsstijl: <strong>${sess.style?.title || ''}</strong>.
       </p>
@@ -280,10 +286,15 @@ async function generateAndSendCouple(token) {
 async function sendMail(to, subject, html) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   return resend.emails.send({
-    from: 'Hechtingtest <hello@hechtingstest.nl>',
+    // FIX: noreply adres — zorg dat dit geverifieerd staat in Resend dashboard
+    from: 'Hechtingtest <noreply@hechtingstest.nl>',
     to,
     subject,
-    html
+    html,
+    // FIX: List-Unsubscribe header helpt tegen spam classificatie
+    headers: {
+      'List-Unsubscribe': '<mailto:info@hechtingstest.nl?subject=Uitschrijven>'
+    }
   });
 }
 
