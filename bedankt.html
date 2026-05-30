@@ -21,40 +21,46 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 .logo { font-weight: 500; font-size: 1.125rem; color: var(--primary); display: flex; gap: 0.5rem; align-items: center; }
 .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
 .page { max-width: 560px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
-.intro { margin-bottom: 3.5rem; }
+.intro { margin-bottom: 2rem; }
 .intro-tag { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
 .intro h1 { font-size: clamp(2.25rem, 8vw, 3.5rem); font-weight: 400; line-height: 0.95; margin-bottom: 1rem; }
 .intro h1 em { font-style: italic; }
 .intro p { font-size: 1rem; color: var(--text-muted); line-height: 1.65; max-width: 400px; margin-bottom: 1.5rem; }
 .stijl-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 0.5rem 1.125rem; font-size: 0.875rem; font-weight: 500; color: var(--text-muted); }
 .stijl-badge strong { color: var(--primary); }
+
+.success-banner { background: var(--primary); color: var(--surface); border-radius: 20px; padding: 1.375rem 1.625rem; display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; }
+.success-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
+.success-text h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+.success-text p { font-size: 0.875rem; opacity: 0.7; line-height: 1.5; }
+
 .section-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.375rem; }
 .section-title { font-size: clamp(1.625rem, 5vw, 2rem); font-weight: 400; line-height: 1.1; margin-bottom: 0.5rem; }
 .section-title em { font-style: italic; }
 .section-sub { font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem; }
+
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.625rem; box-shadow: var(--shadow-sm); }
 .partner-faces { display: flex; justify-content: center; margin-bottom: 1.25rem; }
-.face { width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid var(--bg); display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; font-weight: 700; color: white; box-shadow: var(--shadow-sm); }
+.face { width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid var(--bg); display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; font-weight: 700; color: white; }
 .face:nth-child(1) { background: var(--primary); margin-right: -8px; z-index: 2; }
-.face:nth-child(2) { background: var(--accent); z-index: 1; }
-.face-plus { width: 44px; height: 44px; border-radius: 50%; background: var(--surface-2); border: 2.5px dashed rgba(42,31,26,0.18); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--text-muted); margin-left: -8px; z-index: 0; }
-.card-title { font-size: 1.25rem; font-weight: 400; text-align: center; margin-bottom: 0.375rem; line-height: 1.2; }
+.face-plus { width: 44px; height: 44px; border-radius: 50%; background: var(--surface-2); border: 2.5px dashed rgba(42,31,26,0.18); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--text-muted); margin-left: -8px; }
+.card-title { font-size: 1.25rem; font-weight: 400; text-align: center; margin-bottom: 0.375rem; }
 .card-sub { font-size: 0.875rem; color: var(--text-muted); text-align: center; line-height: 1.6; margin-bottom: 1.125rem; }
 .link-box { display: flex; gap: 0.5rem; background: var(--surface-2); padding: 0.5rem 0.5rem 0.5rem 0.875rem; border-radius: 10px; align-items: center; margin-bottom: 0.625rem; }
 .link-box input { flex: 1; background: transparent; border: none; outline: none; font-size: 0.8125rem; color: var(--text-muted); font-family: inherit; min-width: 0; }
 .link-box button { background: var(--primary); color: var(--surface); border: none; padding: 0.5rem 0.875rem; border-radius: 7px; cursor: pointer; font-weight: 600; font-family: inherit; font-size: 0.8125rem; transition: background 0.2s; white-space: nowrap; }
 .link-box button:hover { background: var(--primary-soft); }
 .link-box button.copied { background: var(--accent); }
+.partner-note { font-size: 0.8125rem; color: var(--text-muted); text-align: center; margin-top: 0.875rem; line-height: 1.5; }
+
 .btn-primary { background: var(--primary); color: var(--surface); border: none; padding: 1rem 2rem; font-size: 0.9375rem; font-weight: 600; border-radius: 999px; cursor: pointer; width: 100%; font-family: inherit; transition: all 0.2s; min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
 .btn-primary:hover { background: var(--primary-soft); transform: translateY(-1px); }
 .btn-primary.accent { background: var(--accent); color: var(--text); }
 .btn-primary.accent:hover { opacity: 0.88; transform: translateY(-1px); }
 .btn-primary.wa { background: #25D366; color: white; }
-.btn-primary.wa:hover { background: #1fba59; transform: translateY(-1px); }
+.btn-primary.wa:hover { background: #1fba59; }
 .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-.partner-note { font-size: 0.8125rem; color: var(--text-muted); text-align: center; margin-top: 0.875rem; line-height: 1.5; }
-.wacht-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; margin-bottom: 2rem; }
-.wacht-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--surface-2); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
 .coach-card { background: var(--primary); color: var(--surface); border-radius: 20px; padding: 1.625rem; box-shadow: var(--shadow-md); }
 .coach-tag { font-size: 0.6875rem; color: var(--accent-soft); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.75rem; }
 .coach-card h3 { font-size: 1.375rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.625rem; }
@@ -71,17 +77,16 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 .step-body span { opacity: 0.5; font-size: 0.8rem; font-style: italic; }
 .features { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
 .features li { display: flex; gap: 0.5rem; font-size: 0.875rem; opacity: 0.8; }
-.features li::before { content: '✓'; color: var(--accent-soft); font-weight: 700; flex-shrink: 0; }
-.limiet { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 12px; padding: 0.875rem 1rem; font-size: 0.875rem; opacity: 0.75; line-height: 1.6; margin-bottom: 1.25rem; }
-.limiet strong { color: white; opacity: 1; }
+.features li::before { content: 'v'; color: var(--accent-soft); font-weight: 700; flex-shrink: 0; }
+.limiet-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 12px; padding: 0.875rem 1rem; font-size: 0.875rem; opacity: 0.75; line-height: 1.6; margin-bottom: 1.25rem; }
+.limiet-box strong { color: white; opacity: 1; }
 .price-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1rem; }
 .price-main { font-size: 2rem; font-weight: 500; }
 .price-main span { font-size: 0.875rem; font-weight: 400; opacity: 0.55; }
-.price-right { text-align: right; }
 .price-trial { font-size: 0.875rem; color: var(--accent-soft); font-weight: 600; }
 .cta-note { text-align: center; font-size: 0.8125rem; opacity: 0.4; margin-top: 0.625rem; }
-.divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0 0; }
-.mt-section { margin-top: 3.5rem; }
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 .disclaimer { padding: 1.5rem; font-size: 0.75rem; color: var(--text-muted); text-align: center; line-height: 1.6; max-width: 480px; margin: 0 auto; }
 .disclaimer a { color: var(--primary); text-decoration: none; }
 .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--primary); color: white; padding: 0.75rem 1.375rem; border-radius: 999px; font-size: 0.9rem; font-weight: 500; transition: transform 0.3s ease; z-index: 99; white-space: nowrap; box-shadow: var(--shadow-md); }
@@ -101,12 +106,21 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 
   <div class="intro">
     <div class="intro-tag" id="introTag">Betaling ontvangen</div>
-    <h1 id="introTitle">Goed bezig.<br><em>Wat nu?</em></h1>
-    <p id="introSubtitle">Je hechtingsprofiel staat in je inbox. Hieronder een paar manieren om verder te gaan.</p>
-    <div class="stijl-badge">Jouw stijl: <strong id="styleName">laden…</strong></div>
+    <h1 id="introTitle">Gelukt.<br><em>Je rapport is onderweg.</em></h1>
+    <p id="introSubtitle">Check je inbox — je hechtingsprofiel staat erin.</p>
+    <div class="stijl-badge">Jouw stijl: <strong id="styleName">laden...</strong></div>
   </div>
 
-  <!-- COUPLE: share link sectie (alleen zichtbaar als plan=couple) -->
+  <!-- SUCCESS BANNER -->
+  <div class="success-banner">
+    <div class="success-icon" id="bannerIcon">📬</div>
+    <div class="success-text">
+      <h3 id="bannerTitle">Rapport verstuurd</h3>
+      <p id="bannerSub">Je ontvangt je hechtingsprofiel op het opgegeven e-mailadres.</p>
+    </div>
+  </div>
+
+  <!-- COUPLE: partner uitnodigen (alleen zichtbaar bij plan=couple) -->
   <div id="coupleSection" style="display:none;">
     <div class="section-label">Stap 2 van 2</div>
     <h2 class="section-title">Nodig je partner<br><em>uit.</em></h2>
@@ -116,7 +130,7 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
         <div class="face">JIJ</div>
         <div class="face-plus">+</div>
       </div>
-      <div class="card-title">Jij hebt betaald ✓</div>
+      <div class="card-title">Jij hebt betaald</div>
       <p class="card-sub">Jouw partner hoeft alleen de test in te vullen via jouw link — geen betaling nodig.</p>
       <div class="link-box">
         <input type="text" id="partnerLink" readonly>
@@ -128,27 +142,27 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
       </button>
       <p class="partner-note">Zodra je partner klaar is krijgen jullie <strong>allebei</strong> het rapport per mail.</p>
     </div>
-    <hr class="divider">
+    <div class="divider"></div>
   </div>
 
-  <!-- SOLO: coach upsell -->
+  <!-- COACH UPSELL -->
   <div id="coachSection">
-    <div class="section-label mt-section">Persoonlijke begeleiding</div>
+    <div class="section-label">Persoonlijke begeleiding</div>
     <h2 class="section-title">Jouw eigen<br><em>AI-coach.</em></h2>
     <p class="section-sub">Een coach die jou kent — jouw stijl, jouw situaties, jouw patronen.</p>
     <div class="coach-card">
       <div class="coach-tag">Meest gekozen</div>
       <h3>Stuur je situatie.<br><em>Krijg jouw antwoord.</em></h3>
-      <p>Na een ruzie, voor een moeilijk gesprek — altijd gebaseerd op jóuw hechtingsstijl.</p>
+      <p>Na een ruzie, voor een moeilijk gesprek — altijd gebaseerd op jouw hechtingsstijl.</p>
       <div class="steps">
         <div class="steps-label">Zo werkt het</div>
         <div class="step">
           <div class="step-n">1</div>
-          <div class="step-body"><strong>Jij stuurt een situatie</strong><span>"Hij reageerde niet op mijn bericht en ik draaide helemaal door…"</span></div>
+          <div class="step-body"><strong>Jij stuurt een situatie</strong><span>"Hij reageerde niet op mijn bericht en ik draaide helemaal door..."</span></div>
         </div>
         <div class="step">
           <div class="step-n">2</div>
-          <div class="step-body"><strong>Coach analyseert op jóuw profiel</strong><span>Niet een template — gebaseerd op wie jij bent</span></div>
+          <div class="step-body"><strong>Coach analyseert op jouw profiel</strong><span>Niet een template — gebaseerd op wie jij bent</span></div>
         </div>
         <div class="step">
           <div class="step-n">3</div>
@@ -156,20 +170,20 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
         </div>
       </div>
       <ul class="features">
-        <li>100% over jóuw situatie — nooit generiek</li>
+        <li>100% over jouw situatie — nooit generiek</li>
         <li>Onthoudt eerdere gesprekken en jouw patroon</li>
         <li>10 berichten per dag — bewust zo gehouden</li>
         <li>Altijd opzegbaar via mail</li>
       </ul>
-      <div class="limiet">
+      <div class="limiet-box">
         <strong>Waarom 10 berichten per dag?</strong><br>
-        Echte groei komt niet van eindeloos chatten, maar van reflecteren. Eén goed gesprek per dag is genoeg.
+        Echte groei komt niet van eindeloos chatten, maar van reflecteren. Een goed gesprek per dag is genoeg.
       </div>
       <div class="price-row">
         <div class="price-main">€14,99 <span>/ maand</span></div>
         <div class="price-right"><div class="price-trial">3 dagen gratis</div></div>
       </div>
-      <button class="btn-primary accent" id="coachBtn" onclick="startCoach()">3 dagen gratis proberen →</button>
+      <button class="btn-primary accent" id="coachBtn" onclick="startCoach()">3 dagen gratis proberen</button>
       <p class="cta-note">3 dagen gratis · Daarna €14,99/maand · Opzegbaar via mail</p>
     </div>
   </div>
@@ -188,7 +202,6 @@ var params     = new URLSearchParams(window.location.search);
 var sessionId  = params.get('session') || '';
 var plan       = params.get('plan')    || 'solo';
 var token      = params.get('token')   || '';
-
 var naam       = decodeURIComponent(params.get('naam')  || '') || localStorage.getItem('userName')       || '';
 var email      = decodeURIComponent(params.get('email') || '') || localStorage.getItem('userEmail')      || '';
 var stijl      = decodeURIComponent(params.get('stijl') || '') || localStorage.getItem('hechtingsstijl') || '';
@@ -201,26 +214,27 @@ if (stijl) localStorage.setItem('hechtingsstijl', stijl);
 
 document.getElementById('styleName').textContent = stijl || 'Jouw stijl';
 
-// ── COUPLE FLOW ──────────────────────────────────────────────────────
 if (plan === 'couple' && token) {
-  // Toon share sectie, pas tekst aan
   document.getElementById('coupleSection').style.display = 'block';
-  document.getElementById('introTag').textContent = 'Betaling ontvangen ✓';
-  document.getElementById('introTitle').innerHTML = 'Bijna klaar.<br><em>Nodig je partner uit.</em>';
+  document.getElementById('introTag').textContent = 'Betaling ontvangen';
+  document.getElementById('introTitle').innerHTML = 'Gelukt.<br><em>Nodig nu je partner uit.</em>';
   document.getElementById('introSubtitle').textContent = 'Je hebt betaald. Stuur nu de link naar je partner — hij/zij hoeft alleen de test in te vullen.';
-
-  var partnerUrl = 'https://hechtingstest.nl/?k=' + token;
-  document.getElementById('partnerLink').value = partnerUrl;
+  document.getElementById('bannerIcon').textContent = 'Gelukt';
+  document.getElementById('bannerTitle').textContent = 'Jij hebt betaald';
+  document.getElementById('bannerSub').textContent = 'Zodra je partner de test doet, sturen we jullie allebei het koppels-rapport.';
+  document.getElementById('partnerLink').value = 'https://hechtingstest.nl/?k=' + token;
 }
 
-// ── SOLO FLOW ────────────────────────────────────────────────────────
-// Coach sectie altijd zichtbaar
+if (plan === 'solo') {
+  document.getElementById('bannerTitle').textContent = 'Rapport verstuurd';
+  document.getElementById('bannerSub').textContent = 'Je solo rapport staat in je inbox. Check ook je spam als je het niet ziet.';
+}
 
 function copyLink() {
   var val = document.getElementById('partnerLink').value;
   navigator.clipboard.writeText(val).then(function() {
     var btn = document.getElementById('copyBtn');
-    btn.textContent = 'Gekopieerd ✓'; btn.classList.add('copied');
+    btn.textContent = 'Gekopieerd'; btn.classList.add('copied');
     setTimeout(function() { btn.textContent = 'Kopieer'; btn.classList.remove('copied'); }, 2500);
   });
 }
@@ -233,28 +247,18 @@ function shareWhatsApp() {
 
 function startCoach() {
   var btn = document.getElementById('coachBtn');
-  btn.disabled = true; btn.textContent = 'Bezig…';
+  btn.disabled = true; btn.textContent = 'Bezig...';
   fetch('/.netlify/functions/create-coach-payment', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      naam: naam || 'Gebruiker',
-      email: email || '',
-      stijl: stijl || 'Onbekend',
-      anxietyScore: anxScore,
-      avoidanceScore: avoidScore,
-      sessionId: sessionId
-    })
+    body: JSON.stringify({ naam: naam || 'Gebruiker', email: email || '', stijl: stijl || 'Onbekend', anxietyScore: anxScore, avoidanceScore: avoidScore, sessionId: sessionId })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
     if (data.checkoutUrl) { window.location.href = data.checkoutUrl; }
-    else { showToast('Fout: ' + (data.error || 'Probeer opnieuw')); btn.disabled = false; btn.textContent = '3 dagen gratis proberen →'; }
+    else { showToast('Fout: ' + (data.error || 'Probeer opnieuw')); btn.disabled = false; btn.textContent = '3 dagen gratis proberen'; }
   })
-  .catch(function() {
-    showToast('Verbindingsfout, probeer opnieuw');
-    btn.disabled = false; btn.textContent = '3 dagen gratis proberen →';
-  });
+  .catch(function() { showToast('Verbindingsfout, probeer opnieuw'); btn.disabled = false; btn.textContent = '3 dagen gratis proberen'; });
 }
 
 function showToast(msg) {
