@@ -76,6 +76,4 @@ exports.handler = async (event) => {
       body: JSON.stringify({ error: 'Betaling aanmaken mislukt: ' + err.message })
     };
   }
-};
 
-};
