@@ -1,30 +1,28 @@
 const { createMollieClient } = require('@mollie/api-client');
-
 const mollie = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY });
-
+ 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
   }
-
+ 
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
   };
-
+ 
   let body;
   try {
     body = JSON.parse(event.body);
   } catch {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Ongeldig verzoek' }) };
   }
-
+ 
   const { naam, email, stijl, anxietyScore, avoidanceScore, sessionId } = body;
-
   if (!naam || !email || !stijl) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Naam, email en stijl zijn verplicht' }) };
   }
-
+ 
   try {
     const klant = await mollie.customers.create({
       name: naam,
@@ -37,14 +35,17 @@ exports.handler = async (event) => {
         sessionId: sessionId || ''
       }
     });
-
+ 
     const coachToken = klant.metadata.coachToken;
-
+ 
     const betaling = await mollie.payments.create({
-      amount: { currency: 'EUR', value: '0.00' },
+      // FIX: €0.01 zodat iDEAL werkt — wordt teruggestort of verrekend
+      amount: { currency: 'EUR', value: '0.01' },
       customerId: klant.id,
       sequenceType: 'first',
-      description: 'Luna hechtingscoach — 3 dagen gratis, daarna €14,99/maand',
+      // FIX: iDEAL + creditcard + bancontact beschikbaar
+      method: ['ideal', 'creditcard', 'bancontact'],
+      description: 'Hechtingtest — 3 dagen gratis proberen, daarna €14,99/maand',
       redirectUrl: `${process.env.SITE_URL}/?token=${coachToken}`,
       webhookUrl: `${process.env.SITE_URL}/.netlify/functions/luna-webhook`,
       metadata: {
@@ -57,7 +58,7 @@ exports.handler = async (event) => {
         type: 'coach_eerste_betaling'
       }
     });
-
+ 
     return {
       statusCode: 200,
       headers,
@@ -66,7 +67,7 @@ exports.handler = async (event) => {
         coachToken
       })
     };
-
+ 
   } catch (err) {
     console.error('Mollie fout:', err);
     return {
@@ -75,4 +76,6 @@ exports.handler = async (event) => {
       body: JSON.stringify({ error: 'Betaling aanmaken mislukt: ' + err.message })
     };
   }
+};
+
 };
