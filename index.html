@@ -598,11 +598,9 @@ async function goToPayment(plan, btnEl) {
     if (!res2.ok) throw new Error(data2.error);
 
     if (plan === 'couple' && !state.isPartner) {
-      // Hoofd-gebruiker: toon share scherm
-      state.coupleToken = data2.token;
-      showCoupleShare(data2);
+      // Redirect naar Mollie — share link staat op bedankt.html na betaling
+      window.location.href = data2.checkoutUrl;
     } else {
-      // Solo of partner betaling: redirect naar Mollie
       window.location.href = data2.checkoutUrl;
     }
 
