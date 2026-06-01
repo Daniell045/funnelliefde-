@@ -70,6 +70,18 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: 'Profiel fout: ' + err.message };
     }
 
+    // ── Dedup: voorkom dubbele abonnementen op hetzelfde e-mailadres ──
+    if (type === 'coach_eerste_betaling') {
+      const bestaandeIndex = await store.get(`coach:email:${(profiel.email || '').toLowerCase()}`);
+      if (bestaandeIndex) {
+        const bestaande = typeof bestaandeIndex === 'string' ? JSON.parse(bestaandeIndex) : bestaandeIndex;
+        if (bestaande.coachToken && bestaande.coachToken !== coachToken) {
+          console.log('[dedup] Al een actief account voor', profiel.email, '— skip subscription aanmaken');
+          return { statusCode: 200, body: 'Duplicate email, skipped' };
+        }
+      }
+    }
+
     if (type === 'coach_eerste_betaling') {
       const subscription = await mollie.customerSubscriptions.create({
         customerId: profiel.mollieKlantId,
