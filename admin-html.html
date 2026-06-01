@@ -137,12 +137,39 @@ tr:hover td { background: rgba(244,239,230,0.02); }
           <div class="stat-value" id="statGebruikers">0</div>
           <div class="stat-sub">Hebben betaald</div>
         </div>
+        <div class="stat-card">
+          <div class="stat-label">Afgemeld</div>
+          <div class="stat-value" style="color:var(--red);" id="statAfgemeld">0</div>
+          <div class="stat-sub">Opzegging aangevraagd</div>
+        </div>
       </div>
 
       <!-- FUNNEL -->
       <div class="funnel-wrap">
         <div class="section-title">Funnel</div>
         <div class="funnel-steps" id="funnelSteps"></div>
+      </div>
+
+      <!-- AANMELDINGEN + AFMELDINGEN -->
+      <div class="two-col">
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="section-title" style="margin:0;">Aanmeldingen</div>
+          </div>
+          <table>
+            <thead><tr><th>Datum</th><th>Naam</th><th>Stijl</th></tr></thead>
+            <tbody id="aanmeldingenTable"></tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="section-title" style="margin:0;">Afmeldingen</div>
+          </div>
+          <table>
+            <thead><tr><th>Datum</th><th>Naam</th><th>Email</th></tr></thead>
+            <tbody id="afmeldingenTable"></tbody>
+          </table>
+        </div>
       </div>
 
       <div class="two-col">
@@ -247,6 +274,25 @@ function renderDashboard(data) {
   document.getElementById('statOntvangen').textContent = '€' + data.stats.totalOntvangen;
   document.getElementById('statMrr').textContent = '€' + data.stats.mrrVerwacht;
   document.getElementById('statActief').textContent = data.stats.actieveAbonnementen;
+  document.getElementById('statAfgemeld').textContent = data.stats.afgemeldCount || 0;
+
+  // Aanmeldingen
+  var aanmeldingen = data.aanmeldingen || [];
+  document.getElementById('aanmeldingenTable').innerHTML = aanmeldingen.length === 0
+    ? '<tr><td colspan="3" class="empty-state">Nog geen aanmeldingen</td></tr>'
+    : aanmeldingen.map(function(a) {
+        var datum = a.datum ? new Date(a.datum).toLocaleDateString('nl-NL') : '—';
+        return '<tr><td style="font-size:0.8125rem;color:var(--text-muted);">' + datum + '</td><td><div style="font-weight:500;">' + (a.naam || '—') + '</div><div style="font-size:0.75rem;color:var(--text-muted);">' + (a.email || '') + '</div></td><td style="font-size:0.8125rem;color:var(--text-muted);">' + (a.stijl || '—') + '</td></tr>';
+      }).join('');
+
+  // Afmeldingen
+  var afgemeld = data.afgemeld || [];
+  document.getElementById('afmeldingenTable').innerHTML = afgemeld.length === 0
+    ? '<tr><td colspan="3" class="empty-state">Geen afmeldingen</td></tr>'
+    : afgemeld.map(function(a) {
+        var datum = a.opzeggingDatum ? new Date(a.opzeggingDatum).toLocaleDateString('nl-NL') : '—';
+        return '<tr><td style="font-size:0.8125rem;color:var(--red);">' + datum + '</td><td style="font-weight:500;">' + (a.naam || '—') + '</td><td style="font-size:0.8125rem;color:var(--text-muted);">' + (a.email || '—') + '</td></tr>';
+      }).join('');
   document.getElementById('statGebruikers').textContent = data.stats.totalGebruikers;
 
   // Funnel
