@@ -1,7 +1,9 @@
 const { getStore } = require('@netlify/blobs');
 const { createMollieClient } = require('@mollie/api-client');
+const { Resend } = require('resend');
 
 const mollie = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY });
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 function getConfiguredStore() {
   const siteID = process.env.NETLIFY_SITE_ID;
@@ -13,129 +15,143 @@ function getConfiguredStore() {
 }
 
 exports.handler = async (event) => {
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
-  };
-
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers, body: 'Method not allowed' };
+    return { statusCode: 405, body: 'Method not allowed' };
   }
 
-  let body;
-  try {
-    body = JSON.parse(event.body);
-  } catch {
-    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Ongeldig verzoek' }) };
-  }
+  const params = new URLSearchParams(event.body);
+  const betalingId = params.get('id');
 
-  const { password } = body;
-  if (!password || password !== process.env.ADMIN_PASSWORD) {
-    return { statusCode: 401, headers, body: JSON.stringify({ error: 'Ongeldig wachtwoord' }) };
+  if (!betalingId) {
+    return { statusCode: 400, body: 'Geen betaling ID' };
   }
 
   try {
+    const betaling = await mollie.payments.get(betalingId);
+
+    if (betaling.status !== 'paid') {
+      return { statusCode: 200, body: 'Niet betaald, niets doen' };
+    }
+
+    const { coachToken, type, naam, email, stijl, anxietyScore, avoidanceScore } = betaling.metadata || {};
+
+    if (!coachToken) {
+      return { statusCode: 200, body: 'Geen coachToken in metadata' };
+    }
+
     const store = getConfiguredStore();
+    const profielKey = `coach:user:${coachToken}:profile`;
 
-    // Haal alle coach profielen op
-    const { blobs } = await store.list({ prefix: 'coach:user:' });
-    const profielen = [];
+    let profiel;
+    try {
+      const data = await store.get(profielKey);
+      if (data) {
+        profiel = typeof data === 'string' ? JSON.parse(data) : data;
+      } else {
+        profiel = {
+          naam: naam || 'Gebruiker',
+          email: email || '',
+          stijl: stijl || '',
+          anxietyScore: parseInt(anxietyScore) || 50,
+          avoidanceScore: parseInt(avoidanceScore) || 50,
+          mollieKlantId: betaling.customerId,
+          abonnementActief: false,
+          aangemaaktOp: new Date().toISOString()
+        };
+        await store.set(profielKey, JSON.stringify(profiel));
 
-    for (const blob of blobs) {
-      if (!blob.key.endsWith(':profile')) continue;
-      try {
-        const data = await store.get(blob.key);
-        if (data) {
-          const profiel = typeof data === 'string' ? JSON.parse(data) : data;
-          // Haal token uit key: coach:user:{token}:profile
-          const token = blob.key.split(':')[2];
-          profielen.push({ ...profiel, coachToken: token });
+        // ── Email index opslaan zodat magic link login werkt ──
+        if (email) {
+          await store.set(`coach:email:${email.toLowerCase()}`, JSON.stringify({ coachToken }));
         }
-      } catch (e) {
-        console.error('Profiel lezen fout:', e);
+      }
+    } catch (err) {
+      console.error('Profiel fout:', err);
+      return { statusCode: 200, body: 'Profiel fout: ' + err.message };
+    }
+
+    // ── Dedup: voorkom dubbele abonnementen op hetzelfde e-mailadres ──
+    if (type === 'coach_eerste_betaling') {
+      const bestaandeIndex = await store.get(`coach:email:${(profiel.email || '').toLowerCase()}`);
+      if (bestaandeIndex) {
+        const bestaande = typeof bestaandeIndex === 'string' ? JSON.parse(bestaandeIndex) : bestaandeIndex;
+        if (bestaande.coachToken && bestaande.coachToken !== coachToken) {
+          console.log('[dedup] Al een actief account voor', profiel.email, '— skip subscription aanmaken');
+          return { statusCode: 200, body: 'Duplicate email, skipped' };
+        }
       }
     }
 
-    // Haal betalingen op uit Mollie
-    let betalingen = [];
-    let totalOntvangen = 0;
-    try {
-      const payments = await mollie.payments.list({ limit: 100 });
-      betalingen = payments
-        .filter(p => p.status === 'paid')
-        .map(p => ({
-          id: p.id,
-          bedrag: parseFloat(p.amount.value),
-          omschrijving: p.description,
-          datum: p.paidAt || p.createdAt,
-          email: p.metadata?.email || '',
-          type: p.metadata?.type || ''
-        }));
-      totalOntvangen = betalingen.reduce((sum, p) => sum + p.bedrag, 0);
-    } catch (e) {
-      console.error('Mollie fout:', e);
-    }
+    if (type === 'coach_eerste_betaling') {
+      const subscription = await mollie.customerSubscriptions.create({
+        customerId: profiel.mollieKlantId,
+        amount: { currency: 'EUR', value: '14.99' },
+        interval: '1 month',
+        startDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        description: 'Luna hechtingscoach — maandelijks',
+        webhookUrl: `${process.env.SITE_URL}/.netlify/functions/luna-webhook`,
+        metadata: { coachToken, type: 'coach_maandelijks' }
+      });
 
-    // Bereken stats
-    const actieveAbonnementen = profielen.filter(p => p.abonnementActief).length;
-    const mrrVerwacht = actieveAbonnementen * 14.99;
+      profiel.abonnementActief = true;
+      profiel.subscriptionId = subscription.id;
+      profiel.abonnementStartOp = new Date().toISOString();
+      await store.set(profielKey, JSON.stringify(profiel));
 
-    // Funnel data uit sessions
-    let funnelData = { quizGestart: 0, emailIngevuld: 0, betaald: 0, actief: actieveAbonnementen };
-    try {
-      const { blobs: sessionBlobs } = await store.list({ prefix: 'sessions/' });
-      funnelData.emailIngevuld = sessionBlobs.length;
-      funnelData.betaald = profielen.length;
-      funnelData.quizGestart = Math.max(sessionBlobs.length, profielen.length);
-    } catch (e) {
-      console.error('Sessions fout:', e);
-    }
-
-    // Dedup op email — houd alleen meest recente per email
-    const emailMap = {};
-    profielen.forEach(function(p) {
-      const key = (p.email || '').toLowerCase();
-      if (!key) return;
-      if (!emailMap[key] || new Date(p.aangemaaktOp) > new Date(emailMap[key].aangemaaktOp)) {
-        emailMap[key] = p;
+      // ── Email index ook updaten na activatie (voor zekerheid) ──
+      if (profiel.email) {
+        await store.set(`coach:email:${profiel.email.toLowerCase()}`, JSON.stringify({ coachToken }));
       }
-    });
-    const uniekeProfielenList = Object.values(emailMap);
 
-    // Splitsen in actief, afgemeld, inactief
-    const actieven = uniekeProfielenList.filter(function(p) { return p.abonnementActief && !p.opzeggingAangevraagd; });
-    const afgemeld = uniekeProfielenList.filter(function(p) { return p.opzeggingAangevraagd; });
-    const inactief = uniekeProfielenList.filter(function(p) { return !p.abonnementActief && !p.opzeggingAangevraagd; });
+      const coachUrl = `${process.env.SITE_URL}/?token=${coachToken}`;
+      const opzegDatum = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' });
 
-    // Aanmeldingen gesorteerd op datum
-    const aanmeldingen = uniekeProfielenList
-      .filter(function(p) { return p.abonnementStartOp; })
-      .sort(function(a, b) { return new Date(b.abonnementStartOp) - new Date(a.abonnementStartOp); })
-      .map(function(p) { return { naam: p.naam, email: p.email, stijl: p.stijl, datum: p.abonnementStartOp, coachToken: p.coachToken }; });
+      await resend.emails.send({
+        from: 'Luna <luna@hechtingstest.nl>',
+        to: profiel.email,
+        subject: 'Welkom — jouw persoonlijke coach staat klaar',
+        html: `
+          <div style="font-family: sans-serif; max-width: 520px; margin: 0 auto; padding: 2rem; color: #2A1F1A;">
+            <div style="margin-bottom: 1.5rem;">
+              <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #C97B5F; margin-right: 0.5rem;"></span>
+              <span style="font-weight: 500; color: #2D4A3E;">Hechtingtest</span>
+            </div>
+            <h1 style="font-size: 2rem; font-weight: 400; line-height: 1.1; margin-bottom: 1rem;">
+              Hoi ${profiel.naam},<br><em>ik ben Luna.</em>
+            </h1>
+            <p style="color: #6B5D52; line-height: 1.65; margin-bottom: 1rem;">
+              Jouw persoonlijke hechtingscoach staat klaar. Ik ken je hechtingsstijl al — en ik ben er om je te helpen begrijpen waarom je voelt wat je voelt in relaties.
+            </p>
+            <p style="color: #6B5D52; line-height: 1.65; margin-bottom: 1.5rem;">
+              Je hebt <strong>10 berichten per dag</strong>. Bewust zo gehouden — één goed gesprek verandert meer dan tien oppervlakkige.
+            </p>
+            <a href="${coachUrl}" style="display: inline-block; background: #2D4A3E; color: #FAF6EE; padding: 1rem 2rem; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 1rem; margin-bottom: 2rem;">
+              Start gesprek met Luna →
+            </a>
+            <div style="background: #F4EFE6; border-radius: 14px; padding: 1.25rem; margin-bottom: 1.5rem;">
+              <p style="font-size: 0.875rem; color: #2A1F1A; font-weight: 600; margin-bottom: 0.5rem;">Jouw proefperiode</p>
+              <p style="font-size: 0.875rem; color: #6B5D52; line-height: 1.6; margin: 0;">
+                De eerste <strong>3 dagen zijn gratis</strong>. Daarna wordt automatisch <strong>€14,99 per maand</strong> afgeschreven.<br><br>
+                Wil je niet verder? Stuur dan vóór <strong>${opzegDatum}</strong> een mail naar <a href="mailto:info@hechtingstest.nl" style="color: #2D4A3E;">info@hechtingstest.nl</a> en je abonnement wordt direct stopgezet.
+              </p>
+            </div>
+            <p style="font-size: 0.75rem; color: #6B5D52; line-height: 1.6; border-top: 1px solid rgba(42,31,26,0.08); padding-top: 1rem;">
+              Bewaar deze mail — de link hierboven is jouw persoonlijke toegang tot Luna. Raak je hem kwijt? Ga naar <a href="https://hechtingstest.nl" style="color: #2D4A3E;">hechtingstest.nl</a> en log in met je e-mailadres.
+            </p>
+          </div>
+        `
+      });
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        profielen: uniekeProfielenList,
-        actieven,
-        afgemeld,
-        inactief,
-        aanmeldingen,
-        betalingen,
-        stats: {
-          totalOntvangen: totalOntvangen.toFixed(2),
-          mrrVerwacht: (actieven.length * 14.99).toFixed(2),
-          actieveAbonnementen: actieven.length,
-          afgemeldCount: afgemeld.length,
-          totalGebruikers: uniekeProfielenList.length
-        },
-        funnel: funnelData
-      })
-    };
+    } else if (type === 'coach_maandelijks') {
+      profiel.abonnementActief = true;
+      profiel.laatsteBetalingOp = new Date().toISOString();
+      await store.set(profielKey, JSON.stringify(profiel));
+    }
+
+    return { statusCode: 200, body: 'OK' };
 
   } catch (err) {
-    console.error('Admin fout:', err);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
+    console.error('Webhook fout:', err);
+    return { statusCode: 200, body: 'Webhook fout: ' + err.message };
   }
 };
