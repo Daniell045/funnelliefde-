@@ -59,6 +59,11 @@ exports.handler = async (event) => {
           aangemaaktOp: new Date().toISOString()
         };
         await store.set(profielKey, JSON.stringify(profiel));
+
+        // ── Email index opslaan zodat magic link login werkt ──
+        if (email) {
+          await store.set(`coach:email:${email.toLowerCase()}`, JSON.stringify({ coachToken }));
+        }
       }
     } catch (err) {
       console.error('Profiel fout:', err);
@@ -80,6 +85,11 @@ exports.handler = async (event) => {
       profiel.subscriptionId = subscription.id;
       profiel.abonnementStartOp = new Date().toISOString();
       await store.set(profielKey, JSON.stringify(profiel));
+
+      // ── Email index ook updaten na activatie (voor zekerheid) ──
+      if (profiel.email) {
+        await store.set(`coach:email:${profiel.email.toLowerCase()}`, JSON.stringify({ coachToken }));
+      }
 
       const coachUrl = `${process.env.SITE_URL}/?token=${coachToken}`;
       const opzegDatum = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' });
@@ -114,7 +124,7 @@ exports.handler = async (event) => {
               </p>
             </div>
             <p style="font-size: 0.75rem; color: #6B5D52; line-height: 1.6; border-top: 1px solid rgba(42,31,26,0.08); padding-top: 1rem;">
-              Bewaar deze mail — de link hierboven is jouw persoonlijke toegang tot Luna.
+              Bewaar deze mail — de link hierboven is jouw persoonlijke toegang tot Luna. Raak je hem kwijt? Ga naar <a href="https://hechtingstest.nl" style="color: #2D4A3E;">hechtingstest.nl</a> en log in met je e-mailadres.
             </p>
           </div>
         `
