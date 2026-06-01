@@ -61,28 +61,59 @@ exports.handler = async (event) => {
     let totalOntvangen = 0;
     try {
       const payments = await mollie.payments.list({ limit: 100 });
-      betalingen = payments
-        .filter(p => p.status === 'paid')
-        .map(p => ({
+      const betaalLijst = payments.filter(p => p.status === 'paid');
+
+      // Haal emails op uit sessions store voor betalingen zonder email
+      const siteID2 = process.env.NETLIFY_SITE_ID;
+      const blobsToken2 = process.env.NETLIFY_BLOBS_TOKEN;
+      const sessStore = (siteID2 && blobsToken2)
+        ? getStore({ name: 'sessions', siteID: siteID2, token: blobsToken2 })
+        : getStore('sessions');
+
+      betalingen = await Promise.all(betaalLijst.map(async p => {
+        let email = p.metadata?.email || p.metadata?.userEmail || '';
+        let plan = p.metadata?.plan || p.metadata?.type || '';
+
+        // Probeer email uit session als het leeg is
+        if (!email && p.metadata?.sessionId) {
+          try {
+            const sess = await sessStore.get(p.metadata.sessionId, { type: 'json' });
+            if (sess) email = sess.user?.email || sess.subscriptionEmail || '';
+          } catch (e) {}
+        }
+
+        return {
           id: p.id,
           bedrag: parseFloat(p.amount.value),
           omschrijving: p.description,
           datum: p.paidAt || p.createdAt,
-          email: p.metadata?.email || '',
-          type: p.metadata?.type || ''
-        }));
+          email,
+          type: plan
+        };
+      }));
+
       totalOntvangen = betalingen.reduce((sum, p) => sum + p.bedrag, 0);
     } catch (e) {
       console.error('Mollie fout:', e);
     }
 
-    // Dedup op email — houd alleen meest recente per email
+    // Dedup op email — houd actief abonnement, anders meest recente
     const emailMap = {};
     profielen.forEach(function(p) {
       const key = (p.email || '').toLowerCase();
       if (!key) return;
-      if (!emailMap[key] || new Date(p.aangemaaktOp) > new Date(emailMap[key].aangemaaktOp)) {
+      if (!emailMap[key]) {
         emailMap[key] = p;
+      } else {
+        const bestaande = emailMap[key];
+        // Actief abonnement heeft altijd voorrang
+        if (p.abonnementActief && !bestaande.abonnementActief) {
+          emailMap[key] = p;
+        } else if (!p.abonnementActief && bestaande.abonnementActief) {
+          // houd bestaande
+        } else if (new Date(p.aangemaaktOp || 0) > new Date(bestaande.aangemaaktOp || 0)) {
+          emailMap[key] = p;
+        }
       }
     });
     const uniekeProfielenList = Object.values(emailMap);
@@ -107,6 +138,26 @@ exports.handler = async (event) => {
       console.error('Sessions fout:', e);
     }
 
+    // Rapporten ophalen
+    let rapporten = [];
+    try {
+      const siteID3 = process.env.NETLIFY_SITE_ID;
+      const blobsToken3 = process.env.NETLIFY_BLOBS_TOKEN;
+      const rapStore = (siteID3 && blobsToken3)
+        ? getStore({ name: 'rapporten', siteID: siteID3, token: blobsToken3 })
+        : getStore('rapporten');
+      const { blobs: rapBlobs } = await rapStore.list();
+      rapporten = await Promise.all(rapBlobs.map(async blob => {
+        try {
+          const data = await rapStore.get(blob.key, { type: 'json' });
+          return data;
+        } catch (e) { return null; }
+      }));
+      rapporten = rapporten.filter(Boolean).sort((a, b) => new Date(b.datum) - new Date(a.datum));
+    } catch (e) {
+      console.error('Rapporten fout:', e);
+    }
+
     // Aanmeldingen gesorteerd op datum
     const aanmeldingen = uniekeProfielenList
       .filter(function(p) { return p.abonnementStartOp; })
@@ -118,6 +169,7 @@ exports.handler = async (event) => {
       headers,
       body: JSON.stringify({
         profielen: uniekeProfielenList,
+        rapporten,
         actieven,
         afgemeld,
         inactief,
