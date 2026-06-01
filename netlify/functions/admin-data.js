@@ -138,6 +138,56 @@ exports.handler = async (event) => {
       console.error('Sessions fout:', e);
     }
 
+    // Alle sessions ophalen voor warme leads
+    let alleSessions = [];
+    try {
+      const siteID3 = process.env.NETLIFY_SITE_ID;
+      const blobsToken3 = process.env.NETLIFY_BLOBS_TOKEN;
+      const sessStore2 = (siteID3 && blobsToken3)
+        ? getStore({ name: 'sessions', siteID: siteID3, token: blobsToken3 })
+        : getStore('sessions');
+      const { blobs: sessBlobs2 } = await sessStore2.list();
+      const sessData = await Promise.all(sessBlobs2.map(async blob => {
+        try {
+          const d = await sessStore2.get(blob.key, { type: 'json' });
+          return d;
+        } catch (e) { return null; }
+      }));
+      alleSessions = sessData.filter(Boolean);
+    } catch (e) {
+      console.error('Sessions ophalen fout:', e);
+    }
+
+    // Betaalde emails verzamelen
+    const betaaldeEmails = new Set(betalingen.map(b => (b.email || '').toLowerCase()).filter(Boolean));
+    const profielEmails = new Set(uniekeProfielenList.map(p => (p.email || '').toLowerCase()).filter(Boolean));
+
+    // Niet betaald — hebben quiz ingevuld maar nooit betaald
+    const nietBetaald = alleSessions
+      .filter(s => s.user?.email && !betaaldeEmails.has(s.user.email.toLowerCase()) && !profielEmails.has(s.user.email.toLowerCase()))
+      .map(s => ({
+        naam: s.user?.name || '—',
+        email: s.user?.email || '—',
+        stijl: s.style?.title || s.styleKey || '—',
+        datum: s.createdAt ? new Date(s.createdAt).toISOString() : null
+      }))
+      .sort((a, b) => new Date(b.datum || 0) - new Date(a.datum || 0));
+
+    // Alleen rapport — eenmalig betaald, geen Luna abonnement
+    const allaRapportEmails = new Set(rapporten ? rapporten.filter(r => r.type === 'solo' || r.type === 'couple_main').map(r => (r.email || '').toLowerCase()) : []);
+    const alleenRapport = alleSessions
+      .filter(s => {
+        const email = (s.user?.email || '').toLowerCase();
+        return email && betaaldeEmails.has(email) && !profielEmails.has(email);
+      })
+      .map(s => ({
+        naam: s.user?.name || '—',
+        email: s.user?.email || '—',
+        stijl: s.style?.title || s.styleKey || '—',
+        datum: s.createdAt ? new Date(s.createdAt).toISOString() : null
+      }))
+      .sort((a, b) => new Date(b.datum || 0) - new Date(a.datum || 0));
+
     // Rapporten ophalen
     let rapporten = [];
     try {
@@ -170,6 +220,9 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         profielen: uniekeProfielenList,
         rapporten,
+        nietBetaald,
+        alleenRapport,
+        leden: actieven,
         actieven,
         afgemeld,
         inactief,
