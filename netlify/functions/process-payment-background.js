@@ -1,21 +1,34 @@
-// netlify/functions/process-payment-background.js
-//
-// KRITIEK: Mollie verwacht een 200 OK binnen ~15 sec. Zo niet, retryt
-// hij met exponential backoff (tot ~24u). Dat is waarom mails 5-10x
-// werden verstuurd: webhook deed 3x Claude calls + 2x Resend voor de
-// 200 terugkwam, dus Mollie dacht dat 't faalde.
-//
-// FIX:
-//   1. Check idempotency direct (paymentId al verwerkt? klaar.)
-//   2. Markeer als processed VOOR het zware werk start
-//   3. Return 200 direct
-//   4. Doe Claude/Resend werk async via background fetch
-
 const mollieClient = require('@mollie/api-client');
 const Anthropic = require('@anthropic-ai/sdk');
 const { Resend } = require('resend');
+const { getStore } = require('@netlify/blobs');
 const { dbGet, dbSet } = require('./_lib/storage');
 const { buildSoloPrompt, buildCouplePrompt, emailWrapper } = require('./_lib/helpers');
+
+function getRapportenStore() {
+  const siteID = process.env.NETLIFY_SITE_ID;
+  const token = process.env.NETLIFY_BLOBS_TOKEN;
+  if (siteID && token) {
+    return getStore({ name: 'rapporten', siteID, token });
+  }
+  return getStore('rapporten');
+}
+
+async function slaRapportOp({ type, email, naam, stijl, sessionId, token }) {
+  try {
+    const store = getRapportenStore();
+    const id = `rapport_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+    await store.setJSON(id, {
+      id, type, email, naam, stijl,
+      sessionId: sessionId || null,
+      token: token || null,
+      datum: new Date().toISOString(),
+      verstuurd: true
+    });
+  } catch (e) {
+    console.error('[rapport opslaan mislukt]', e.message);
+  }
+}
 
 exports.handler = async (event) => {
   const secret = event.headers['x-internal-secret'];
@@ -84,12 +97,19 @@ async function handleSolo({ sessionId }) {
 
   const html = await generateSoloReport(sess);
 
-  // FIX: emailWrapper title is niet de naam — rapport opent zelf al met "Hallo {naam}"
   await sendMail(
     sess.user.email,
     `Jouw hechtingsrapport — ${sess.style?.title || ''}`,
     emailWrapper('Jouw hechtingsrapport', html)
   );
+
+  await slaRapportOp({
+    type: 'solo',
+    email: sess.user.email,
+    naam: sess.user.name,
+    stijl: sess.style?.title,
+    sessionId
+  });
 
   await dbSet(`sessions/${sessionId}`, { ...sess, paid: true, reportSent: true });
 }
@@ -147,7 +167,6 @@ async function handleSubscriptionFirst({ mollie, payment, sessionId }) {
 
   const html = await generateSoloReport(updatedSess);
 
-  // FIX: geen naam in emailWrapper title — rapport opent zelf al met "Hallo {naam}"
   await sendMail(
     sess.user?.email || sess.subscriptionEmail,
     'Welkom bij Hechtingtest Premium — jouw eerste rapport',
@@ -164,6 +183,14 @@ async function handleSubscriptionFirst({ mollie, payment, sessionId }) {
       </p>
     `)
   );
+
+  await slaRapportOp({
+    type: 'subscription',
+    email: sess.user?.email || sess.subscriptionEmail,
+    naam: sess.user?.name,
+    stijl: sess.style?.title,
+    sessionId
+  });
 
   await dbSet(`sessions/${sessionId}`, { ...updatedSess, reportSent: true });
 }
@@ -184,7 +211,6 @@ async function handleSubscriptionRecurring({ payment }) {
   const sess = await dbGet(`sessions/${sessionIdForCustomer}`);
   if (!sess) return;
 
-  // FIX: geen naam in emailWrapper title
   await sendMail(
     sess.user?.email || sess.subscriptionEmail,
     'Jouw maandelijkse hechtings-inzichten',
@@ -278,6 +304,25 @@ async function generateAndSendCouple(token) {
     )
   ]);
 
+  await Promise.all([
+    slaRapportOp({
+      type: 'couple_main',
+      email: main.user.email,
+      naam: main.user.name,
+      stijl: main.style?.title,
+      sessionId: couple.mainSessionId,
+      token
+    }),
+    slaRapportOp({
+      type: 'couple_partner',
+      email: partner.user.email,
+      naam: partner.user.name,
+      stijl: partner.style?.title,
+      sessionId: couple.partnerSessionId,
+      token
+    })
+  ]);
+
   await dbSet(`couples/${token}`, { ...couple, reportSent: true });
 }
 
@@ -286,12 +331,10 @@ async function generateAndSendCouple(token) {
 async function sendMail(to, subject, html) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   return resend.emails.send({
-    // FIX: noreply adres — zorg dat dit geverifieerd staat in Resend dashboard
     from: 'Hechtingtest <noreply@hechtingstest.nl>',
     to,
     subject,
     html,
-    // FIX: List-Unsubscribe header helpt tegen spam classificatie
     headers: {
       'List-Unsubscribe': '<mailto:info@hechtingstest.nl?subject=Uitschrijven>'
     }
