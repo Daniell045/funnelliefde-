@@ -276,6 +276,24 @@ function renderDashboard(data) {
   document.getElementById('statActief').textContent = data.stats.actieveAbonnementen;
   document.getElementById('statAfgemeld').textContent = data.stats.afgemeldCount || 0;
 
+  // Rapporten
+  var rapporten = data.rapporten || [];
+  document.getElementById('rapportenTable').innerHTML = rapporten.length === 0
+    ? '<tr><td colspan="5" class="empty-state">Nog geen rapporten verstuurd</td></tr>'
+    : rapporten.map(function(r) {
+        var datum = r.datum ? new Date(r.datum).toLocaleDateString('nl-NL') : '—';
+        var typeMap = { solo: 'Solo', couple_main: 'Koppel (hoofd)', couple_partner: 'Koppel (partner)', subscription: 'Abonnement' };
+        var typeLabel = typeMap[r.type] || r.type || '—';
+        var badgeClass = r.type === 'solo' ? 'solo' : r.type && r.type.includes('couple') ? 'couple' : 'coach';
+        return '<tr>' +
+          '<td style="font-size:0.8125rem;color:var(--text-muted);">' + datum + '</td>' +
+          '<td style="font-weight:500;">' + (r.naam || '—') + '</td>' +
+          '<td style="font-size:0.8125rem;color:var(--text-muted);">' + (r.email || '—') + '</td>' +
+          '<td><span class="badge ' + badgeClass + '">' + typeLabel + '</span></td>' +
+          '<td style="font-size:0.8125rem;color:var(--text-muted);">' + (r.stijl || '—') + '</td>' +
+          '</tr>';
+      }).join('');
+
   // Aanmeldingen
   var aanmeldingen = data.aanmeldingen || [];
   document.getElementById('aanmeldingenTable').innerHTML = aanmeldingen.length === 0
