@@ -91,17 +91,44 @@ exports.handler = async (event) => {
       console.error('Sessions fout:', e);
     }
 
+    // Dedup op email — houd alleen meest recente per email
+    const emailMap = {};
+    profielen.forEach(function(p) {
+      const key = (p.email || '').toLowerCase();
+      if (!key) return;
+      if (!emailMap[key] || new Date(p.aangemaaktOp) > new Date(emailMap[key].aangemaaktOp)) {
+        emailMap[key] = p;
+      }
+    });
+    const uniekeProfielenList = Object.values(emailMap);
+
+    // Splitsen in actief, afgemeld, inactief
+    const actieven = uniekeProfielenList.filter(function(p) { return p.abonnementActief && !p.opzeggingAangevraagd; });
+    const afgemeld = uniekeProfielenList.filter(function(p) { return p.opzeggingAangevraagd; });
+    const inactief = uniekeProfielenList.filter(function(p) { return !p.abonnementActief && !p.opzeggingAangevraagd; });
+
+    // Aanmeldingen gesorteerd op datum
+    const aanmeldingen = uniekeProfielenList
+      .filter(function(p) { return p.abonnementStartOp; })
+      .sort(function(a, b) { return new Date(b.abonnementStartOp) - new Date(a.abonnementStartOp); })
+      .map(function(p) { return { naam: p.naam, email: p.email, stijl: p.stijl, datum: p.abonnementStartOp, coachToken: p.coachToken }; });
+
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        profielen,
+        profielen: uniekeProfielenList,
+        actieven,
+        afgemeld,
+        inactief,
+        aanmeldingen,
         betalingen,
         stats: {
           totalOntvangen: totalOntvangen.toFixed(2),
-          mrrVerwacht: mrrVerwacht.toFixed(2),
-          actieveAbonnementen,
-          totalGebruikers: profielen.length
+          mrrVerwacht: (actieven.length * 14.99).toFixed(2),
+          actieveAbonnementen: actieven.length,
+          afgemeldCount: afgemeld.length,
+          totalGebruikers: uniekeProfielenList.length
         },
         funnel: funnelData
       })
