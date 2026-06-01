@@ -138,6 +138,26 @@ exports.handler = async (event) => {
       console.error('Sessions fout:', e);
     }
 
+    // Rapporten ophalen
+    let rapporten = [];
+    try {
+      const siteIDr = process.env.NETLIFY_SITE_ID;
+      const blobsTokenr = process.env.NETLIFY_BLOBS_TOKEN;
+      const rapStore = (siteIDr && blobsTokenr)
+        ? getStore({ name: 'rapporten', siteID: siteIDr, token: blobsTokenr })
+        : getStore('rapporten');
+      const { blobs: rapBlobs } = await rapStore.list();
+      rapporten = await Promise.all(rapBlobs.map(async blob => {
+        try {
+          const data = await rapStore.get(blob.key, { type: 'json' });
+          return data;
+        } catch (e) { return null; }
+      }));
+      rapporten = rapporten.filter(Boolean).sort((a, b) => new Date(b.datum) - new Date(a.datum));
+    } catch (e) {
+      console.error('Rapporten fout:', e);
+    }
+
     // Alle sessions ophalen voor warme leads
     let alleSessions = [];
     try {
@@ -174,7 +194,6 @@ exports.handler = async (event) => {
       .sort((a, b) => new Date(b.datum || 0) - new Date(a.datum || 0));
 
     // Alleen rapport — eenmalig betaald, geen Luna abonnement
-    const allaRapportEmails = new Set(rapporten ? rapporten.filter(r => r.type === 'solo' || r.type === 'couple_main').map(r => (r.email || '').toLowerCase()) : []);
     const alleenRapport = alleSessions
       .filter(s => {
         const email = (s.user?.email || '').toLowerCase();
@@ -187,26 +206,6 @@ exports.handler = async (event) => {
         datum: s.createdAt ? new Date(s.createdAt).toISOString() : null
       }))
       .sort((a, b) => new Date(b.datum || 0) - new Date(a.datum || 0));
-
-    // Rapporten ophalen
-    let rapporten = [];
-    try {
-      const siteID3 = process.env.NETLIFY_SITE_ID;
-      const blobsToken3 = process.env.NETLIFY_BLOBS_TOKEN;
-      const rapStore = (siteID3 && blobsToken3)
-        ? getStore({ name: 'rapporten', siteID: siteID3, token: blobsToken3 })
-        : getStore('rapporten');
-      const { blobs: rapBlobs } = await rapStore.list();
-      rapporten = await Promise.all(rapBlobs.map(async blob => {
-        try {
-          const data = await rapStore.get(blob.key, { type: 'json' });
-          return data;
-        } catch (e) { return null; }
-      }));
-      rapporten = rapporten.filter(Boolean).sort((a, b) => new Date(b.datum) - new Date(a.datum));
-    } catch (e) {
-      console.error('Rapporten fout:', e);
-    }
 
     // Aanmeldingen gesorteerd op datum
     const aanmeldingen = uniekeProfielenList
