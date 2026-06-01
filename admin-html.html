@@ -276,6 +276,40 @@ function renderDashboard(data) {
   document.getElementById('statActief').textContent = data.stats.actieveAbonnementen;
   document.getElementById('statAfgemeld').textContent = data.stats.afgemeldCount || 0;
 
+  // Segmenten
+  document.getElementById('statNietBetaald').textContent = (data.nietBetaald || []).length;
+  document.getElementById('statAlleenRapport').textContent = (data.alleenRapport || []).length;
+  document.getElementById('statLeden').textContent = (data.leden || []).length;
+
+  function renderSegmentTable(tableId, lijst) {
+    document.getElementById(tableId).innerHTML = lijst.length === 0
+      ? '<tr><td colspan="4" class="empty-state">Geen data</td></tr>'
+      : lijst.map(function(r) {
+          var datum = r.datum ? new Date(r.datum).toLocaleDateString('nl-NL') : '—';
+          return '<tr><td style="font-size:0.8125rem;color:var(--text-muted);">' + datum + '</td><td style="font-weight:500;">' + (r.naam || '—') + '</td><td style="font-size:0.8125rem;color:var(--text-muted);">' + (r.email || '—') + '</td><td style="font-size:0.8125rem;color:var(--text-muted);">' + (r.stijl || '—') + '</td></tr>';
+        }).join('');
+  }
+
+  renderSegmentTable('nietBetaaldTable', data.nietBetaald || []);
+  renderSegmentTable('alleenRapportTable', data.alleenRapport || []);
+
+  // Leden
+  var alleLeden = data.leden || [];
+  function renderLeden(lijst) {
+    document.getElementById('ledenTable').innerHTML = lijst.length === 0
+      ? '<tr><td colspan="4" class="empty-state">Geen leden</td></tr>'
+      : lijst.map(function(l) {
+          var datum = l.abonnementStartOp ? new Date(l.abonnementStartOp).toLocaleDateString('nl-NL') : '—';
+          return '<tr><td><div style="font-weight:500;">' + (l.naam || '—') + '</div><div style="font-size:0.75rem;color:var(--text-muted);">' + (l.email || '—') + '</div></td><td style="font-size:0.8125rem;color:var(--text-muted);">' + (l.stijl || '—') + '</td><td style="font-size:0.8125rem;color:var(--text-muted);">' + datum + '</td><td style="font-size:0.8125rem;color:var(--text-muted);">' + (l.totaleBerichten || 0) + '</td></tr>';
+        }).join('');
+  }
+  renderLeden(alleLeden);
+
+  function filterLeden(q) {
+    if (!q) { renderLeden(alleLeden); return; }
+    renderLeden(alleLeden.filter(function(l) { return (l.naam||'').toLowerCase().includes(q.toLowerCase()) || (l.email||'').toLowerCase().includes(q.toLowerCase()); }));
+  }
+
   // Rapporten
   var rapporten = data.rapporten || [];
   document.getElementById('rapportenTable').innerHTML = rapporten.length === 0
