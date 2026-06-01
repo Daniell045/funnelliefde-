@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#2D4A3E">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/logo.png">
+<link rel="icon" type="image/png" href="/logo.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Hechtingtest">
@@ -168,6 +169,21 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
     <h1 class="intro-title" id="introTitle">Hoe jij liefhebt<br><em>begint bij hechten.</em></h1>
     <p class="intro-body" id="introBody">Je hechtingsstijl bepaalt hoe je liefde geeft, ruzie maakt en je veilig voelt. Ontdek welke van de 4 stijlen jou stuurt — en wat dat betekent voor je relaties.</p>
     <button class="btn-primary" onclick="startQuiz()">Start de test</button>
+
+    <!-- Al lid / inloggen -->
+    <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);width:100%;max-width:420px;">
+      <div style="font-size:0.6875rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.75rem;">Al een account?</div>
+      <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.6;margin-bottom:1rem;">Heb je al een Luna AI coach abonnement? Log in met je e-mailadres om verder te gaan.</p>
+      <div id="loginForm" style="display:flex;flex-direction:column;gap:0.625rem;">
+        <input type="email" class="input" id="loginEmail" placeholder="jouw@email.nl" style="max-width:420px;">
+        <div id="loginError" style="display:none;color:var(--accent);font-size:0.8125rem;"></div>
+        <button onclick="loginMetEmail()" id="loginBtn" style="background:transparent;color:var(--primary);border:1.5px solid var(--primary);padding:0.875rem 1.5rem;font-size:0.9375rem;font-weight:600;border-radius:999px;cursor:pointer;font-family:inherit;transition:all 0.2s;min-height:52px;align-self:flex-start;">Inloggen →</button>
+      </div>
+      <div id="loginSuccess" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem 1.25rem;font-size:0.9rem;color:var(--text-muted);line-height:1.6;">
+        ✓ Check je inbox — we hebben een inloglink gestuurd.
+      </div>
+      <p style="font-size:0.8125rem;color:var(--text-muted);margin-top:1rem;">Nog geen abonnement? <button onclick="startQuiz()" style="background:none;border:none;color:var(--primary);font-weight:600;cursor:pointer;font-family:inherit;font-size:0.8125rem;padding:0;">Doe eerst de test →</button></p>
+    </div>
   </section>
 
   <!-- QUIZ -->
@@ -640,6 +656,41 @@ function partnerStartCoach() {
     else { alert('Fout: ' + (data.error || 'Probeer opnieuw')); btn.disabled = false; btn.textContent = '3 dagen gratis proberen'; }
   })
   .catch(function() { alert('Verbindingsfout, probeer opnieuw'); btn.disabled = false; btn.textContent = '3 dagen gratis proberen'; });
+}
+
+function loginMetEmail() {
+  var email = document.getElementById('loginEmail').value.trim();
+  var btn = document.getElementById('loginBtn');
+  var errEl = document.getElementById('loginError');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    errEl.textContent = 'Vul een geldig e-mailadres in.';
+    errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+  btn.disabled = true; btn.textContent = 'Bezig...';
+  fetch('/.netlify/functions/luna-login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.ok) {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('loginSuccess').style.display = 'block';
+    } else if (data.token) {
+      window.location.href = '/?token=' + data.token;
+    } else {
+      errEl.textContent = data.error || 'Geen account gevonden met dit e-mailadres.';
+      errEl.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Inloggen →';
+    }
+  })
+  .catch(function() {
+    errEl.textContent = 'Verbindingsfout, probeer opnieuw.';
+    errEl.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Inloggen →';
+  });
 }
 
 document.getElementById('inputEmail').addEventListener('keydown', function(e) {
