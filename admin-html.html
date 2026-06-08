@@ -14,8 +14,6 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
-/* LOGIN */
 .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
 .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; width: 100%; max-width: 380px; }
 .login-card h1 { font-size: 1.5rem; font-weight: 400; margin-bottom: 0.375rem; }
@@ -26,30 +24,20 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 .btn:hover { opacity: 0.85; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .error-msg { color: var(--accent); font-size: 0.8125rem; margin-bottom: 0.75rem; display: none; }
-
-/* DASHBOARD */
 #dashboard { display: none; }
 .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-.topbar-logo { font-weight: 600; font-size: 1rem; color: var(--text); display: flex; align-items: center; gap: 0.5rem; }
+.topbar-logo { font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 .topbar-right { display: flex; align-items: center; gap: 1rem; }
-.refresh-btn { background: var(--surface-2); border: 1px solid var(--border); color: var(--text-muted); padding: 0.5rem 1rem; border-radius: 999px; font-size: 0.8125rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
-.refresh-btn:hover { border-color: var(--primary); color: var(--text); }
+.refresh-btn { background: var(--surface-2); border: 1px solid var(--border); color: var(--text-muted); padding: 0.5rem 1rem; border-radius: 999px; font-size: 0.8125rem; font-weight: 600; cursor: pointer; font-family: inherit; }
 .last-updated { font-size: 0.75rem; color: var(--text-muted); }
-
 .page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-
-/* STATS */
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
 .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.375rem; }
 .stat-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
 .stat-value { font-size: 2rem; font-weight: 500; line-height: 1; margin-bottom: 0.25rem; }
-.stat-value.green { color: var(--green); }
-.stat-value.accent { color: var(--accent-soft); }
 .stat-sub { font-size: 0.8125rem; color: var(--text-muted); }
-
-/* FUNNEL */
-.funnel-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 2.5rem; }
+.funnel-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; }
 .section-title { font-size: 1rem; font-weight: 600; margin-bottom: 1.25rem; }
 .funnel-steps { display: flex; flex-direction: column; gap: 0.5rem; }
 .funnel-step { display: flex; align-items: center; gap: 1rem; }
@@ -58,36 +46,30 @@ body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); col
 .funnel-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.8s ease; }
 .funnel-count { font-size: 0.875rem; font-weight: 600; width: 40px; text-align: right; flex-shrink: 0; }
 .funnel-pct { font-size: 0.75rem; color: var(--text-muted); width: 45px; text-align: right; flex-shrink: 0; }
-
-/* TABLES */
-.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; overflow-x: auto; }
-.table-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: gap; gap: 0.75rem; }
+.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; overflow-x: auto; }
+.table-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; gap: 0.75rem; }
 .search-input { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.875rem; font-family: inherit; font-size: 0.875rem; color: var(--text); width: 220px; }
 .search-input:focus { outline: none; border-color: var(--primary); }
 table { width: 100%; border-collapse: collapse; }
 th { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); padding: 0.625rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
 td { font-size: 0.875rem; padding: 0.875rem 0.75rem; border-bottom: 1px solid rgba(244,239,230,0.04); vertical-align: middle; }
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(244,239,230,0.02); }
-.badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+.badge { display: inline-flex; align-items: center; padding: 0.25rem 0.625rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
 .badge.actief { background: rgba(76,175,80,0.15); color: var(--green); }
 .badge.inactief { background: rgba(239,83,80,0.15); color: var(--red); }
 .badge.solo { background: rgba(201,123,95,0.15); color: var(--accent-soft); }
 .badge.couple { background: rgba(74,140,110,0.15); color: var(--primary); }
 .badge.coach { background: rgba(74,140,110,0.2); color: #7BC8A4; }
 .empty-state { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem; }
-
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
-@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: 1fr 1fr; } }
-
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 .loading-overlay { display: flex; align-items: center; justify-content: center; padding: 4rem; flex-direction: column; gap: 1rem; color: var(--text-muted); }
 .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div class="login-wrap" id="loginWrap">
   <div class="login-card">
     <h1>Admin</h1>
@@ -98,7 +80,6 @@ tr:hover td { background: rgba(244,239,230,0.02); }
   </div>
 </div>
 
-<!-- DASHBOARD -->
 <div id="dashboard">
   <div class="topbar">
     <div class="topbar-logo"><div class="dot"></div> Hechtingtest Admin</div>
@@ -107,35 +88,39 @@ tr:hover td { background: rgba(244,239,230,0.02); }
       <button class="refresh-btn" onclick="laadData()">Vernieuwen</button>
     </div>
   </div>
-
   <div class="page">
     <div id="loadingState" class="loading-overlay">
       <div class="spinner"></div>
       <span>Data ophalen...</span>
     </div>
-
     <div id="dashContent" style="display:none;">
+
       <!-- STATS -->
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-label">Ontvangen</div>
-          <div class="stat-value green" id="statOntvangen">€0</div>
+          <div class="stat-value" style="color:var(--green);" id="statOntvangen">€0</div>
           <div class="stat-sub">Totaal betalingen</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">MRR verwacht</div>
-          <div class="stat-value accent" id="statMrr">€0</div>
+          <div class="stat-value" style="color:var(--accent-soft);" id="statMrr">€0</div>
           <div class="stat-sub">Per maand</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Actieve abonnementen</div>
-          <div class="stat-value" id="statActief">0</div>
-          <div class="stat-sub">Luna coach</div>
+          <div class="stat-label">Niet betaald</div>
+          <div class="stat-value" style="color:var(--yellow);" id="statNietBetaald">0</div>
+          <div class="stat-sub">Warme leads</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Totaal gebruikers</div>
-          <div class="stat-value" id="statGebruikers">0</div>
-          <div class="stat-sub">Hebben betaald</div>
+          <div class="stat-label">Alleen rapport</div>
+          <div class="stat-value" style="color:var(--accent-soft);" id="statAlleenRapport">0</div>
+          <div class="stat-sub">Eenmalig betaald</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Leden</div>
+          <div class="stat-value" style="color:var(--green);" id="statLeden">0</div>
+          <div class="stat-sub">Actief abonnement</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Afgemeld</div>
@@ -150,21 +135,51 @@ tr:hover td { background: rgba(244,239,230,0.02); }
         <div class="funnel-steps" id="funnelSteps"></div>
       </div>
 
+      <!-- NIET BETAALD -->
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="section-title" style="margin:0;color:var(--yellow);">Niet betaald — warme leads</div>
+        </div>
+        <table>
+          <thead><tr><th>Datum</th><th>Naam</th><th>Email</th><th>Stijl</th><th>Actie</th></tr></thead>
+          <tbody id="nietBetaaldTable"></tbody>
+        </table>
+      </div>
+
+      <!-- ALLEEN RAPPORT -->
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="section-title" style="margin:0;color:var(--accent-soft);">Alleen rapport</div>
+        </div>
+        <table>
+          <thead><tr><th>Datum</th><th>Naam</th><th>Email</th><th>Stijl</th><th>Actie</th></tr></thead>
+          <tbody id="alleenRapportTable"></tbody>
+        </table>
+      </div>
+
+      <!-- LEDEN -->
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="section-title" style="margin:0;color:var(--green);">Leden — actief abonnement</div>
+          <input type="text" class="search-input" placeholder="Zoek..." oninput="filterLeden(this.value)">
+        </div>
+        <table>
+          <thead><tr><th>Naam</th><th>Stijl</th><th>Lid sinds</th><th>Berichten</th></tr></thead>
+          <tbody id="ledenTable"></tbody>
+        </table>
+      </div>
+
       <!-- AANMELDINGEN + AFMELDINGEN -->
       <div class="two-col">
         <div class="table-wrap">
-          <div class="table-header">
-            <div class="section-title" style="margin:0;">Aanmeldingen</div>
-          </div>
+          <div class="table-header"><div class="section-title" style="margin:0;">Aanmeldingen</div></div>
           <table>
             <thead><tr><th>Datum</th><th>Naam</th><th>Stijl</th></tr></thead>
             <tbody id="aanmeldingenTable"></tbody>
           </table>
         </div>
         <div class="table-wrap">
-          <div class="table-header">
-            <div class="section-title" style="margin:0;">Afmeldingen</div>
-          </div>
+          <div class="table-header"><div class="section-title" style="margin:0;">Afmeldingen</div></div>
           <table>
             <thead><tr><th>Datum</th><th>Naam</th><th>Email</th></tr></thead>
             <tbody id="afmeldingenTable"></tbody>
@@ -172,52 +187,44 @@ tr:hover td { background: rgba(244,239,230,0.02); }
         </div>
       </div>
 
+      <!-- RAPPORTEN -->
+      <div class="table-wrap">
+        <div class="table-header"><div class="section-title" style="margin:0;">Verstuurde rapporten</div></div>
+        <table>
+          <thead><tr><th>Datum</th><th>Naam</th><th>Email</th><th>Type</th><th>Stijl</th></tr></thead>
+          <tbody id="rapportenTable"></tbody>
+        </table>
+      </div>
+
+      <!-- GEBRUIKERS + BETALINGEN -->
       <div class="two-col">
-        <!-- GEBRUIKERS -->
         <div class="table-wrap">
           <div class="table-header">
             <div class="section-title" style="margin:0;">Gebruikers</div>
-            <input type="text" class="search-input" placeholder="Zoek op naam of email..." oninput="filterGebruikers(this.value)">
+            <input type="text" class="search-input" placeholder="Zoek..." oninput="filterGebruikers(this.value)">
           </div>
           <table>
-            <thead>
-              <tr>
-                <th>Naam</th>
-                <th>Stijl</th>
-                <th>Status</th>
-                <th>Aangemaakt</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Naam</th><th>Stijl</th><th>Status</th><th>Datum</th></tr></thead>
             <tbody id="gebruikersTable"></tbody>
           </table>
         </div>
-
-        <!-- BETALINGEN -->
         <div class="table-wrap">
-          <div class="table-header">
-            <div class="section-title" style="margin:0;">Betalingen</div>
-          </div>
+          <div class="table-header"><div class="section-title" style="margin:0;">Betalingen</div></div>
           <table>
-            <thead>
-              <tr>
-                <th>Datum</th>
-                <th>Bedrag</th>
-                <th>Type</th>
-                <th>Email</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Datum</th><th>Bedrag</th><th>Type</th><th>Email</th></tr></thead>
             <tbody id="betalingenTable"></tbody>
           </table>
         </div>
       </div>
+
     </div>
   </div>
 </div>
 
 <script>
 var pw = '';
-var adminData = null;
 var alleGebruikers = [];
+var alleLeden = [];
 
 function doLogin() {
   var input = document.getElementById('pwInput').value;
@@ -240,7 +247,6 @@ function doLogin() {
     }
     document.getElementById('loginWrap').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
-    adminData = data;
     renderDashboard(data);
   })
   .catch(function() {
@@ -259,9 +265,7 @@ function laadData() {
     body: JSON.stringify({ password: pw })
   })
   .then(function(r) { return r.json(); })
-  .then(function(data) {
-    if (!data.error) { adminData = data; renderDashboard(data); }
-  })
+  .then(function(data) { if (!data.error) renderDashboard(data); })
   .catch(function() {});
 }
 
@@ -270,98 +274,43 @@ function renderDashboard(data) {
   document.getElementById('dashContent').style.display = 'block';
   document.getElementById('lastUpdated').textContent = 'Bijgewerkt: ' + new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
 
-  // Stats
-  document.getElementById('statOntvangen').textContent = '€' + data.stats.totalOntvangen;
-  document.getElementById('statMrr').textContent = '€' + data.stats.mrrVerwacht;
-  document.getElementById('statActief').textContent = data.stats.actieveAbonnementen;
-  document.getElementById('statAfgemeld').textContent = data.stats.afgemeldCount || 0;
-
-  // Segmenten
+  var s = data.stats || {};
+  document.getElementById('statOntvangen').textContent = '\u20AC' + (s.totalOntvangen || '0');
+  document.getElementById('statMrr').textContent = '\u20AC' + (s.mrrVerwacht || '0');
   document.getElementById('statNietBetaald').textContent = (data.nietBetaald || []).length;
   document.getElementById('statAlleenRapport').textContent = (data.alleenRapport || []).length;
   document.getElementById('statLeden').textContent = (data.leden || []).length;
+  document.getElementById('statAfgemeld').textContent = s.afgemeldCount || 0;
 
-  function renderSegmentTable(tableId, lijst, mailType) {
-    document.getElementById(tableId).innerHTML = lijst.length === 0
-      ? '<tr><td colspan="5" class="empty-state">Geen data</td></tr>'
-      : lijst.map(function(r) {
-          var datum = r.datum ? new Date(r.datum).toLocaleDateString('nl-NL') : '—';
-          var btnId = 'btn_' + (r.email || '').replace(/[^a-z0-9]/gi, '_');
-          return '<tr>' +
-            '<td style="font-size:0.8125rem;color:var(--text-muted);">' + datum + '</td>' +
-            '<td style="font-weight:500;">' + (r.naam || '—') + '</td>' +
-            '<td style="font-size:0.8125rem;color:var(--text-muted);">' + (r.email || '—') + '</td>' +
-            '<td style="font-size:0.8125rem;color:var(--text-muted);">' + (r.stijl || '—') + '</td>' +
-            '<td><button id="' + btnId + '" onclick="stuurFollowUp(this, '' + (r.email||'') + '', '' + (r.naam||'') + '', '' + (r.stijl||'') + '', '' + mailType + '')" style="background:var(--primary);color:white;border:none;padding:0.375rem 0.75rem;border-radius:999px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity 0.2s;">Stuur mail</button></td>' +
-            '</tr>';
-        }).join('');
-  }
+  // Funnel
+  var f = data.funnel || {};
+  var max = Math.max(f.quizGestart || 1, 1);
+  var steps = [
+    { label: 'Quiz gestart', count: f.quizGestart || 0 },
+    { label: 'Email ingevuld', count: f.emailIngevuld || 0 },
+    { label: 'Betaald', count: f.betaald || 0 },
+    { label: 'Actief abonnement', count: f.actief || 0 }
+  ];
+  document.getElementById('funnelSteps').innerHTML = steps.map(function(s) {
+    var pct = Math.round((s.count / max) * 100);
+    return '<div class="funnel-step"><div class="funnel-label">' + s.label + '</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:' + pct + '%"></div></div><div class="funnel-count">' + s.count + '</div><div class="funnel-pct">' + pct + '%</div></div>';
+  }).join('');
 
-  renderSegmentTable('nietBetaaldTable', data.nietBetaald || [], 'niet_betaald');
-  renderSegmentTable('alleenRapportTable', data.alleenRapport || [], 'rapport_follow_up');
-
-  function stuurFollowUp(btn, email, naam, stijl, type) {
-    btn.disabled = true; btn.textContent = 'Bezig...';
-    fetch('/.netlify/functions/send-followup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: pw, email, naam, stijl, type })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.ok) {
-        btn.textContent = 'Verstuurd v';
-        btn.style.background = 'var(--green)';
-      } else {
-        btn.textContent = 'Fout';
-        btn.disabled = false;
-      }
-    })
-    .catch(function() { btn.textContent = 'Fout'; btn.disabled = false; });
-  }
+  // Niet betaald
+  renderLeadsTable('nietBetaaldTable', data.nietBetaald || [], 'niet_betaald');
+  renderLeadsTable('alleenRapportTable', data.alleenRapport || [], 'rapport_follow_up');
 
   // Leden
-  var alleLeden = data.leden || [];
-  function renderLeden(lijst) {
-    document.getElementById('ledenTable').innerHTML = lijst.length === 0
-      ? '<tr><td colspan="4" class="empty-state">Geen leden</td></tr>'
-      : lijst.map(function(l) {
-          var datum = l.abonnementStartOp ? new Date(l.abonnementStartOp).toLocaleDateString('nl-NL') : '—';
-          return '<tr><td><div style="font-weight:500;">' + (l.naam || '—') + '</div><div style="font-size:0.75rem;color:var(--text-muted);">' + (l.email || '—') + '</div></td><td style="font-size:0.8125rem;color:var(--text-muted);">' + (l.stijl || '—') + '</td><td style="font-size:0.8125rem;color:var(--text-muted);">' + datum + '</td><td style="font-size:0.8125rem;color:var(--text-muted);">' + (l.totaleBerichten || 0) + '</td></tr>';
-        }).join('');
-  }
+  alleLeden = data.leden || [];
   renderLeden(alleLeden);
-
-  function filterLeden(q) {
-    if (!q) { renderLeden(alleLeden); return; }
-    renderLeden(alleLeden.filter(function(l) { return (l.naam||'').toLowerCase().includes(q.toLowerCase()) || (l.email||'').toLowerCase().includes(q.toLowerCase()); }));
-  }
-
-  // Rapporten
-  var rapporten = data.rapporten || [];
-  document.getElementById('rapportenTable').innerHTML = rapporten.length === 0
-    ? '<tr><td colspan="5" class="empty-state">Nog geen rapporten verstuurd</td></tr>'
-    : rapporten.map(function(r) {
-        var datum = r.datum ? new Date(r.datum).toLocaleDateString('nl-NL') : '—';
-        var typeMap = { solo: 'Solo', couple_main: 'Koppel (hoofd)', couple_partner: 'Koppel (partner)', subscription: 'Abonnement' };
-        var typeLabel = typeMap[r.type] || r.type || '—';
-        var badgeClass = r.type === 'solo' ? 'solo' : r.type && r.type.includes('couple') ? 'couple' : 'coach';
-        return '<tr>' +
-          '<td style="font-size:0.8125rem;color:var(--text-muted);">' + datum + '</td>' +
-          '<td style="font-weight:500;">' + (r.naam || '—') + '</td>' +
-          '<td style="font-size:0.8125rem;color:var(--text-muted);">' + (r.email || '—') + '</td>' +
-          '<td><span class="badge ' + badgeClass + '">' + typeLabel + '</span></td>' +
-          '<td style="font-size:0.8125rem;color:var(--text-muted);">' + (r.stijl || '—') + '</td>' +
-          '</tr>';
-      }).join('');
 
   // Aanmeldingen
   var aanmeldingen = data.aanmeldingen || [];
   document.getElementById('aanmeldingenTable').innerHTML = aanmeldingen.length === 0
-    ? '<tr><td colspan="3" class="empty-state">Nog geen aanmeldingen</td></tr>'
+    ? '<tr><td colspan="3" class="empty-state">Geen aanmeldingen</td></tr>'
     : aanmeldingen.map(function(a) {
-        var datum = a.datum ? new Date(a.datum).toLocaleDateString('nl-NL') : '—';
-        return '<tr><td style="font-size:0.8125rem;color:var(--text-muted);">' + datum + '</td><td><div style="font-weight:500;">' + (a.naam || '—') + '</div><div style="font-size:0.75rem;color:var(--text-muted);">' + (a.email || '') + '</div></td><td style="font-size:0.8125rem;color:var(--text-muted);">' + (a.stijl || '—') + '</td></tr>';
+        var d = a.datum ? new Date(a.datum).toLocaleDateString('nl-NL') : '-';
+        return '<tr><td style="font-size:0.8rem;color:var(--text-muted);">' + d + '</td><td><div style="font-weight:500;">' + (a.naam||'-') + '</div><div style="font-size:0.75rem;color:var(--text-muted);">' + (a.email||'') + '</div></td><td style="font-size:0.8rem;color:var(--text-muted);">' + (a.stijl||'-') + '</td></tr>';
       }).join('');
 
   // Afmeldingen
@@ -369,30 +318,21 @@ function renderDashboard(data) {
   document.getElementById('afmeldingenTable').innerHTML = afgemeld.length === 0
     ? '<tr><td colspan="3" class="empty-state">Geen afmeldingen</td></tr>'
     : afgemeld.map(function(a) {
-        var datum = a.opzeggingDatum ? new Date(a.opzeggingDatum).toLocaleDateString('nl-NL') : '—';
-        return '<tr><td style="font-size:0.8125rem;color:var(--red);">' + datum + '</td><td style="font-weight:500;">' + (a.naam || '—') + '</td><td style="font-size:0.8125rem;color:var(--text-muted);">' + (a.email || '—') + '</td></tr>';
+        var d = a.opzeggingDatum ? new Date(a.opzeggingDatum).toLocaleDateString('nl-NL') : '-';
+        return '<tr><td style="font-size:0.8rem;color:var(--red);">' + d + '</td><td style="font-weight:500;">' + (a.naam||'-') + '</td><td style="font-size:0.8rem;color:var(--text-muted);">' + (a.email||'-') + '</td></tr>';
       }).join('');
-  document.getElementById('statGebruikers').textContent = data.stats.totalGebruikers;
 
-  // Funnel
-  var f = data.funnel;
-  var max = Math.max(f.quizGestart, 1);
-  var steps = [
-    { label: 'Quiz gestart', count: f.quizGestart },
-    { label: 'Email ingevuld', count: f.emailIngevuld },
-    { label: 'Betaald', count: f.betaald },
-    { label: 'Actief abonnement', count: f.actief }
-  ];
-  var funnelHtml = steps.map(function(s) {
-    var pct = Math.round((s.count / max) * 100);
-    return '<div class="funnel-step">' +
-      '<div class="funnel-label">' + s.label + '</div>' +
-      '<div class="funnel-bar-wrap"><div class="funnel-bar" style="width:' + pct + '%"></div></div>' +
-      '<div class="funnel-count">' + s.count + '</div>' +
-      '<div class="funnel-pct">' + pct + '%</div>' +
-      '</div>';
-  }).join('');
-  document.getElementById('funnelSteps').innerHTML = funnelHtml;
+  // Rapporten
+  var rapporten = data.rapporten || [];
+  var typeMap = { solo: 'Solo', couple_main: 'Koppel (hoofd)', couple_partner: 'Koppel (partner)', subscription: 'Abonnement' };
+  document.getElementById('rapportenTable').innerHTML = rapporten.length === 0
+    ? '<tr><td colspan="5" class="empty-state">Nog geen rapporten</td></tr>'
+    : rapporten.map(function(r) {
+        var d = r.datum ? new Date(r.datum).toLocaleDateString('nl-NL') : '-';
+        var tl = typeMap[r.type] || r.type || '-';
+        var bc = r.type === 'solo' ? 'solo' : (r.type||'').includes('couple') ? 'couple' : 'coach';
+        return '<tr><td style="font-size:0.8rem;color:var(--text-muted);">' + d + '</td><td style="font-weight:500;">' + (r.naam||'-') + '</td><td style="font-size:0.8rem;color:var(--text-muted);">' + (r.email||'-') + '</td><td><span class="badge ' + bc + '">' + tl + '</span></td><td style="font-size:0.8rem;color:var(--text-muted);">' + (r.stijl||'-') + '</td></tr>';
+      }).join('');
 
   // Gebruikers
   alleGebruikers = data.profielen || [];
@@ -400,54 +340,82 @@ function renderDashboard(data) {
 
   // Betalingen
   var betalingen = data.betalingen || [];
-  var bHtml = betalingen.length === 0
-    ? '<tr><td colspan="4" class="empty-state">Nog geen betalingen</td></tr>'
+  document.getElementById('betalingenTable').innerHTML = betalingen.length === 0
+    ? '<tr><td colspan="4" class="empty-state">Geen betalingen</td></tr>'
     : betalingen.map(function(b) {
-        var datum = b.datum ? new Date(b.datum).toLocaleDateString('nl-NL') : '—';
-        var typeLabel = b.type === 'coach_eerste_betaling' ? 'Coach start' : b.type === 'coach_maandelijks' ? 'Coach maand' : b.type || '—';
-        var badgeClass = b.type === 'coach_eerste_betaling' || b.type === 'coach_maandelijks' ? 'coach' : b.type === 'couple' ? 'couple' : 'solo';
-        return '<tr>' +
-          '<td>' + datum + '</td>' +
-          '<td style="font-weight:600;color:#4CAF50;">€' + b.bedrag.toFixed(2) + '</td>' +
-          '<td><span class="badge ' + badgeClass + '">' + typeLabel + '</span></td>' +
-          '<td style="color:var(--text-muted);font-size:0.8125rem;">' + (b.email || '—') + '</td>' +
-          '</tr>';
+        var d = b.datum ? new Date(b.datum).toLocaleDateString('nl-NL') : '-';
+        var tl = b.type === 'coach_eerste_betaling' ? 'Coach start' : b.type === 'coach_maandelijks' ? 'Coach maand' : b.type || '-';
+        var bc = (b.type||'').includes('coach') ? 'coach' : b.type === 'couple' ? 'couple' : 'solo';
+        return '<tr><td>' + d + '</td><td style="font-weight:600;color:var(--green);">\u20AC' + (b.bedrag||0).toFixed(2) + '</td><td><span class="badge ' + bc + '">' + tl + '</span></td><td style="font-size:0.8rem;color:var(--text-muted);">' + (b.email||'-') + '</td></tr>';
       }).join('');
-  document.getElementById('betalingenTable').innerHTML = bHtml;
+}
+
+function renderLeadsTable(tableId, lijst, mailType) {
+  var el = document.getElementById(tableId);
+  if (!lijst.length) { el.innerHTML = '<tr><td colspan="5" class="empty-state">Geen data</td></tr>'; return; }
+  el.innerHTML = lijst.map(function(r) {
+    var d = r.datum ? new Date(r.datum).toLocaleDateString('nl-NL') : '-';
+    return '<tr>' +
+      '<td style="font-size:0.8rem;color:var(--text-muted);">' + d + '</td>' +
+      '<td style="font-weight:500;">' + (r.naam||'-') + '</td>' +
+      '<td style="font-size:0.8rem;color:var(--text-muted);">' + (r.email||'-') + '</td>' +
+      '<td style="font-size:0.8rem;color:var(--text-muted);">' + (r.stijl||'-') + '</td>' +
+      '<td><button data-email="' + (r.email||'') + '" data-naam="' + (r.naam||'') + '" data-stijl="' + (r.stijl||'') + '" data-type="' + mailType + '" onclick="handleFollowUp(this)" style="background:var(--primary);color:white;border:none;padding:0.375rem 0.75rem;border-radius:999px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:inherit;">Stuur mail</button></td>' +
+      '</tr>';
+  }).join('');
+}
+
+function handleFollowUp(btn) {
+  btn.disabled = true; btn.textContent = 'Bezig...';
+  var email = btn.getAttribute('data-email');
+  var naam = btn.getAttribute('data-naam');
+  var stijl = btn.getAttribute('data-stijl');
+  var type = btn.getAttribute('data-type');
+  fetch('/.netlify/functions/send-followup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: pw, email: email, naam: naam, stijl: stijl, type: type })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.ok) { btn.textContent = 'Verstuurd'; btn.style.background = 'var(--green)'; }
+    else { btn.textContent = 'Fout'; btn.disabled = false; }
+  })
+  .catch(function() { btn.textContent = 'Fout'; btn.disabled = false; });
+}
+
+function renderLeden(lijst) {
+  document.getElementById('ledenTable').innerHTML = !lijst.length
+    ? '<tr><td colspan="4" class="empty-state">Geen leden</td></tr>'
+    : lijst.map(function(l) {
+        var d = l.abonnementStartOp ? new Date(l.abonnementStartOp).toLocaleDateString('nl-NL') : '-';
+        return '<tr><td><div style="font-weight:500;">' + (l.naam||'-') + '</div><div style="font-size:0.75rem;color:var(--text-muted);">' + (l.email||'') + '</div></td><td style="font-size:0.8rem;color:var(--text-muted);">' + (l.stijl||'-') + '</td><td style="font-size:0.8rem;color:var(--text-muted);">' + d + '</td><td style="font-size:0.8rem;color:var(--text-muted);">' + (l.totaleBerichten||0) + '</td></tr>';
+      }).join('');
+}
+
+function filterLeden(q) {
+  if (!q) { renderLeden(alleLeden); return; }
+  renderLeden(alleLeden.filter(function(l) { return (l.naam||'').toLowerCase().includes(q.toLowerCase()) || (l.email||'').toLowerCase().includes(q.toLowerCase()); }));
 }
 
 function renderGebruikers(lijst) {
-  var html = lijst.length === 0
-    ? '<tr><td colspan="4" class="empty-state">Nog geen gebruikers</td></tr>'
+  document.getElementById('gebruikersTable').innerHTML = !lijst.length
+    ? '<tr><td colspan="4" class="empty-state">Geen gebruikers</td></tr>'
     : lijst.map(function(g) {
-        var datum = g.aangemaaktOp ? new Date(g.aangemaaktOp).toLocaleDateString('nl-NL') : '—';
-        var statusClass = g.abonnementActief ? 'actief' : 'inactief';
-        var statusLabel = g.abonnementActief ? 'Actief' : 'Inactief';
-        return '<tr>' +
-          '<td>' +
-            '<div style="font-weight:500;">' + (g.naam || '—') + '</div>' +
-            '<div style="font-size:0.75rem;color:var(--text-muted);">' + (g.email || '—') + '</div>' +
-          '</td>' +
-          '<td style="font-size:0.8125rem;color:var(--text-muted);">' + (g.stijl || '—') + '</td>' +
-          '<td><span class="badge ' + statusClass + '">' + statusLabel + '</span></td>' +
-          '<td style="font-size:0.8125rem;color:var(--text-muted);">' + datum + '</td>' +
-          '</tr>';
+        var d = g.aangemaaktOp ? new Date(g.aangemaaktOp).toLocaleDateString('nl-NL') : '-';
+        var sc = g.abonnementActief ? 'actief' : 'inactief';
+        var sl = g.abonnementActief ? 'Actief' : 'Inactief';
+        return '<tr><td><div style="font-weight:500;">' + (g.naam||'-') + '</div><div style="font-size:0.75rem;color:var(--text-muted);">' + (g.email||'') + '</div></td><td style="font-size:0.8rem;color:var(--text-muted);">' + (g.stijl||'-') + '</td><td><span class="badge ' + sc + '">' + sl + '</span></td><td style="font-size:0.8rem;color:var(--text-muted);">' + d + '</td></tr>';
       }).join('');
-  document.getElementById('gebruikersTable').innerHTML = html;
 }
 
 function filterGebruikers(query) {
   if (!query) { renderGebruikers(alleGebruikers); return; }
   var q = query.toLowerCase();
-  var gefilterd = alleGebruikers.filter(function(g) {
-    return (g.naam || '').toLowerCase().includes(q) || (g.email || '').toLowerCase().includes(q);
-  });
-  renderGebruikers(gefilterd);
+  renderGebruikers(alleGebruikers.filter(function(g) { return (g.naam||'').toLowerCase().includes(q) || (g.email||'').toLowerCase().includes(q); }));
 }
 
-document.getElementById('pwInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') doLogin();
-});
+document.getElementById('pwInput').addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
 </script>
 </body>
 </html>
